@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Subir Fotos | Equity Solar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 600px;
+            margin: 120px auto 60px;
+            padding: 30px;
+            border-radius: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-family: inherit;
+        }
+        .success-msg {
+            display: none;
+            color: #06d6a0;
+            margin-top: 15px;
+            text-align: center;
+            padding: 10px;
+            background: rgba(6, 214, 160, 0.1);
+            border-radius: 10px;
+        }
+        .error-msg {
+            display: none;
+            color: #ef476f;
+            margin-top: 15px;
+            text-align: center;
+            padding: 10px;
+            background: rgba(239, 71, 111, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar glass">
+        <div class="logo" style="font-size: 1.3rem;">La energia solar es gratis. <span>Usala.</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Ver Sitio</a></li>
+            <li><a href="gallery.html">Ver Galería</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin-container glass">
+        <h2>Subir Nueva Foto a la Galería</h2>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">Sube fotos reales de tus instalaciones. Aparecerán automáticamente en la sección de Galería.</p>
+        
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="photoFile">Selecciona la Foto (JPG, PNG)</label>
+                <input type="file" id="photoFile" accept="image/*" required>
+            </div>
+            
+            <button type="submit" class="btn-primary full-width" id="submitBtn">Subir y Publicar Foto</button>
+            
+            <div id="successMsg" class="success-msg">¡Foto subida y publicada con éxito!</div>
+            <div id="errorMsg" class="error-msg">Hubo un error al subir la foto.</div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            btn.innerHTML = 'Subiendo...';
+            btn.disabled = true;
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            const fileInput = document.getElementById('photoFile');
+            
+            const formData = new FormData();
+            formData.append('photo', fileInput.files[0]);
+            
+            try {
+                const res = await fetch('/api/gallery', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (res.ok) {
+                    successMsg.style.display = 'block';
+                    document.getElementById('uploadForm').reset();
+                } else {
+                    errorMsg.style.display = 'block';
+                }
+            } catch (error) {
+                console.error(error);
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.innerHTML = 'Subir y Publicar Foto';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

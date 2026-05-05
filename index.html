@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolución Solar | Conoce a Sol</title>
+    <meta name="description" content="Descubre el poder de la energía solar con Sol, tu experta digital. Calcula tu ahorro y únete a la revolución.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar glass">
+        <div class="logo" style="font-size: 1.3rem;">La energia solar es gratis. <span>Usala.</span></div>
+        <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero">Inicio</a></li>
+            <li><a href="#program-benefits">Beneficios</a></li>
+            <li><a href="#influencer">Conoce a Sol</a></li>
+            <li><a href="gallery.html">Instalaciones Reales</a></li>
+        </ul>
+        <button class="btn-primary desktop-only" id="joinTodayBtn">Únete Hoy</button>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section id="hero" class="hero">
+        <div class="hero-background">
+            <img src="assets/home.png" alt="Casa moderna con paneles solares">
+            <div class="overlay"></div>
+        </div>
+        <div class="hero-content">
+            <span class="badge" id="futureBadge" style="cursor: pointer; transition: transform 0.2s; position: relative; z-index: 10;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" title="Descubre por qué">El futuro de la energía ℹ️</span>
+            <h1 class="animate-up">Energía Inteligente<br>Para un Mundo Mejor</h1>
+            <p class="animate-up delay-1">Convierte el sol en tu mayor activo. Independencia energética, cero emisiones y ahorros desde el primer día.</p>
+            <div class="hero-buttons animate-up delay-2">
+                <a href="#calculator" class="btn-primary glow">Calcula tu Ahorro</a>
+                <a href="#influencer" id="demoBtn" class="btn-secondary">Ver Demostración</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Influencer Digital -->
+    <section id="influencer" class="influencer-section">
+        <div class="influencer-grid">
+            <div class="influencer-text scroll-reveal">
+                <h2>Tu guía personal hacia la transición, <span class="highlight">24/7</span>.</h2>
+                <p>Conoce a <strong>Sol</strong>. Ella no es solo un avatar, es una experta generada por inteligencia artificial, diseñada para responder todas tus dudas sobre energía renovable, financiamiento e instalación en tiempo real.</p>
+                <ul class="features-list">
+                    <li><span class="icon">✨</span> Respuestas instantáneas y precisas.</li>
+                    <li><span class="icon">📊</span> Análisis de datos en tiempo real.</li>
+                    <li><span class="icon">🌱</span> Consejos de estilo de vida sostenible.</li>
+                </ul>
+
+                <button class="btn-primary" onclick="document.getElementById('chatToggle').click()">Habla con Sol (Demo)</button>
+            </div>
+            <style>
+                @keyframes floatAvatar {
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-12px); }
+                    100% { transform: translateY(0px); }
+                }
+                .floating-container {
+                    animation: floatAvatar 4s ease-in-out infinite;
+                }
+            </style>
+            <div class="influencer-image scroll-reveal right">
+                <div class="image-wrapper glass-border floating-container" style="position: relative;">
+                    <img src="assets/influencer.png" id="solImage" alt="Sol, tu experta solar digital" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div class="floating-badge">
+                        <span class="status-dot"></span> Online ahora
+                    </div>
+                    <!-- Speech Bubble -->
+                    <div id="solSpeechBubble" class="glass" style="position: absolute; top: -20px; right: -40px; max-width: 250px; padding: 15px; border-radius: 15px; border-bottom-left-radius: 0; opacity: 0; transform: translateY(20px); transition: all 0.4s ease; pointer-events: none; z-index: 20;">
+                        <p style="font-size: 0.9rem; margin: 0; line-height: 1.4; color: var(--text-main);">
+                            <strong>¡Hola! Soy Sol. ☀️</strong><br>
+                            La energia solar es gratis. <span style="color: var(--primary-color); font-weight: bold;">Usala.</span> Únete a nuestra comunidad hoy. Permíteme guiarte en el proceso. Aquí estoy para contestar tus preguntas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Partner Oficial -->
+    <section id="official-partner" class="partner-highlight-section glass">
+        <div class="partner-content scroll-reveal">
+            <p class="partners-title">Instalador Oficial Exclusivo</p>
+            <h2 class="partner-name">Equity Solar</h2>
+            <div class="partner-stats">
+                <div class="stat">
+                    <span class="stat-number">4.9 <span class="stars">⭐⭐⭐⭐⭐</span></span>
+                    <span class="stat-label">1,475 Opiniones en Google</span>
+                </div>
+                <div class="stat divider"></div>
+                <div class="stat">
+                    <span class="stat-number">+100k</span>
+                    <span class="stat-label">Instalaciones Exitosas</span>
+                </div>
+                <div class="stat divider"></div>
+                <div class="stat">
+                    <span class="stat-number">Florida, USA</span>
+                    <span class="stat-label">Cobertura Principal</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                <a href="gallery.html" class="btn-primary glow">
+                    <span class="icon" style="margin-right: 8px;">📸</span> Ver Fotos Reales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Beneficios del Programa -->
+    <section id="program-benefits" class="benefits-section">
+        <div class="section-header scroll-reveal">
+            <h2>Resultados del Programa de Energía Limpia</h2>
+            <p>Conoce los beneficios exclusivos y garantías al calificar para nuestro sistema renovable.</p>
+        </div>
+        <div class="benefits-grid">
+            <!-- Financieros -->
+            <div class="benefit-card glass scroll-reveal">
+                <span class="icon">💸</span>
+                <h4>Ahorro Radical</h4>
+                <ul>
+                    <li>Eliminas por completo la facturación eléctrica.</li>
+                    <li>Renta del sistema hasta 50% más barata que la facturación eléctrica eliminada.</li>
+                    <li>Pago de renta fijo sin variación mensual por 25 años.</li>
+                </ul>
+            </div>
+            <!-- Cero Riesgo -->
+            <div class="benefit-card glass scroll-reveal delay-1">
+                <span class="icon">🛡️</span>
+                <h4>Cero Riesgo e Inversión</h4>
+                <ul>
+                    <li>No se paga nada en el proceso de instalación ($0 Down).</li>
+                    <li>Comienzas a pagar el lease 30-60 días después de que el sistema esté funcionando.</li>
+                    <li>No hay gravamen (lien) en la propiedad.</li>
+                    <li>No se reporta al buró de crédito.</li>
+                </ul>
+            </div>
+            <!-- Ganancias y Seguridad -->
+            <div class="benefit-card glass scroll-reveal delay-2">
+                <span class="icon">📈</span>
+                <h4>Ganancias y Respaldo</h4>
+                <ul>
+                    <li>Vendes electricidad a la compañía eléctrica y recibes un cheque anual.</li>
+                    <li>Incremento automático del valor de la propiedad.</li>
+                    <li>Seguro incluido de responsabilidad por $1 Millón.</li>
+                    <li>Cobertura de hasta $500,000 por daños a la propiedad.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Cómo Funciona -->
+    <section id="how-it-works" class="how-it-works-section">
+        <div class="section-header scroll-reveal">
+            <h2>El Camino hacia tu Independencia</h2>
+            <p>Un proceso simple, transparente y sin complicaciones.</p>
+        </div>
+        <div class="steps-container">
+            <div class="step-card glass scroll-reveal delay-1">
+                <div class="step-number">1</div>
+                <h3>Diseño y Aprobación</h3>
+                <p>Nuestra IA y equipo de ingenieros diseñan el sistema perfecto para tu techo y gestionan los permisos locales.</p>
+            </div>
+            <div class="step-card glass scroll-reveal delay-2">
+                <div class="step-number">2</div>
+                <h3>Instalación Rápida</h3>
+                <p>Nuestros técnicos certificados instalan los paneles y la batería en 1-2 días, con interrupciones mínimas.</p>
+            </div>
+            <div class="step-card glass scroll-reveal delay-3">
+                <div class="step-number">3</div>
+                <h3>Ahorro Inmediato</h3>
+                <p>Enciende tu sistema y comienza a ver cómo tu factura eléctrica se desploma desde el primer mes.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Sección Social Feed (Influencer) -->
+    <section id="social-feed" class="social-feed-section">
+        <div class="section-header scroll-reveal">
+            <h2>El Impacto de Sol en Redes</h2>
+            <p>Únete a miles de seguidores que aprenden a ahorrar e independizarse todos los días.</p>
+        </div>
+        <div class="feed-grid scroll-reveal delay-1">
+            <div class="feed-post glass">
+                <div class="post-image" style="background-image: url('assets/influencer.png')">
+                    <span class="platform-icon">🎵</span>
+                </div>
+                <div class="post-content">
+                    <p><strong>@SolEnergy_AI</strong> ¡No creas el mito! 🌧️ Tus paneles siguen produciendo energía en días de lluvia. Te explico cómo la luz difusa funciona a tu favor. #EnergiaSolar #Ahorro</p>
+                    <div class="post-stats"><span>❤️ 12.4K</span> <span>💬 340</span></div>
+                </div>
+            </div>
+            <div class="feed-post glass">
+                <div class="post-image" style="background-image: url('assets/home.png')">
+                    <span class="platform-icon">📷</span>
+                </div>
+                <div class="post-content">
+                    <p><strong>@SolEnergy_AI</strong> Miren la elegancia de esta instalación de Equity Solar en Florida. Cero inversión inicial y la factura pasó de $210 a solo $18. ¿Quieres ver si calificas? Link en mi bio. ☀️🔋</p>
+                    <div class="post-stats"><span>❤️ 8.9K</span> <span>💬 156</span></div>
+                </div>
+            </div>
+            <div class="feed-post glass">
+                <div class="post-image" style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.6)), url('assets/influencer.png'); background-position: top;">
+                    <span class="platform-icon">🐦</span>
+                </div>
+                <div class="post-content">
+                    <p><strong>@SolEnergy_AI</strong> Dato del día: Los paneles solares protegen tu techo del desgaste directo del sol, actuando como un escudo térmico. Tu casa vale más y está más fresca. 🛡️🏠</p>
+                    <div class="post-stats"><span>🔁 1.2K</span> <span>❤️ 4.5K</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Calculadora -->
+    <section id="calculator" class="calculator-section">
+        <div class="section-header scroll-reveal">
+            <h2>Simulador de Ahorro</h2>
+            <p>Descubre cuánto podrías ahorrar al año cambiando a energía solar.</p>
+        </div>
+
+        <div class="calculator-container glass scroll-reveal">
+            <div class="calc-input">
+                <label for="monthlyBill">¿Cuánto pagas de luz al mes? (USD)</label>
+                <div class="range-slider">
+                    <input type="range" id="billRange" min="50" max="800" value="150" step="10">
+                    <span id="billValue" class="value-display">$150</span>
+                </div>
+            </div>
+            
+            <div class="calc-results">
+                <div class="result-card">
+                    <h3>Ahorro a 10 Años</h3>
+                    <div class="number text-gradient" id="savings10y">$28,833</div>
+                </div>
+                <div class="result-card">
+                    <h3>Ahorro a 25 años</h3>
+                    <div class="number text-gradient" id="savings25y">$134,888</div>
+                </div>
+                <div class="result-card">
+                    <h3>Árboles Equivalentes</h3>
+                    <div class="number text-green" id="treesSaved">263</div>
+                </div>
+            </div>
+            <button class="btn-primary full-width mt-2">Generar Cotización Completa</button>
+        </div>
+    </section>
+
+    <!-- Sección FAQ -->
+    <section id="faq" class="faq-section">
+        <div class="section-header scroll-reveal">
+            <h2>Preguntas Frecuentes</h2>
+            <p>Todo lo que necesitas saber sobre la transición solar.</p>
+        </div>
+        <div class="faq-container scroll-reveal">
+            <div class="faq-item">
+                <button class="faq-question">¿Realmente la instalación es con $0 de inicial? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>Sí, gracias a los incentivos actuales y nuestros programas, cubrimos el 100% de los costos de equipo e instalación por adelantado. Comienzas a pagar tu renta fija mensual 30-60 días después de que tu sistema esté encendido y produciendo energía.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">¿Qué pasa si mi techo necesita reparaciones? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>Durante la evaluación inicial, inspeccionamos tu techo. Si necesita reparaciones o ser cambiado, en muchos casos podemos incluir el costo del techo nuevo dentro del mismo paquete de financiamiento solar.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">¿Qué sucede en días nublados o lluviosos? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>Los paneles solares modernos captan luz ultravioleta, la cual penetra las nubes. Aunque la producción sea menor que en un día soleado, tu sistema seguirá generando. Si agregas baterías, tendrás total independencia sin importar el clima.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">¿Aumentarán mis impuestos a la propiedad? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>No. De hecho, Florida tiene leyes que prohíben el aumento de los impuestos a la propiedad debido a la instalación de paneles solares, a pesar de que el valor de mercado de tu casa sí aumentará significativamente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content glass">
+            <h2 style="font-size: 1.5rem; margin-bottom: 10px;">La energia solar es gratis. <span style="color: var(--primary-color);">Usala.</span></h2>
+            <p>Tu Consultor Asignado: <strong>Eliecer Hernandez</strong></p>
+            <p>Innovación energética al alcance de todos.</p>
+            <p class="copyright">© 2026 SolarNext Inc. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Quiz/Matchmaker Modal -->
+    <div class="modal-overlay" id="quizModal">
+        <div class="modal-content glass">
+            <button class="close-modal" id="closeQuiz">×</button>
+            
+            <!-- Step 1 -->
+            <div class="quiz-step active" id="step1">
+                <h3>Paso 1: Perfil</h3>
+                <p>¿Eres dueño de la propiedad?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-next="step2">Sí</button>
+                    <button class="btn-secondary quiz-btn" data-next="step2">No</button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="quiz-step" id="step2">
+                <h3>Paso 2: Consumo</h3>
+                <p>¿Tu factura eléctrica supera los $100.00 mensualmente?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-next="step3">Sí</button>
+                    <button class="btn-secondary quiz-btn" data-next="step3">No</button>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="quiz-step" id="step3">
+                <h3>Paso 3: Calificación Financiera</h3>
+                <p>¿Tu puntuación crediticia supera 650?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-next="step4">Sí</button>
+                    <button class="btn-secondary quiz-btn" data-next="step4">No</button>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="quiz-step" id="step4">
+                <h3>Paso 4: Tu Techo</h3>
+                <p>¿Qué tipo de techo tienes principalmente?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-next="step5">Metal</button>
+                    <button class="btn-secondary quiz-btn" data-next="step5">Tejas</button>
+                    <button class="btn-secondary quiz-btn" data-next="step5">Shingle</button>
+                    <button class="btn-secondary quiz-btn" data-next="step5">Plano</button>
+                </div>
+            </div>
+
+            <!-- Step 5 (Result) -->
+            <div class="quiz-step" id="step5">
+                <h3 class="text-green">¡Excelente Compatibilidad!</h3>
+                <p>Eres elegible para el plan <strong>Cero Inversión Inicial</strong>.</p>
+                <p>Completa tus datos para recibir tu diseño 3D personalizado y reporte de ahorros.</p>
+                <div class="quiz-input-group multi-input" style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="text" id="leadName" placeholder="Nombre y Apellido" class="glass-input" required>
+                    <input type="tel" id="leadPhone" placeholder="Teléfono" class="glass-input" required>
+                    <input type="text" id="leadAddress" placeholder="Dirección de la propiedad" class="glass-input" required>
+                    <input type="text" id="leadZip" placeholder="Código Postal" class="glass-input" required>
+                    <input type="email" id="leadEmail" placeholder="Correo Electrónico" class="glass-input" required>
+                    <button class="btn-primary" id="submitLead" style="margin-top: 10px;">Ver mi Diseño</button>
+                </div>
+                <div id="successMsg" style="display: none; color: #06d6a0; margin-top: 15px;">
+                    ¡Enviado! Revisa tu bandeja de entrada en unos minutos.
+                </div>
+                <div id="whatsappButtons" style="display: none; margin-top: 15px; flex-direction: column; gap: 10px;">
+                    <p style="color: var(--text-main); font-size: 0.9rem; margin-bottom: 5px;">Conecta con tu consultor por WhatsApp:</p>
+                    <a id="waBtn1" href="#" target="_blank" class="btn-primary" style="background: #25D366; text-decoration: none; text-align: center; font-size: 0.9rem;">📲 Eliecer (305-813-6159)</a>
+                    <a id="waBtn2" href="#" target="_blank" class="btn-secondary" style="border-color: #25D366; color: #25D366; text-decoration: none; text-align: center; font-size: 0.9rem;">📲 Consultor 2 (305-784-6363)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget Sol -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chatToggle">
+            <img src="assets/influencer.png" alt="Sol">
+            <span class="notification-badge">1</span>
+        </button>
+        <div class="chat-window glass" id="chatWindow">
+            <div class="chat-header" style="display: flex; align-items: center; gap: 10px; padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                <div class="chat-avatar">
+                    <img src="assets/influencer.png" alt="Sol">
+                    <span class="status-dot"></span>
+                </div>
+                <div style="flex-grow: 1;">
+                    <h4>Sol</h4>
+                    <p class="status-text">Especialista Solar IA</p>
+                </div>
+                <button id="voiceToggle" title="Activar Voz" style="background:none; border:none; color:var(--text-main); font-size:1.2rem; cursor:pointer;">🔇</button>
+                <button class="close-chat" id="closeChat" style="margin-left: 5px;">×</button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="message sol-msg">
+                    <p>¡Hola! Soy Sol 👋. Veo que estás explorando tus opciones de energía solar. ¿En qué te puedo ayudar a calcular o entender hoy?</p>
+                </div>
+            </div>
+            <div class="chat-input" style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap; padding: 10px;">
+                <div style="display: flex; width: 100%; gap: 5px;">
+                    <input type="text" id="chatInput" placeholder="Pregúntale a Sol..." style="flex-grow: 1;">
+                    <button id="micBtn" title="Dictar por voz" style="background:none; border:none; font-size:1.4rem; cursor:pointer; transition: transform 0.2s;">🎤</button>
+                    <button id="sendChat" class="btn-primary glow">Enviar</button>
+                </div>
+                <button id="vapiCallBtn" class="btn-primary" style="width: 100%; background: #ff0055; border-color: #ff0055; margin-top: 5px; text-align: center; font-weight: bold; transition: all 0.3s;">
+                    📞 Hablar por Teléfono con Sol
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import Vapi from "https://esm.sh/@vapi-ai/web";
+        
+        // Inicializar Vapi con tu Public Key
+        const vapi = new Vapi("421c2647-83b3-4e5f-bc7c-72414918483a");
+        const callBtn = document.getElementById('vapiCallBtn');
+        let callActive = false;
+        
+        // REQUIERE TU ASSISTANT ID
+        const ASSISTANT_ID = "795ccfaf-220d-4eea-8c2d-ab24d1b3de8c"; 
+        
+        if (callBtn) {
+            callBtn.addEventListener('click', () => {
+                if (ASSISTANT_ID === "TU_ASSISTANT_ID") {
+                    alert('¡Casi listo! Por favor dame tu Assistant ID de Vapi para completar la conexión.');
+                    return;
+                }
+                
+                if (callActive) {
+                    vapi.stop();
+                } else {
+                    callBtn.innerHTML = '⏳ Conectando...';
+                    vapi.start(ASSISTANT_ID);
+                }
+            });
+            
+            vapi.on('call-start', () => {
+                callActive = true;
+                callBtn.innerHTML = '🛑 Colgar Llamada';
+                callBtn.style.background = '#d90429';
+                callBtn.style.borderColor = '#d90429';
+            });
+            
+            vapi.on('call-end', () => {
+                callActive = false;
+                callBtn.innerHTML = '📞 Hablar por Teléfono con Sol';
+                callBtn.style.background = '#ff0055';
+                callBtn.style.borderColor = '#ff0055';
+            });
+            
+            vapi.on('error', (e) => {
+                console.error(e);
+                callActive = false;
+                callBtn.innerHTML = '📞 Hablar por Teléfono con Sol';
+                callBtn.style.background = '#ff0055';
+                callBtn.style.borderColor = '#ff0055';
+                alert('Hubo un error con la llamada. Verifica que tu navegador tenga permisos de micrófono habilitados.');
+            });
+        }
+    </script>
+
+
+    <!-- Future Energy Modal -->
+    <div class="modal-overlay" id="futureEnergyModal">
+        <div class="modal-content glass" style="max-width: 600px; text-align: left; padding: 2.5rem;">
+            <button class="close-modal" id="closeFutureModal">×</button>
+            <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">El Futuro de la Energía</h2>
+            <p style="margin-bottom: 1.5rem; line-height: 1.6; color: var(--text-main);">Adoptar la energía solar no es solo un ahorro en tu factura, es formar parte de la evolución hacia un mundo más inteligente y limpio. Estos son los tres pilares de tu transición:</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+                <div style="background: rgba(255,255,255,0.05); padding: 1.2rem; border-radius: 12px; border-left: 4px solid #34a853;">
+                    <h4 style="color: #34a853; margin-bottom: 5px; font-size: 1.1rem;">🌍 Medio Ambiente</h4>
+                    <p style="font-size: 0.95rem; margin: 0; color: #e8eaed;">Reduces drásticamente tu huella de carbono, combates el cambio climático y disminuyes la dependencia global de los combustibles fósiles altamente contaminantes.</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 1.2rem; border-radius: 12px; border-left: 4px solid #fbbc04;">
+                    <h4 style="color: #fbbc04; margin-bottom: 5px; font-size: 1.1rem;">💰 Economía</h4>
+                    <p style="font-size: 0.95rem; margin: 0; color: #e8eaed;">Blindas tu bolsillo contra la inflación energética. Eliminas las facturas impredecibles de la luz mientras aumentas automáticamente el valor de tu propiedad en el mercado inmobiliario.</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 1.2rem; border-radius: 12px; border-left: 4px solid #4285f4;">
+                    <h4 style="color: #4285f4; margin-bottom: 5px; font-size: 1.1rem;">🚀 Desarrollo Tecnológico</h4>
+                    <p style="font-size: 0.95rem; margin: 0; color: #e8eaed;">Integras tu hogar a la red del futuro. La combinación de paneles solares, baterías de alta eficiencia y gestión por inteligencia artificial moderniza por completo tu estilo de vida.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
