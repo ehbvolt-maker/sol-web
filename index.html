@@ -9,6 +9,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos para el botón de Google Translate */
+        body { top: 0 !important; }
+        .skiptranslate iframe { display: none !important; }
+        #google_translate_element select {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            font-weight: bold;
+            outline: none;
+        }
+        #google_translate_element select option { color: #000; }
+        .goog-te-gadget { color: transparent !important; font-size: 0; }
+        .goog-logo-link { display: none !important; }
+    </style>
 </head>
 <body>
 
@@ -22,6 +41,7 @@
             <li><a href="#influencer">Conoce a Sol</a></li>
             <li><a href="gallery.html">Instalaciones Reales</a></li>
         </ul>
+        <div id="google_translate_element" style="margin-right: 15px; margin-top: 5px;"></div>
         <button class="btn-primary desktop-only" id="joinTodayBtn">Únete Hoy</button>
     </nav>
 
@@ -489,5 +509,15 @@
     </div>
 
     <script src="script.js"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es', 
+                includedLanguages: 'en,es', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
