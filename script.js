@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const savings25y = document.getElementById('savings25y');
     const treesSaved = document.getElementById('treesSaved');
 
+    // Helper para detectar idioma actual (usando Google Translate cookie o html lang)
+    function getCurrentLanguage() {
+        const cookie = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
+        if (cookie) {
+            const val = cookie.split('=')[1];
+            if (val.endsWith('/en')) return 'en';
+        }
+        return 'es';
+    }
+
     function updateCalculator() {
         const val = parseInt(billRange.value);
         billValue.innerText = `$${val}`;
@@ -161,10 +171,11 @@ document.addEventListener("DOMContentLoaded", () => {
         addTypingIndicator();
         
         try {
+            const currentLang = getCurrentLanguage();
             const res = await fetch('/api/ask-sol', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text })
+                body: JSON.stringify({ message: text, language: currentLang })
             });
 
             removeTypingIndicator();
@@ -220,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
             micBtn.addEventListener('click', () => {
                 micBtn.style.transform = 'scale(1.2)';
                 micBtn.style.color = '#06d6a0';
+                recognition.lang = getCurrentLanguage() === 'en' ? 'en-US' : 'es-US';
                 recognition.start();
             });
 
@@ -262,14 +274,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!isVoiceEnabled || !('speechSynthesis' in window)) return;
         window.speechSynthesis.cancel(); // Detener audios anteriores
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'es-US';
+        const currentLang = getCurrentLanguage();
+        utterance.lang = currentLang === 'en' ? 'en-US' : 'es-US';
         utterance.pitch = 1.1; 
         utterance.rate = 1.0;
         
-        // Intentar seleccionar una voz femenina en español
         const voices = window.speechSynthesis.getVoices();
-        const femaleVoice = voices.find(v => v.lang.includes('es') && (v.name.includes('Female') || v.name.includes('Monica') || v.name.includes('Paulina') || v.name.includes('Google español')));
-        if (femaleVoice) utterance.voice = femaleVoice;
+        let selectedVoice;
+        if (currentLang === 'en') {
+            selectedVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google US English') || v.name.includes('Zira')));
+        } else {
+            selectedVoice = voices.find(v => v.lang.includes('es') && (v.name.includes('Female') || v.name.includes('Monica') || v.name.includes('Paulina') || v.name.includes('Google español')));
+        }
+        if (selectedVoice) utterance.voice = selectedVoice;
 
         window.speechSynthesis.speak(utterance);
     }
@@ -544,24 +561,30 @@ document.addEventListener("DOMContentLoaded", () => {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel(); // Detener si estaba hablando antes
             
-            const textToSpeak = "La energía solar es gratis. Úsala. Únete a nuestra comunidad hoy. Permíteme guiarte en el proceso. Aquí estoy para contestar tus preguntas.";
+            const currentLang = getCurrentLanguage();
+            const textToSpeak = currentLang === 'en' 
+                ? "Solar energy is free. Use it. Join our community today. Let me guide you through the process. I am here to answer your questions." 
+                : "La energía solar es gratis. Úsala. Únete a nuestra comunidad hoy. Permíteme guiarte en el proceso. Aquí estoy para contestar tus preguntas.";
+            
             const utterance = new SpeechSynthesisUtterance(textToSpeak);
             
-            // Configuración de la voz (intenta forzar una voz femenina en español)
-            let selectedVoice = availableVoices.find(voice => 
-                voice.lang.startsWith('es') && 
-                /(Helena|Sabina|Laura|Paulina|Monica|Victoria|Female|Google español de Estados Unidos|Google español)/i.test(voice.name)
-            );
-            
-            if (!selectedVoice) {
-                // Fallback a cualquier voz en español si no encontramos los nombres femeninos comunes
-                selectedVoice = availableVoices.find(voice => voice.lang.startsWith('es'));
+            let selectedVoice;
+            if (currentLang === 'en') {
+                selectedVoice = availableVoices.find(voice => 
+                    voice.lang.startsWith('en') && 
+                    /(Samantha|Zira|Female|Google US English)/i.test(voice.name)
+                ) || availableVoices.find(voice => voice.lang.startsWith('en'));
+            } else {
+                selectedVoice = availableVoices.find(voice => 
+                    voice.lang.startsWith('es') && 
+                    /(Helena|Sabina|Laura|Paulina|Monica|Victoria|Female|Google español)/i.test(voice.name)
+                ) || availableVoices.find(voice => voice.lang.startsWith('es'));
             }
             
             if (selectedVoice) {
                 utterance.voice = selectedVoice;
             } else {
-                utterance.lang = 'es-US'; // Fallback final
+                utterance.lang = currentLang === 'en' ? 'en-US' : 'es-US';
             }
             
             utterance.rate = 1.05; // Un poco más dinámico

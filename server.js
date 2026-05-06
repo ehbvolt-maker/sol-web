@@ -177,7 +177,7 @@ app.post('/api/gallery', upload.single('photo'), (req, res) => {
 
 // 3. Ask Sol (Inteligencia Artificial con OpenAI)
 app.post('/api/ask-sol', async (req, res) => {
-    const { message } = req.body;
+    const { message, language } = req.body;
     
     // Validar si el usuario no ha puesto su API KEY aún
     if (openai.apiKey === 'TU_OPENAI_API_KEY_AQUI') {
@@ -185,13 +185,18 @@ app.post('/api/ask-sol', async (req, res) => {
     }
 
     try {
+        const isEnglish = language === 'en';
+        const languageInstruction = isEnglish 
+            ? "\n\nCRITICAL INSTRUCTION: The user is speaking English. You MUST reply in English ONLY, maintaining your friendly personality. Translate all your typical Spanish responses and concepts to fluent English."
+            : "\n\nCRITICAL INSTRUCTION: You must speak in Spanish (Latin American).";
+
         const completion = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [
                 { 
                     role: "system", 
                     content: `## Role
-You are Sol, a friendly and professional assistant. Your goal is to qualify leads for a solar energy program. You speak natural, conversational Spanish (Latin American).
+You are Sol, a friendly and professional assistant. Your goal is to qualify leads for a solar energy program. You speak natural, conversational Spanish (Latin American).${languageInstruction}
 
 ## Personality
 - **Tone**: Warm, empathetic, and patient.
