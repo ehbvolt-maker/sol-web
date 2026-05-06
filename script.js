@@ -628,4 +628,38 @@ document.addEventListener("DOMContentLoaded", () => {
     if (solImage) {
         solImage.addEventListener('click', triggerSolSpeech);
     }
+
+    // Lógica para el botón personalizado de traducción (Sol)
+    const customTranslateBtn = document.getElementById('customTranslateBtn');
+    if (customTranslateBtn) {
+        // Inicializar texto del botón basado en el idioma actual
+        if (getCurrentLanguage() === 'en') {
+            customTranslateBtn.innerHTML = '☀️ Español';
+        }
+
+        customTranslateBtn.addEventListener('click', () => {
+            const isEnglish = getCurrentLanguage() === 'en';
+            const select = document.querySelector('.goog-te-combo');
+            
+            if (select) {
+                // El widget de Google a veces usa 'es' o '' para volver al original
+                const targetLang = isEnglish ? 'es' : 'en';
+                let optionExists = false;
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value === targetLang) {
+                        optionExists = true; break;
+                    }
+                }
+                
+                select.value = optionExists ? targetLang : ''; // '' restaura el original
+                select.dispatchEvent(new Event('change'));
+                
+                // Actualizar el texto del botón
+                setTimeout(() => {
+                    const newLang = getCurrentLanguage();
+                    customTranslateBtn.innerHTML = newLang === 'en' ? '☀️ Español' : '☀️ English';
+                }, 400);
+            }
+        });
+    }
 });

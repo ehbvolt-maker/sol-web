@@ -13,18 +13,32 @@
         /* Estilos para el botón de Google Translate */
         body { top: 0 !important; }
         .skiptranslate iframe { display: none !important; }
-        #google_translate_element select {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px;
-            border-radius: 8px;
-            font-family: 'Outfit', sans-serif;
-            cursor: pointer;
-            font-weight: bold;
-            outline: none;
+        #google_translate_element {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
         }
-        #google_translate_element select option { color: #000; }
+        .custom-translate-btn {
+            background: rgba(255, 183, 3, 0.1);
+            color: #ffb703;
+            border: 1px solid #ffb703;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        .custom-translate-btn:hover {
+            background: #ffb703;
+            color: #fff;
+            transform: scale(1.05);
+        }
         .goog-te-gadget { color: transparent !important; font-size: 0; }
         .goog-logo-link { display: none !important; }
     </style>
@@ -41,7 +55,8 @@
             <li><a href="#influencer">Conoce a Sol</a></li>
             <li><a href="gallery.html">Instalaciones Reales</a></li>
         </ul>
-        <div id="google_translate_element" style="margin-right: 15px; margin-top: 5px;"></div>
+        <button id="customTranslateBtn" class="custom-translate-btn">☀️ English</button>
+        <div id="google_translate_element"></div>
         <button class="btn-primary desktop-only" id="joinTodayBtn">Únete Hoy</button>
     </nav>
 
