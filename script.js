@@ -633,32 +633,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const customTranslateBtn = document.getElementById('customTranslateBtn');
     if (customTranslateBtn) {
         // Inicializar texto del botón basado en el idioma actual
-        if (getCurrentLanguage() === 'en') {
-            customTranslateBtn.innerHTML = '☀️ Español';
-        }
+        setTimeout(() => {
+            if (getCurrentLanguage() === 'en') {
+                customTranslateBtn.innerHTML = '☀️ Español';
+            }
+        }, 1000); // Dar tiempo a que Google Translate cargue
 
         customTranslateBtn.addEventListener('click', () => {
             const isEnglish = getCurrentLanguage() === 'en';
             const select = document.querySelector('.goog-te-combo');
             
             if (select) {
-                // El widget de Google a veces usa 'es' o '' para volver al original
-                const targetLang = isEnglish ? 'es' : 'en';
-                let optionExists = false;
-                for (let i = 0; i < select.options.length; i++) {
-                    if (select.options[i].value === targetLang) {
-                        optionExists = true; break;
-                    }
+                // Para volver a español (el original), el valor suele ser 'es' o cadena vacía ''
+                select.value = isEnglish ? 'es' : 'en';
+                
+                // Si intentamos poner 'es' pero la opción no existe, usamos '' (restablecer al original)
+                if (isEnglish && select.value !== 'es') {
+                    select.value = '';
                 }
                 
-                select.value = optionExists ? targetLang : ''; // '' restaura el original
-                select.dispatchEvent(new Event('change'));
+                // Despachar evento con "bubbles: true" para que Google lo detecte
+                select.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
                 
-                // Actualizar el texto del botón
-                setTimeout(() => {
-                    const newLang = getCurrentLanguage();
-                    customTranslateBtn.innerHTML = newLang === 'en' ? '☀️ Español' : '☀️ English';
-                }, 400);
+                // Cambiar el texto del botón de inmediato para dar feedback al usuario
+                customTranslateBtn.innerHTML = isEnglish ? '☀️ English' : '☀️ Español';
+            } else {
+                // Si el combo no ha cargado, usamos el método de recarga forzada por cookie (Fallback seguro)
+                if (isEnglish) {
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.hostname;
+                } else {
+                    document.cookie = "googtrans=/es/en; path=/;";
+                    document.cookie = "googtrans=/es/en; path=/; domain=" + location.hostname;
+                }
+                window.location.reload();
             }
         });
     }
