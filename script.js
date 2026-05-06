@@ -5,12 +5,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const savings25y = document.getElementById('savings25y');
     const treesSaved = document.getElementById('treesSaved');
 
-    // Helper para detectar idioma actual (usando Google Translate cookie o html lang)
+    // Helper para detectar idioma actual (usando Google Translate cookie o html classes)
     function getCurrentLanguage() {
-        const cookie = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
-        if (cookie) {
-            const val = cookie.split('=')[1];
-            if (val.endsWith('/en')) return 'en';
+        // Si el widget de Google añadió la clase de traducción, estamos en Inglés
+        if (document.documentElement.classList.contains('translated-ltr') || document.body.classList.contains('translated-ltr')) {
+            return 'en';
+        }
+        if (document.documentElement.lang.toLowerCase().startsWith('en')) {
+            return 'en';
+        }
+        // Fallback a Cookie
+        const cookie = document.cookie.split('; ').find(row => row.includes('googtrans='));
+        if (cookie && cookie.includes('/en')) {
+            return 'en';
         }
         return 'es';
     }
