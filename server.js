@@ -21,7 +21,7 @@ const upload = multer({ storage: storage });
 
 // Configuración de OpenAI (Requiere API Key)
 const openai = new OpenAI({
-    apiKey: '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', // Llave inyectada
+    apiKey: process.env.OPENAI_API_KEY || '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',
 });
 
 // Configuración de HeyGen
