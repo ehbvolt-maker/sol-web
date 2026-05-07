@@ -31,7 +31,7 @@ Reglas:
             res.json({ script: completion.choices[0].message.content });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Error generando guion' });
+            res.status(500).json({ error: 'Error OpenAI: ' + (error.message || 'Desconocido') });
         }
     });
 
@@ -62,7 +62,10 @@ Reglas:
             });
             const data = await response.json();
             // Filtrar voces en español (femeninas) para facilitar la elección
-            const spanishVoices = data.data.voices.filter(v => v.language === 'Spanish' && v.gender === 'Female');
+            const spanishVoices = data.data.voices.filter(v => 
+                (v.language === 'Spanish' || v.language === 'es') && 
+                (v.gender && v.gender.toLowerCase() === 'female')
+            );
             res.json({ voices: spanishVoices });
         } catch (error) {
             console.error(error);
@@ -96,7 +99,7 @@ Reglas:
                             voice: {
                                 type: "text",
                                 input_text: script,
-                                voice_id: voice_id || "es-ES-ElviraNeural" // Voz por defecto
+                                voice_id: voice_id || "689f48196a9a43c4bbbb67c14fdbb4c6" // Voz por defecto (Sara Martin)
                             }
                         }
                     ],
