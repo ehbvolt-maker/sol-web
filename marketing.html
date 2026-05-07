@@ -136,18 +136,16 @@
             <!-- Columna Derecha: Video -->
             <div class="card">
                 <h3>2. Renderizado de Video (HeyGen)</h3>
-                <div class="form-group">
-                    <label>Selecciona tu Avatar de Sol:</label>
-                    <div class="loader" id="avatarLoader" style="display: block;"></div>
-                    <div class="avatar-grid" id="avatarGrid"></div>
-                    <input type="hidden" id="selectedAvatarId">
-                </div>
-
-                <div class="form-group">
-                    <label>Voz (Opcional):</label>
-                    <select id="voiceSelect" class="form-control">
-                        <option value="">Cargando voces...</option>
-                    </select>
+                <div class="form-group" style="text-align: center; margin-bottom: 20px;">
+                    <label>Avatar Oficial Seleccionado:</label>
+                    <div style="margin: 10px auto; border: 2px solid #ffb703; border-radius: 10px; overflow: hidden; width: 120px;">
+                        <img src="https://files2.heygen.ai/avatar/v3/fc1eb1f7e6d142cd8d32d99cad4fb042_60600/preview_target.webp" alt="Sol" style="width: 100%; display: block;">
+                    </div>
+                    <p style="color: #06d6a0; margin-top: 5px;">✅ Tahlia in Red suit (Voz Fija)</p>
+                    <div style="margin-top: 15px; text-align: left; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <label for="customAvatarId" style="display: block; font-size: 12px; color: #ffb703; margin-bottom: 5px;">¿Tienes otro Avatar ID? (Opcional)</label>
+                        <input type="text" id="customAvatarId" class="form-control" placeholder="Pega aquí el código para sobreescribir a Tahlia" style="padding: 8px; font-size: 12px;">
+                    </div>
                 </div>
 
                 <button class="btn-primary" id="generateVideoBtn" style="width: 100%; margin-top: 20px;">🎬 Producir Video Ahora</button>
@@ -157,64 +155,17 @@
                 <div id="videoResult" style="display: none;">
                     <h4 style="color: #ffb703;">¡Video Listo para Publicar!</h4>
                     <video id="finalVideo" controls></video>
-                    <a id="downloadBtn" href="#" target="_blank" class="btn-secondary" style="display: inline-block; margin-top: 15px;">Descargar MP4</a>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <a id="downloadBtn" href="#" target="_blank" class="btn-secondary" style="flex: 1; text-align: center;">Descargar MP4</a>
+                        <button id="publishBtn" class="btn-primary" style="flex: 1; background-color: #e1306c; border: none; cursor: pointer; border-radius: 8px;">📲 Publicar en Redes</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Cargar Avatares
-        async function loadAvatars() {
-            try {
-                const res = await fetch('/api/marketing/avatars');
-                const data = await res.json();
-                document.getElementById('avatarLoader').style.display = 'none';
-                
-                if (data.avatars) {
-                    const grid = document.getElementById('avatarGrid');
-                    data.avatars.forEach(avatar => {
-                        const div = document.createElement('div');
-                        div.className = 'avatar-item';
-                        div.innerHTML = `<img src="${avatar.preview_image_url}" alt="${avatar.avatar_name}" title="${avatar.avatar_name}">`;
-                        div.onclick = () => {
-                            document.querySelectorAll('.avatar-item').forEach(el => el.classList.remove('selected'));
-                            div.classList.add('selected');
-                            document.getElementById('selectedAvatarId').value = avatar.avatar_id;
-                        };
-                        grid.appendChild(div);
-                    });
-                }
-            } catch (e) {
-                document.getElementById('avatarLoader').style.display = 'none';
-                console.error("Error loading avatars", e);
-            }
-        }
-
-        // Cargar Voces
-        async function loadVoices() {
-            try {
-                const res = await fetch('/api/marketing/voices');
-                const data = await res.json();
-                const select = document.getElementById('voiceSelect');
-                select.innerHTML = '';
-                if (data.voices && data.voices.length > 0) {
-                    data.voices.forEach(voice => {
-                        const option = document.createElement('option');
-                        option.value = voice.voice_id;
-                        option.textContent = `${voice.name} (${voice.language})`;
-                        select.appendChild(option);
-                    });
-                } else {
-                    select.innerHTML = '<option value="">Usar voz por defecto del avatar</option>';
-                }
-            } catch (e) {
-                console.error("Error loading voices", e);
-            }
-        }
-
-        loadAvatars();
-        loadVoices();
+        // El avatar y voz están ahora configurados en el backend para mantener a "Sol" constante
 
         // Generar Guion
         document.getElementById('generateScriptBtn').addEventListener('click', async () => {
@@ -245,11 +196,8 @@
         let statusInterval;
         document.getElementById('generateVideoBtn').addEventListener('click', async () => {
             const script = document.getElementById('scriptOutput').value;
-            const avatar_id = document.getElementById('selectedAvatarId').value;
-            const voice_id = document.getElementById('voiceSelect').value;
-
-            if (!script || !avatar_id) {
-                alert('Por favor, genera un guion y selecciona un avatar de la lista.');
+            if (!script) {
+                alert('Por favor, genera o escribe un guion primero.');
                 return;
             }
 
@@ -259,10 +207,11 @@
             document.getElementById('generateVideoBtn').disabled = true;
 
             try {
+                const customAvatarId = document.getElementById('customAvatarId').value.trim();
                 const res = await fetch('/api/marketing/generate-video', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ script, avatar_id, voice_id })
+                    body: JSON.stringify({ script, avatar_id: customAvatarId })
                 });
                 const data = await res.json();
                 
@@ -299,7 +248,8 @@
                     } else if (data.status === 'failed') {
                         clearInterval(statusInterval);
                         document.getElementById('videoLoader').style.display = 'none';
-                        document.getElementById('videoStatus').innerText = 'Error: Falló el renderizado del video.';
+                        const errMsg = data.error ? (data.error.detail || data.error.message) : '';
+                        document.getElementById('videoStatus').innerText = 'Error: Falló el renderizado. ' + errMsg;
                         document.getElementById('generateVideoBtn').disabled = false;
                     } else {
                         // processing, pending, etc
@@ -310,6 +260,38 @@
                 }
             }, 5000); // Revisar cada 5 segundos
         }
+
+        document.getElementById('publishBtn').addEventListener('click', async () => {
+            const video_url = document.getElementById('finalVideo').src;
+            const script = document.getElementById('scriptOutput').value;
+            const customAvatarId = document.getElementById('customAvatarId').value.trim();
+            const btn = document.getElementById('publishBtn');
+            
+            btn.disabled = true;
+            btn.innerText = 'Publicando...';
+
+            try {
+                const res = await fetch('/api/marketing/publish-social', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ video_url, script, avatar_id: customAvatarId })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    alert('¡Éxito! El video ha sido enviado a Make.com para publicarse en tus redes.');
+                    btn.innerText = '✅ Publicado';
+                } else {
+                    alert('Error: ' + data.error);
+                    btn.disabled = false;
+                    btn.innerText = '📲 Publicar en Redes';
+                }
+            } catch (e) {
+                alert('Error de conexión');
+                btn.disabled = false;
+                btn.innerText = '📲 Publicar en Redes';
+            }
+        });
     </script>
 </body>
 </html>
