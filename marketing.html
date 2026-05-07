@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Marketing | Sol Influencer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffb703;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: inherit;
+        }
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .avatar-item {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .avatar-item.selected {
+            border-color: #ffb703;
+            transform: scale(1.05);
+        }
+        .avatar-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .loader {
+            display: none;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #ffb703;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #videoResult {
+            margin-top: 20px;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body style="background-image: url('assets/nature_solar_bg.png'); background-size: cover; background-attachment: fixed;">
+
+    <!-- Navegación -->
+    <nav class="navbar glass">
+        <div class="logo">Panel <span>Influencer</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Volver al Sitio</a></li>
+            <li><a href="admin.html">Leads CRM</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h2>Creación Automática de Videos Virales ☀️</h2>
+            <p>Genera contenido para Instagram, TikTok y YouTube usando a Sol</p>
+        </div>
+
+        <div class="grid-layout">
+            <!-- Columna Izquierda: Guion -->
+            <div class="card">
+                <h3>1. Generador de Guiones (IA)</h3>
+                <div class="form-group">
+                    <label>Tema del video de hoy:</label>
+                    <input type="text" id="topicInput" class="form-control" placeholder="Ej: Por qué la energía solar sube el valor de tu casa...">
+                </div>
+                <button class="btn-secondary" id="generateScriptBtn" style="width: 100%;">Generar Guion Mágico ✨</button>
+                <div class="loader" id="scriptLoader"></div>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Guion Final (Puedes editarlo):</label>
+                    <textarea id="scriptOutput" class="form-control" placeholder="El guion aparecerá aquí..."></textarea>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Video -->
+            <div class="card">
+                <h3>2. Renderizado de Video (HeyGen)</h3>
+                <div class="form-group">
+                    <label>Selecciona tu Avatar de Sol:</label>
+                    <div class="loader" id="avatarLoader" style="display: block;"></div>
+                    <div class="avatar-grid" id="avatarGrid"></div>
+                    <input type="hidden" id="selectedAvatarId">
+                </div>
+
+                <div class="form-group">
+                    <label>Voz (Opcional):</label>
+                    <select id="voiceSelect" class="form-control">
+                        <option value="">Cargando voces...</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" id="generateVideoBtn" style="width: 100%; margin-top: 20px;">🎬 Producir Video Ahora</button>
+                <div class="loader" id="videoLoader"></div>
+                <p id="videoStatus" style="text-align: center; margin-top: 10px; color: #06d6a0;"></p>
+
+                <div id="videoResult" style="display: none;">
+                    <h4 style="color: #ffb703;">¡Video Listo para Publicar!</h4>
+                    <video id="finalVideo" controls></video>
+                    <a id="downloadBtn" href="#" target="_blank" class="btn-secondary" style="display: inline-block; margin-top: 15px;">Descargar MP4</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar Avatares
+        async function loadAvatars() {
+            try {
+                const res = await fetch('/api/marketing/avatars');
+                const data = await res.json();
+                document.getElementById('avatarLoader').style.display = 'none';
+                
+                if (data.avatars) {
+                    const grid = document.getElementById('avatarGrid');
+                    data.avatars.forEach(avatar => {
+                        const div = document.createElement('div');
+                        div.className = 'avatar-item';
+                        div.innerHTML = `<img src="${avatar.preview_image_url}" alt="${avatar.avatar_name}" title="${avatar.avatar_name}">`;
+                        div.onclick = () => {
+                            document.querySelectorAll('.avatar-item').forEach(el => el.classList.remove('selected'));
+                            div.classList.add('selected');
+                            document.getElementById('selectedAvatarId').value = avatar.avatar_id;
+                        };
+                        grid.appendChild(div);
+                    });
+                }
+            } catch (e) {
+                document.getElementById('avatarLoader').style.display = 'none';
+                console.error("Error loading avatars", e);
+            }
+        }
+
+        // Cargar Voces
+        async function loadVoices() {
+            try {
+                const res = await fetch('/api/marketing/voices');
+                const data = await res.json();
+                const select = document.getElementById('voiceSelect');
+                select.innerHTML = '';
+                if (data.voices && data.voices.length > 0) {
+                    data.voices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.voice_id;
+                        option.textContent = `${voice.name} (${voice.language})`;
+                        select.appendChild(option);
+                    });
+                } else {
+                    select.innerHTML = '<option value="">Usar voz por defecto del avatar</option>';
+                }
+            } catch (e) {
+                console.error("Error loading voices", e);
+            }
+        }
+
+        loadAvatars();
+        loadVoices();
+
+        // Generar Guion
+        document.getElementById('generateScriptBtn').addEventListener('click', async () => {
+            const topic = document.getElementById('topicInput').value;
+            document.getElementById('scriptLoader').style.display = 'block';
+            
+            try {
+                const res = await fetch('/api/marketing/generate-script', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic })
+                });
+                const data = await res.json();
+                document.getElementById('scriptLoader').style.display = 'none';
+                
+                if (data.script) {
+                    document.getElementById('scriptOutput').value = data.script;
+                } else if (data.error) {
+                    alert('Error: ' + data.error);
+                }
+            } catch (e) {
+                document.getElementById('scriptLoader').style.display = 'none';
+                alert('Error de conexión');
+            }
+        });
+
+        // Generar Video
+        let statusInterval;
+        document.getElementById('generateVideoBtn').addEventListener('click', async () => {
+            const script = document.getElementById('scriptOutput').value;
+            const avatar_id = document.getElementById('selectedAvatarId').value;
+            const voice_id = document.getElementById('voiceSelect').value;
+
+            if (!script || !avatar_id) {
+                alert('Por favor, genera un guion y selecciona un avatar de la lista.');
+                return;
+            }
+
+            document.getElementById('videoLoader').style.display = 'block';
+            document.getElementById('videoStatus').innerText = 'Enviando a los servidores de HeyGen...';
+            document.getElementById('videoResult').style.display = 'none';
+            document.getElementById('generateVideoBtn').disabled = true;
+
+            try {
+                const res = await fetch('/api/marketing/generate-video', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ script, avatar_id, voice_id })
+                });
+                const data = await res.json();
+                
+                if (data.video_id) {
+                    document.getElementById('videoStatus').innerText = 'Procesando video... (Esto puede tomar 1 a 3 minutos)';
+                    checkVideoStatus(data.video_id);
+                } else {
+                    document.getElementById('videoLoader').style.display = 'none';
+                    document.getElementById('generateVideoBtn').disabled = false;
+                    alert('Error: ' + (data.error || 'Desconocido'));
+                }
+            } catch (e) {
+                document.getElementById('videoLoader').style.display = 'none';
+                document.getElementById('generateVideoBtn').disabled = false;
+                alert('Error al generar el video');
+            }
+        });
+
+        async function checkVideoStatus(videoId) {
+            statusInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`/api/marketing/video-status/${videoId}`);
+                    const data = await res.json();
+                    
+                    if (data.status === 'completed') {
+                        clearInterval(statusInterval);
+                        document.getElementById('videoLoader').style.display = 'none';
+                        document.getElementById('videoStatus').innerText = '';
+                        document.getElementById('generateVideoBtn').disabled = false;
+                        
+                        document.getElementById('videoResult').style.display = 'block';
+                        document.getElementById('finalVideo').src = data.video_url;
+                        document.getElementById('downloadBtn').href = data.video_url;
+                    } else if (data.status === 'failed') {
+                        clearInterval(statusInterval);
+                        document.getElementById('videoLoader').style.display = 'none';
+                        document.getElementById('videoStatus').innerText = 'Error: Falló el renderizado del video.';
+                        document.getElementById('generateVideoBtn').disabled = false;
+                    } else {
+                        // processing, pending, etc
+                        document.getElementById('videoStatus').innerText = `Estado: ${data.status}... Renderizando magia.`;
+                    }
+                } catch (e) {
+                    console.error("Error checking status", e);
+                }
+            }, 5000); // Revisar cada 5 segundos
+        }
+    </script>
+</body>
+</html>

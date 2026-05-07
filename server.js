@@ -25,7 +25,7 @@ const openai = new OpenAI({
 });
 
 // Configuración de HeyGen
-const HEYGEN_API_KEY = 'sk_V2_hgu_kflLc1YA7kH_rPbPk11piXyUAhh55Kw5dljZaxbMp8vt'; // Llave inyectada
+const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || 'sk_V2_hgu_kEN3KwiGUt6_CUd4OB4lGSLgUa36QlS1nZ6wnn5kNDSV'; // Llave inyectada por el usuario
 
 // Configuración de Make.com
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/if28kqo3pwt68rmsyjvlym52idet20eb';
@@ -41,6 +41,9 @@ const transporter = nodemailer.createTransport({
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const setupMarketingRoutes = require('./marketing');
+setupMarketingRoutes(app, openai);
 
 // Middleware
 app.use(cors());
