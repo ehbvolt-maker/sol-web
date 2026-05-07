@@ -1,5 +1,4 @@
 const express = require('express');
-const fetch = require('node-fetch'); // Requerido en Node.js antiguo, pero Node 18+ soporta fetch nativo. Usaremos fetch global si está disponible.
 
 function setupMarketingRoutes(app, openai) {
     const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || "sk_V2_hgu_kEN3KwiGUt6_CUd4OB4lGSLgUa36QlS1nZ6wnn5kNDSV"; // Llave provista por el usuario
