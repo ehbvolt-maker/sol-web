@@ -21,14 +21,14 @@ const upload = multer({ storage: storage });
 
 // Configuración de OpenAI (Requiere API Key)
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || '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',
+    apiKey: process.env.OPENAI_API_KEY || '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',
 });
 
 // Configuración de HeyGen
 const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || 'sk_V2_hgu_kEN3KwiGUt6_CUd4OB4lGSLgUa36QlS1nZ6wnn5kNDSV'; // Llave inyectada por el usuario
 
 // Configuración de Make.com
-const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/if28kqo3pwt68rmsyjvlym52idet20eb';
+const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/p73ls3ukkbtd6szgpznx7hu96ax1k624';
 
 // Configuración de Email (Requiere App Password de Gmail)
 const transporter = nodemailer.createTransport({
@@ -89,6 +89,11 @@ const db = new sqlite3.Database('./leads.db', (err) => {
 });
 
 // API Routes
+
+// Endpoint de Keep-Alive para evitar que Render se duerma
+app.get('/api/ping', (req, res) => {
+    res.status(200).json({ status: 'alive', timestamp: new Date() });
+});
 
 // 1. Capture Leads
 app.post('/api/leads', (req, res) => {
@@ -321,7 +326,7 @@ async function pollHeyGenVideoStatus(videoId, script) {
                             video_id: videoId,
                             video_url: videoUrl,
                             script: script,
-                            avatar_id: "ab63167094c24a088f4bbde4b6b48fd5",
+                            avatar_id: "Annie_Casual_Standing_Front_public",
                             presenter: "Sol"
                         })
                     });
@@ -369,12 +374,12 @@ app.post('/api/generate-marketing-video', async (req, res) => {
                 {
                     character: {
                         type: "avatar",
-                        avatar_id: "ab63167094c24a088f4bbde4b6b48fd5" // Avatar de "Sol"
+                        avatar_id: "Annie_Casual_Standing_Front_public" // Avatar de "Sol"
                     },
                     voice: {
                         type: "text",
                         input_text: videoScript,
-                        voice_id: "689f48196a9a43c4bbbb67c14fdbb4c6" // Voz femenina en español
+                        voice_id: "8217ce4716a34615a75beec0685dbba8" // Voz elegida por el usuario
                     }
                 }
             ],

@@ -66,7 +66,7 @@
                         item.style.cssText = 'border-radius: 15px; overflow: hidden; position: relative; transition: transform 0.3s ease;';
                         
                         item.innerHTML = `
-                            <img src="assets/${photo.filename}" alt="Instalación Solar" style="width: 100%; height: 300px; object-fit: cover; display: block; cursor: zoom-in;" onclick="openLightbox(this.src)">
+                            <img src="assets/${photo.filename}" loading="lazy" alt="Instalación Solar" style="width: 100%; height: 300px; object-fit: cover; display: block; cursor: zoom-in;" onclick="openLightbox(this.src)">
                         `;
                         grid.appendChild(item);
                     });
