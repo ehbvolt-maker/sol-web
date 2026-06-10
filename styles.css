@@ -20,7 +20,7 @@
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--dark-bg);
-    background-image: url('assets/nature_solar_bg.webp');
+    background-image: url('assets/nature_solar_bg.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -841,7 +841,7 @@ footer {
 /* FAQ Section */
 .faq-section {
     padding: 6rem 4rem;
-    background: var(--dark-bg);
+    background: rgba(11, 15, 25, 0.6);
 }
 .faq-container {
     max-width: 800px;
