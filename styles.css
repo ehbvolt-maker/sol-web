@@ -20,7 +20,7 @@
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--dark-bg);
-    background-image: url('nature_solar_bg.png');
+    background-image: radial-gradient(circle, rgba(11, 15, 25, 0.15) 0%, rgba(11, 15, 25, 0.75) 100%), url('nature_solar_bg.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -39,6 +39,8 @@ h1, h2, h3, .logo {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .glass-border {
@@ -357,10 +359,12 @@ h1, h2, h3, .logo {
     padding: 2.5rem;
     border-radius: 20px;
     border-top: 4px solid var(--secondary-color);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .benefit-card:hover {
     transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 15px var(--primary-glow);
+    border-color: rgba(255, 183, 3, 0.3);
 }
 .benefit-card .icon {
     font-size: 3rem;
@@ -411,10 +415,12 @@ h1, h2, h3, .logo {
     text-align: center;
     border-radius: 20px;
     position: relative;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .step-card:hover {
     transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 15px var(--primary-glow);
+    border-color: rgba(255, 183, 3, 0.3);
 }
 .step-number {
     width: 60px;
@@ -454,6 +460,11 @@ h1, h2, h3, .logo {
     padding: 3rem;
     border-radius: 20px;
     border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 .stars {
     margin-bottom: 1rem;
@@ -853,6 +864,12 @@ footer {
     border-radius: 10px;
     margin-bottom: 1rem;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+.faq-item:hover {
+    border-color: rgba(255, 183, 3, 0.3);
+    background: rgba(255,255,255,0.04);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 .faq-question {
     width: 100%;
