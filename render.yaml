@@ -2,6 +2,7 @@ services:
   - type: web
     name: sol-web
     runtime: node
+    rootDir: sol
     buildCommand: npm install
     startCommand: npm start
     plan: free
