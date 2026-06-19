@@ -1,0 +1,9 @@
+# Exclusiones de Git
+node_modules/
+git/
+backend/venv/
+backend/__pycache__/
+*.log
+.env
+.package-lock.json
+portable-git.exe

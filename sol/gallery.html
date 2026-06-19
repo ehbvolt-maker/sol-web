@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Instalaciones | Equity Solar</title>
+    <meta name="description" content="Nuestras instalaciones de energía solar.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar glass">
+        <div class="logo" style="font-size: 1.3rem;">La energia solar es gratis. <span>Usala.</span></div>
+        <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html#hero">Inicio</a></li>
+            <li><a href="index.html#program-benefits">Beneficios</a></li>
+            <li><a href="index.html#influencer">Conoce a Sol</a></li>
+            <li><a href="gallery.html" class="active">Galería</a></li>
+        </ul>
+        <button class="btn-primary desktop-only" onclick="window.location.href='index.html#calculator'">Cotizar</button>
+    </nav>
+
+    <section class="gallery-section" style="padding-top: 120px; padding-bottom: 60px;">
+        <div class="section-header scroll-reveal">
+            <h2>Nuestras Instalaciones Reales</h2>
+            <p>Descubre el trabajo de Equity Solar con diseños elegantes y cero inversión inicial.</p>
+        </div>
+        
+        <div class="gallery-grid" id="dynamicGallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Cargando galería...</div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="index.html#calculator" class="btn-primary glow" style="display: inline-block;">Quiero Ver si Califico</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content glass">
+            <h2>SolarNext</h2>
+            <p>Tu Consultor Asignado: <strong>Eliecer Hernandez</strong></p>
+            <p>📞 (305) 813-6159 | (305) 784-6363</p>
+            <p>Innovación energética al alcance de todos.</p>
+            <p class="copyright">© 2026 SolarNext Inc. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        async function loadGallery() {
+            try {
+                const res = await fetch('/api/gallery');
+                const data = await res.json();
+                const grid = document.getElementById('dynamicGallery');
+                
+                if (data.photos && data.photos.length > 0) {
+                    grid.innerHTML = '';
+                    data.photos.forEach(photo => {
+                        const item = document.createElement('div');
+                        item.className = 'gallery-item glass';
+                        item.style.cssText = 'border-radius: 15px; overflow: hidden; position: relative; transition: transform 0.3s ease;';
+                        
+                        item.innerHTML = `
+                            <img src="assets/${photo.filename}" loading="lazy" alt="Instalación Solar" style="width: 100%; height: 300px; object-fit: cover; display: block; cursor: zoom-in;" onclick="openLightbox(this.src)">
+                        `;
+                        grid.appendChild(item);
+                    });
+                } else {
+                    grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Aún no hay fotos en la galería.</p>';
+                }
+            } catch(e) {
+                console.error('Error loading gallery', e);
+            }
+        }
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            lightboxImg.src = src;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGallery();
+            
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) {
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target !== document.getElementById('lightboxImg')) {
+                        closeLightbox();
+                    }
+                });
+            }
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+
+    <!-- Lightbox Modal (Zoom) -->
+    <div id="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+        <span style="position: absolute; top: 20px; right: 40px; font-size: 50px; color: white; cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='#ffb703'" onmouseout="this.style.color='white'" onclick="closeLightbox()">&times;</span>
+        <img id="lightboxImg" src="" style="max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); object-fit: contain;">
+    </div>
+</body>
+</html>
