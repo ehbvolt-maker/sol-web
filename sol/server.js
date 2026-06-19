@@ -139,6 +139,32 @@ app.post('/api/leads', (req, res) => {
             }
         });
 
+        // Enviar Alerta de Lead a Make.com
+        (async () => {
+            try {
+                await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event: 'new_lead',
+                        name: name,
+                        phone: phone,
+                        address: address,
+                        email: email,
+                        zipcode: zipcode,
+                        bill_over_100: bill_over_100,
+                        credit_score: credit_score,
+                        roof_type: roof_type,
+                        is_owner: is_owner
+                    })
+                });
+                print_msg = '[Make.com] Webhook de nuevo lead enviado con éxito.'
+                console.log(print_msg);
+            } catch (webhookError) {
+                console.error('[Make.com] Error enviando webhook de lead:', webhookError.message);
+            }
+        })();
+
         res.status(201).json({ success: true, id: this.lastID, message: 'Lead guardado con éxito' });
     });
 });
