@@ -3,7 +3,7 @@ services:
     name: sol-web
     runtime: node
     rootDir: sol
-    buildCommand: npm install
+    buildCommand: npm install && npm rebuild sqlite3 --build-from-source
     startCommand: npm start
     plan: free
     envVars:
