@@ -19,13 +19,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Configuración de OpenAI (Requiere API Key)
+// Configuración de OpenAI (Requiere API Key desde variable de entorno)
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || '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',
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Configuración de HeyGen
-const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || 'sk_V2_hgu_kEN3KwiGUt6_CUd4OB4lGSLgUa36QlS1nZ6wnn5kNDSV'; // Llave inyectada por el usuario
+const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY;
 
 // Configuración de Make.com
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/p73ls3ukkbtd6szgpznx7hu96ax1k624';
