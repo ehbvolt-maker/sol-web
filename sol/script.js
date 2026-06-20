@@ -734,6 +734,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Ejecutar inicialización de visibilidad
+    // Ejecutar inicializaciA3n de visibilidad
     updateWhatsAppFloatingVisibility();
+
+    // Auto-open quiz modal if URL indicates it (e.g., from the Quote button in comercial.html)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('openQuiz') === 'true' || window.location.hash === '#quiz' || window.location.hash === '#quote') {
+        if (quizModal) {
+            quizModal.classList.add('active');
+            updateWhatsAppFloatingVisibility();
+            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Solar' });
+
+            // Clear the query parameter and hash to prevent re-opening on reload (e.g. when changing language)
+            try {
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.delete('openQuiz');
+                if (newUrl.hash === '#quiz' || newUrl.hash === '#quote') {
+                    newUrl.hash = '';
+                }
+                window.history.replaceState({}, document.title, newUrl.pathname + newUrl.search + newUrl.hash);
+            } catch (e) {
+                console.error('Failed to clean URL parameters:', e);
+            }
+        }
+    }
 });

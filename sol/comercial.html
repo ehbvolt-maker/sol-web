@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comercial Animado | Evolución Solar</title>
+    <meta name="description" content="Mira nuestro comercial interactivo y descubre los 12 increíbles beneficios de la energía solar renovable.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos personalizados para el Comercial Premium */
+        :root {
+            --solar-yellow: #ffb703;
+            --tech-blue: #219ebc;
+            --glow-color: rgba(255, 183, 3, 0.4);
+            --bg-gradient: radial-gradient(circle at center, #111827 0%, #030712 100%);
+        }
+
+        body.comercial-page {
+            background: linear-gradient(rgba(10, 15, 30, 0.76), rgba(10, 15, 30, 0.76)), url('assets/comercial_house_bg.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilo del Botón de Idioma Premium */
+        .custom-translate-btn {
+            background: rgba(255, 183, 3, 0.1);
+            color: #ffb703;
+            border: 1px solid #ffb703;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        .custom-translate-btn:hover {
+            background: #ffb703;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .comercial-wrapper {
+            max-width: 1100px;
+            width: 90%;
+            margin: 120px auto 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Selector de Modo */
+        .mode-selector-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .mode-selector {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 5px;
+            position: relative;
+        }
+
+        .mode-btn {
+            background: transparent;
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-btn.active {
+            background: var(--gradient-gold);
+            color: #000;
+            box-shadow: 0 4px 15px var(--glow-color);
+        }
+
+        /* Contenedor Principal de la Pantalla */
+        .commercial-screen {
+            min-height: 520px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 15, 30, 0.85); /* Fondo oscuro semi-opaco para resaltar slides */
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* MODO VIDEO */
+        .video-mode-content {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            background: #000;
+        }
+
+        .video-mode-content.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-height: 550px;
+            display: flex;
+            justify-content: center;
+            background: #000;
+        }
+
+        .video-container video {
+            max-height: 520px;
+            width: auto;
+            max-width: 100%;
+            aspect-ratio: 9 / 16;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        /* MODO DIAPOSITIVAS INTERACTIVAS (Motion Graphics) */
+        .slides-mode-content {
+            width: 100%;
+            height: 100%;
+            min-height: 520px;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            background: radial-gradient(circle at 80% 20%, rgba(255, 183, 3, 0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 20% 80%, rgba(33, 158, 188, 0.08) 0%, transparent 60%);
+        }
+
+        .slides-mode-content.active {
+            display: flex;
+        }
+
+        /* Diapositiva Activa */
+        .slide-content-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .slide-graphic {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .graphic-circle {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 183, 3, 0.15) 0%, rgba(255, 255, 255, 0.02) 70%);
+            border: 1px solid rgba(255, 183, 3, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 6.5rem;
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 183, 3, 0.05);
+            animation: pulse-glow 3s infinite ease-in-out;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 183, 3, 0.05); }
+            50% { transform: scale(1.04); box-shadow: 0 0 60px rgba(255, 183, 3, 0.15), inset 0 0 20px rgba(255, 183, 3, 0.1); border-color: rgba(255, 183, 3, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 183, 3, 0.05); }
+        }
+
+        .slide-text-info {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .slide-badge {
+            align-self: flex-start;
+            background: rgba(33, 158, 188, 0.1);
+            color: var(--tech-blue);
+            border: 1px solid rgba(33, 158, 188, 0.25);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            margin: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .slide-description {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Controles de Diapositiva */
+        .slides-controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 25px;
+            gap: 20px;
+        }
+
+        .playback-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .playback-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .playback-btn:hover {
+            background: var(--gradient-gold);
+            color: #000;
+            border-color: transparent;
+            transform: scale(1.08);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        .play-pause-btn {
+            width: 56px;
+            height: 56px;
+            font-size: 1.3rem;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .progress-indicator {
+            flex: 1;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .progress-bar-track {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-gold);
+            width: 8.33%;
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .audio-settings {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .settings-btn:hover, .settings-btn.active {
+            background: rgba(255, 183, 3, 0.15);
+            border-color: var(--solar-yellow);
+            color: var(--solar-yellow);
+        }
+
+        /* Efecto de transición de diapositivas */
+        .slide-transition-in {
+            animation: slide-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .graphic-transition-in {
+            animation: scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.6) rotate(-15deg); }
+            to { opacity: 1; transform: scale(1) rotate(0); }
+        }
+
+        /* Sección de Llamado a la Acción */
+        .commercial-footer-cta {
+            text-align: center;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .commercial-footer-cta h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+
+        .commercial-footer-cta p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        /* Lista de beneficios pequeña (sidebar/resumen) */
+        .benefits-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .benefit-summary-card {
+            background: rgba(10, 15, 30, 0.75); /* Fondo oscuro más opaco para legibilidad */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(6px);
+        }
+
+        .benefit-summary-card.active {
+            background: rgba(255, 183, 3, 0.15); /* Mayor resalte activo */
+            border-color: rgba(255, 183, 3, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 183, 3, 0.2);
+        }
+
+        .benefit-summary-card .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--solar-yellow);
+        }
+
+        .benefit-summary-card .title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .benefit-summary-card.active .title {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Responsividad */
+        @media (max-width: 900px) {
+            .slide-content-area {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .slide-text-info {
+                align-items: center;
+                text-align: center;
+            }
+
+            .slide-title {
+                font-size: 1.8rem;
+            }
+
+            .slide-description {
+                font-size: 1.1rem;
+            }
+
+            .graphic-circle {
+                width: 150px;
+                height: 150px;
+                font-size: 4.5rem;
+            }
+
+            .benefits-summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .benefits-summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .slides-controls-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .progress-indicator {
+                width: 100%;
+                max-width: none;
+            }
+            .comercial-wrapper {
+                margin-top: 90px;
+            }
+        }
+    </style>
+</head>
+<body class="comercial-page">
+
+    <!-- Navegación -->
+    <nav class="navbar glass">
+        <div class="logo" id="navLogoText" style="font-size: 1.3rem;">La energia solar es gratis. <span>Usala.</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html" id="navHome">Inicio</a></li>
+            <li><a href="index.html#program-benefits" id="navBenefits">Beneficios</a></li>
+            <li><a href="gallery.html" id="navGallery">Instalaciones</a></li>
+            <li><a href="comercial.html" class="active" id="navCommercial" style="color: var(--solar-yellow);">Comercial 🎬</a></li>
+        </ul>
+        <button id="customTranslateBtn" onclick="toggleLanguage()" class="custom-translate-btn" style="margin-right: 15px;">☀️ English</button>
+        <a href="index.html#calculator" class="btn-primary desktop-only" id="navBtnCalc" style="text-decoration: none;">Calcula tu Ahorro</a>
+    </nav>
+
+    <div class="comercial-wrapper">
+        
+        <!-- Selector de Modo de Comercial -->
+        <div class="mode-selector-container">
+            <div class="mode-selector">
+                <button class="mode-btn active" id="btnSlidesMode" onclick="setMode('slides')">
+                    <span>✨</span> Presentación Animada
+                </button>
+                <button class="mode-btn" id="btnVideoMode" onclick="setMode('video')">
+                    <span>🎬</span> Comercial de Video
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla del Comercial -->
+        <div class="commercial-screen glass">
+            
+            <!-- MODO VIDEO -->
+            <div class="video-mode-content" id="videoModeContent">
+                <div class="video-container">
+                    <video id="commercialVideo" controls playsinline>
+                        <source src="assets/comercial_solar.mp4" type="video/mp4">
+                        <source src="assets/test_video.mp4" type="video/mp4">
+                        Tu navegador no soporta reproducción de video.
+                    </video>
+                </div>
+            </div>
+
+            <!-- MODO DIAPOSITIVAS / ANIMACIÓN -->
+            <div class="slides-mode-content active" id="slidesModeContent">
+                <!-- Cuerpo de Diapositiva -->
+                <div class="slide-content-area">
+                    <div class="slide-graphic">
+                        <div class="graphic-circle" id="slideGraphicCircle">
+                            💸
+                        </div>
+                    </div>
+                    <div class="slide-text-info">
+                        <span class="slide-badge" id="slideBadge">Beneficio Financiero</span>
+                        <h2 class="slide-title" id="slideTitle">1. Facturación Eléctrica Eliminada</h2>
+                        <p class="slide-description" id="slideDescription">
+                            Con nuestro sistema de energía limpia, eliminas por completo tu facturación eléctrica actual. ¡Deja de pagarle a la red y genera tu propia energía!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Barra de Controles Inferior -->
+                <div class="slides-controls-bar">
+                    <!-- Botones de Reproducción -->
+                    <div class="playback-buttons">
+                        <button class="playback-btn" onclick="prevSlide()" title="Anterior">⏮️</button>
+                        <button class="playback-btn play-pause-btn" id="btnPlayPause" onclick="toggleAutoPlay()" title="Pausar / Reproducir">⏸️</button>
+                        <button class="playback-btn" onclick="nextSlide()" title="Siguiente">⏭️</button>
+                    </div>
+
+                    <!-- Indicador de Progreso -->
+                    <div class="progress-indicator">
+                        <div class="progress-text">
+                            <span id="slideProgressText">Beneficio 1 de 12</span>
+                            <span id="slidePercent">8%</span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progressBarFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Ajustes de Sonido / Narración -->
+                    <div class="audio-settings">
+                        <button class="settings-btn" id="btnVoiceover" onclick="toggleVoiceover()" title="Activar/Desactivar Voz Virtual de Sol">
+                            🔊 Narrador IA
+                        </button>
+                        <a href="index.html?openQuiz=true" class="settings-btn" id="btnQuote" title="Cotizar / Calcular Ahorro" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            💰 Cotizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Selector Rápido de Beneficios (Miniaturas) -->
+        <div class="benefits-summary-grid" id="summaryGrid">
+            <!-- Rellenado dinámicamente por JavaScript -->
+        </div>
+
+        <!-- Footer / CTA -->
+        <div class="commercial-footer-cta glass">
+            <h3>¡Empieza a Ahorrar Cero Inicial! ☀️</h3>
+            <p>Este comercial abarca las garantías reales de los programas federales de energía renovable. Mira si tu propiedad califica en solo 30 segundos.</p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+                <a href="index.html#calculator" class="btn-primary glow" style="text-decoration: none; padding: 12px 35px; font-size: 1.1rem;">
+                    Calcular Mi Ahorro Ahora 🚀
+                </a>
+                <button class="btn-secondary" onclick="openSpecsModal()" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 30px;">
+                    📋 Ver Fichas de Equipos
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal de Fichas Técnicas de Materiales -->
+    <div id="specsModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; justify-content: center; align-items: center; padding: 20px;">
+        <div class="modal-content glass" style="max-width: 1000px; width: 100%; max-height: 90vh; overflow-y: auto; border-radius: 20px; border: 1px solid var(--glass-border); padding: 30px; position: relative; animation: modal-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; background: rgba(15, 23, 42, 0.95);">
+            <!-- Botón cerrar -->
+            <button onclick="closeSpecsModal()" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.3s; z-index: 10;">✕</button>
+            
+            <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--solar-yellow); margin-bottom: 10px; text-align: center;">📋 Fichas Técnicas de Equipos Premium</h2>
+            <p style="color: var(--text-muted); text-align: center; margin-bottom: 30px;">Especificaciones técnicas de materiales domésticos de última generación instalados por Equity Solar.</p>
+            
+            <!-- Tabs para cambiar entre Paneles y Baterías -->
+            <div style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; justify-content: center;">
+                <button id="tabPanels" onclick="switchSpecTab('panels')" class="mode-btn active" style="padding: 8px 20px; font-size: 0.9rem;">☀️ Paneles Solares</button>
+                <button id="tabBatteries" onclick="switchSpecTab('batteries')" class="mode-btn" style="padding: 8px 20px; font-size: 0.9rem;">🔋 Baterías Inteligentes</button>
+            </div>
+            
+            <!-- Ficha de Paneles (Silfab Prime SIL-440 QD) -->
+            <div id="panelSpecs" class="spec-tab-content">
+                <h3 style="color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <span>☀️</span> Silfab Prime SIL-440 QD (Última Generación N-Type)
+                </h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.5;">
+                    Utiliza tecnología de celdas de silicio de tipo N (N-Type NTC) de última generación, superando las limitaciones de los paneles estándar. Cuenta con un elegante diseño completamente negro ("triple black") y excelente coeficiente térmico para el clima caluroso de Florida.
+                </p>
+                
+                <!-- Flex Container for Photo + Table -->
+                <div style="display: flex; gap: 25px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 20px;">
+                    <!-- Foto del Panel Silfab 440 -->
+                    <div style="flex: 1; min-width: 240px; max-width: 300px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                        <img src="assets/silfab_440_panel.png" alt="Silfab Prime SIL-440 QD" style="width: 100%; height: auto; border-radius: 8px; display: block; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                        <a href="assets/silfab_440_panel_datasheet.pdf" target="_blank" id="panelDatasheetBtn" class="settings-btn" style="text-decoration: none; width: 100%; justify-content: center; background: rgba(255, 183, 3, 0.1); border-color: rgba(255, 183, 3, 0.3); color: var(--solar-yellow); font-weight: 600; text-align: center; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 20px;">
+                            📄 Ver Ficha Técnica (PDF)
+                        </a>
+                    </div>
+                    <!-- Tabla de Especificaciones -->
+                    <div style="flex: 1.6; min-width: 320px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.15); text-align: left;">
+                                    <th style="padding: 10px; color: var(--solar-yellow);">Parámetro Técnico</th>
+                                    <th style="padding: 10px; color: var(--solar-yellow);">Valor / Medida</th>
+                                    <th style="padding: 10px; color: var(--solar-yellow);">Beneficio para tu Hogar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Potencia Nominal (Pmax)</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">440 Watts (STC)</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Máxima generación de energía por metro cuadrado.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Eficiencia del Módulo</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">22.6%</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Requiere menos paneles en tu techo para cubrir el 100% de tu factura.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Resistencia Mecánica</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">5400 Pa frontal / 4000 Pa trasera</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Estructura duradera capaz de soportar vientos de huracán en Florida.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Rendimiento a Alta Temp.</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">Excelente (N-Type Wafer)</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Mantiene alta producción en los meses más calurosos del verano.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Sensibilidad en Baja Luz</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">Sensibilidad a luz difusa</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Sigue generando energía en días nublados y lluviosos en Florida.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Peso y Dimensiones</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">1721 x 1133 x 35 mm / 21 kg</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Alineamiento compacto, estético e ideal para techos residenciales.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Garantía de Potencia</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">25 años (Baja Degradación)</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Asegura un rendimiento superior y estable por décadas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ficha de Baterías (Tesla Powerwall 3 / FranklinWH) -->
+            <div id="batterySpecs" class="spec-tab-content" style="display: none;">
+                <h3 style="color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <span>🔋</span> Tesla Powerwall 3 / FranklinWH LFP (Almacenamiento Inteligente)
+                </h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.5;">
+                    Sistemas de respaldo doméstico de última generación con baterías de Litio-Ferrofosfato (LFP) integradas. Proporcionan energía de respaldo completa para cortes de luz, tormentas tropicales y optimizan el autoconsumo nocturno.
+                </p>
+                
+                <!-- Flex Container for Photo + Table -->
+                <div style="display: flex; gap: 25px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 20px;">
+                    <!-- Foto de la Batería Tesla Powerwall 3 -->
+                    <div style="flex: 1; min-width: 240px; max-width: 300px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                        <img src="assets/tesla_powerwall_3.png" alt="Tesla Powerwall 3" style="width: 100%; height: auto; border-radius: 8px; display: block; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                        <a href="assets/tesla_powerwall_3_datasheet.pdf" target="_blank" id="batteryDatasheetBtn" class="settings-btn" style="text-decoration: none; width: 100%; justify-content: center; background: rgba(255, 183, 3, 0.1); border-color: rgba(255, 183, 3, 0.3); color: var(--solar-yellow); font-weight: 600; text-align: center; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 20px;">
+                            📄 Ver Ficha Técnica (Tesla)
+                        </a>
+                    </div>
+                    <!-- Tabla de Especificaciones -->
+                    <div style="flex: 1.6; min-width: 320px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.15); text-align: left;">
+                                    <th style="padding: 10px; color: var(--solar-yellow);">Parámetro Técnico</th>
+                                    <th style="padding: 10px; color: var(--solar-yellow);">Valor / Medida</th>
+                                    <th style="padding: 10px; color: var(--solar-yellow);">Beneficio para tu Hogar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Capacidad Nominal</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">13.5 kWh por unidad</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Almacena el exceso solar diurno para usarlo toda la noche.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Potencia de Salida</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">5.8 kW continua / 11.5 kW pico</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Capacidad para arrancar motores de aire acondicionado de forma directa.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Química de la Batería</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">Litio-Ferrofosfato (LFP)</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">La química más segura y estable, sin riesgo de incendio térmico y libre de cobalto.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Inversor Solar Integrado</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">Sí, con múltiples seguidores MPPT</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Instalación limpia, compacta y directa con menos cableado.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Eficiencia (Ida y Vuelta)</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">90%</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Menor pérdida de energía en los ciclos de carga diurna y descarga nocturna.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding: 10px; font-weight: bold; color: #fff;">Garantía y Ciclos</td>
+                                    <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">10 años / ciclos ilimitados</td>
+                                    <td style="padding: 10px; color: var(--text-muted);">Protección de rendimiento de largo plazo garantizada.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Funcionamiento del Comercial -->
+    <script>
+        // Datos de los 12 beneficios en Español
+        const benefitsDataEs = [
+            {
+                number: 1,
+                emoji: "💸",
+                badge: "Ahorro Financiero",
+                title: "Facturación Eléctrica Eliminada",
+                desc: "Eliminas por completo la facturación eléctrica tradicional de tu hogar. ¡Pasa a generar tu propia energía limpia y renovable!",
+                narrative: "Primero: eliminas por completo tu facturación eléctrica. ¡Genera tu propia energía!"
+            },
+            {
+                number: 2,
+                emoji: "🔌",
+                badge: "Ingresos Activos",
+                title: "Venta de Electricidad Excedente",
+                desc: "Vendes toda la electricidad extra que genere tu sistema directamente a la compañía eléctrica y conviertes tu techo en una fuente de ingresos.",
+                narrative: "Segundo: vendes electricidad a la compañía eléctrica. ¡Haz que tu casa trabaje para ti!"
+            },
+            {
+                number: 3,
+                emoji: "📈",
+                badge: "Plusvalía e Inversión",
+                title: "Incremento del Valor de la Propiedad",
+                desc: "Los paneles solares incrementan de inmediato el valor comercial de tu casa. Al ser dueño o arrendatario de un sistema, tu propiedad se revaloriza.",
+                narrative: "Tercero: incremento del valor de tu propiedad desde el primer día."
+            },
+            {
+                number: 4,
+                emoji: "🛡️",
+                badge: "Seguridad y Respaldo",
+                title: "Seguro Incluido por $1 Millón",
+                desc: "Disfruta de total tranquilidad con un seguro de responsabilidad civil de 1 millón de dólares que protege todo tu sistema solar durante el periodo.",
+                narrative: "Cuarto: seguro de responsabilidad civil incluido por un millón de dólares."
+            },
+            {
+                number: 5,
+                emoji: "🏠",
+                badge: "Garantía de Daños",
+                title: "Hasta $500,000 por Daños a la Propiedad",
+                desc: "Ante cualquier percance o inconveniente físico en tu techo u hogar debido al sistema, cuentas con una póliza de cobertura de hasta 500 mil dólares.",
+                narrative: "Quinto: cobertura de hasta quinientos mil dólares por cualquier daño a la propiedad."
+            },
+            {
+                number: 6,
+                emoji: "💳",
+                badge: "Cero Impacto Crediticio",
+                title: "No se Reporta al Buró de Crédito",
+                desc: "Este programa está estructurado para que no afecte tu capacidad de financiamiento futura, por lo que no se reporta a ningún buró de crédito.",
+                narrative: "Sexto: este programa no se reporta al buró de crédito. Mantén tu historial limpio."
+            },
+            {
+                number: 7,
+                emoji: "🔒",
+                badge: "Propiedad Libre",
+                title: "Sin Gravamen o Liens en la Propiedad",
+                desc: "A diferencia de otros financiamientos, el programa de renta solar no coloca ningún gravamen, lien o restricción sobre tu título de propiedad.",
+                narrative: "Séptimo: no se coloca ningún gravamen o lien en tu propiedad."
+            },
+            {
+                number: 8,
+                emoji: "📉",
+                badge: "Ahorro Garantizado",
+                title: "Renta del Sistema hasta 50% Más Barato",
+                desc: "La renta del sistema solar es garantizada hasta un 50% más barata que la facturación eléctrica eliminada. ¡Ahorro inmediato garantizado!",
+                narrative: "Octavo: renta del sistema hasta cincuenta por ciento más barato que la facturación eléctrica eliminada."
+            },
+            {
+                number: 9,
+                emoji: "🛠️",
+                badge: "Cero Costo Inicial",
+                title: "Cero Pago en el Proceso de Instalación",
+                desc: "No pagas absolutamente nada durante todo el proceso de diseño, permisos, cableado e instalación. $0 Down real para iniciar.",
+                narrative: "Noveno: no se paga absolutamente nada durante el proceso de instalación."
+            },
+            {
+                number: 10,
+                emoji: "📅",
+                badge: "Renta Fija y Estable",
+                title: "Pago de Renta Fijo por 25 Años",
+                desc: "Olvídate de la inflación de la luz. Tu pago mensual de renta es completamente fijo y sin ninguna variación mensual garantizado por 25 años.",
+                narrative: "Décimo: pago de renta fijo y sin variaciones mensuales por veinticinco años."
+            },
+            {
+                number: 11,
+                emoji: "💵",
+                badge: "Ganancias Anuales",
+                title: "Recibes Cheque Anual de Ganancias",
+                desc: "La energía sobrante que vendiste se liquida anualmente, por lo que recibirás un cheque directo a tu nombre todos los años.",
+                narrative: "Undécimo: recibes un cheque anual por la electricidad vendida a la red."
+            },
+            {
+                number: 12,
+                emoji: "⏱️",
+                badge: "Pago Diferido",
+                title: "Comienzas a Pagar 30-60 Días Después",
+                desc: "Comienzas a pagar la renta fija del lease entre 30 a 60 días después de que el sistema esté funcionando y conectado a la red. ¡Primero produces, luego pagas!",
+                narrative: "Duodécimo: comienzas a pagar el lease entre treinta a sesenta días después de que el sistema esté funcionando."
+            }
+        ];
+
+        // Datos de los 12 beneficios en Inglés (English translation)
+        const benefitsDataEn = [
+            {
+                number: 1,
+                emoji: "💸",
+                badge: "Financial Savings",
+                title: "Electric Bill Eliminated",
+                desc: "You completely eliminate the traditional electric bill for your home. Generate your own clean, renewable energy!",
+                narrative: "First: you completely eliminate your electric bill. Generate your own energy!"
+            },
+            {
+                number: 2,
+                emoji: "🔌",
+                badge: "Active Income",
+                title: "Sell Excess Electricity",
+                desc: "Sell all the extra electricity your system generates directly to the power company and turn your roof into a source of income.",
+                narrative: "Second: you sell electricity to the utility company. Make your home work for you!"
+            },
+            {
+                number: 3,
+                emoji: "📈",
+                badge: "Appreciation",
+                title: "Increase Property Value",
+                desc: "Solar panels immediately increase your home's market value. By owning or leasing a system, your property appreciates.",
+                narrative: "Third: immediate increase in your property value from day one."
+            },
+            {
+                number: 4,
+                emoji: "🛡️",
+                badge: "Protection",
+                title: "$1 Million Insurance Included",
+                desc: "Enjoy complete peace of mind with a $1 million liability insurance policy protecting your solar system throughout the term.",
+                narrative: "Fourth: liability insurance included for one million dollars."
+            },
+            {
+                number: 5,
+                emoji: "🏠",
+                badge: "Damage Warranty",
+                title: "Up to $500,000 for Property Damage",
+                desc: "In the event of any physical incident on your roof or home due to the system, you have a coverage policy of up to $500,000.",
+                narrative: "Fifth: coverage of up to five hundred thousand dollars for any property damage."
+            },
+            {
+                number: 6,
+                emoji: "💳",
+                badge: "No Credit Impact",
+                title: "No Credit Bureau Reporting",
+                desc: "This program is structured so that it does not affect your future borrowing capacity; it is not reported to credit bureaus.",
+                narrative: "Sixth: this program is not reported to the credit bureau. Keep your credit score intact."
+            },
+            {
+                number: 7,
+                emoji: "🔒",
+                badge: "Free Property",
+                title: "No Lien on the Property",
+                desc: "Unlike other financing options, the solar rental program puts no lien, restriction, or encumbrance on your home title.",
+                narrative: "Seventh: no lien or restriction is placed on your property."
+            },
+            {
+                number: 8,
+                emoji: "📉",
+                badge: "Guaranteed Savings",
+                title: "System Rent up to 50% Cheaper",
+                desc: "System rent is guaranteed to be up to 50% cheaper than the eliminated electric bill. Instant savings guaranteed!",
+                narrative: "Eighth: system rent up to fifty percent cheaper than the eliminated electric bill."
+            },
+            {
+                number: 9,
+                emoji: "🛠️",
+                badge: "Zero Down",
+                title: "Zero Upfront Cost",
+                desc: "You pay absolutely nothing during the design, permits, and installation process. True $0 Down to start.",
+                narrative: "Ninth: you pay absolutely nothing during the installation process."
+            },
+            {
+                number: 10,
+                emoji: "📅",
+                badge: "Stable Rent",
+                title: "Fixed Rent for 25 Years",
+                desc: "Forget about utility inflation. Your monthly rental payment is completely fixed with no monthly variation, guaranteed for 25 years.",
+                narrative: "Tenth: fixed rent payment with no monthly variations for twenty-five years."
+            },
+            {
+                number: 11,
+                emoji: "💵",
+                badge: "Annual Earnings",
+                title: "Annual Profit Check",
+                desc: "The surplus energy you sell is liquidated annually, meaning you receive a check directly in your name every single year.",
+                narrative: "Eleventh: you receive an annual check for the electricity sold to the grid."
+            },
+            {
+                number: 12,
+                emoji: "⏱️",
+                badge: "Deferred Payment",
+                title: "Lease Starts 30-60 Days After",
+                desc: "You start paying the fixed lease rent 30 to 60 days after the system is fully operational and grid-connected. First produce, then pay!",
+                narrative: "Twelfth: you start paying the lease thirty to sixty days after the system is running."
+            }
+        ];
+
+        let benefitsData = benefitsDataEs; // Por defecto español
+        let currentIndex = 0;
+        let isPlaying = true;
+        let playInterval = null;
+        let voiceoverEnabled = false;
+        let musicEnabled = false;
+        let synth = window.speechSynthesis;
+        let audioCtx = null;
+        let activeOscillators = [];
+        let gainNode = null;
+        let currentLang = 'es';
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            // Detectar idioma del navegador o almacenamiento local
+            let langToSet = 'es';
+            
+            // 1. Revisar almacenamiento local
+            const savedLang = localStorage.getItem('selectedLanguage');
+            if (savedLang) {
+                langToSet = savedLang;
+            } else {
+                // 2. Revisar cookies de Google Translate
+                const cookie = document.cookie.split('; ').find(row => row.includes('googtrans='));
+                if (cookie && cookie.includes('/en')) {
+                    langToSet = 'en';
+                } else if (navigator.language && navigator.language.startsWith('en')) {
+                    // 3. Revisar idioma del navegador
+                    langToSet = 'en';
+                }
+            }
+
+            setLanguage(langToSet);
+            startAutoPlay();
+            
+            // Intenta reproducir el video si está en cache
+            const video = document.getElementById('commercialVideo');
+            video.addEventListener('error', () => {
+                console.log("El video oficial comercial_solar.mp4 está cargándose o en proceso de generación. Fallback a test_video.mp4");
+            });
+        });
+
+        // Alternar Idioma (Español / Inglés)
+        function toggleLanguage() {
+            const nextLang = currentLang === 'es' ? 'en' : 'es';
+            setLanguage(nextLang);
+            localStorage.setItem('selectedLanguage', nextLang);
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            benefitsData = lang === 'es' ? benefitsDataEs : benefitsDataEn;
+            
+            const btn = document.getElementById('customTranslateBtn');
+            if (btn) {
+                btn.innerHTML = lang === 'es' ? '☀️ English' : '☀️ Español';
+            }
+
+            // Traducir Slogan en Logo
+            const logoText = document.getElementById('navLogoText');
+            if (logoText) {
+                logoText.innerHTML = lang === 'es' 
+                    ? 'La energia solar es gratis. <span>Usala.</span>' 
+                    : 'Solar energy is free. <span>Use it.</span>';
+            }
+
+            // Traducir Video Oficial
+            const video = document.getElementById('commercialVideo');
+            if (video) {
+                const wasPlaying = !video.paused;
+                const newSrc = lang === 'es' ? 'assets/comercial_solar.mp4' : 'assets/comercial_solar_en.mp4';
+                
+                // Solo recargar si cambia el source
+                if (!video.src.includes(newSrc)) {
+                    video.src = newSrc;
+                    video.load();
+                    if (wasPlaying) {
+                        video.play().catch(e => console.log("Auto-play blocked"));
+                    }
+                }
+            }
+            
+            // Traducir Navbar
+            document.getElementById('navHome').innerText = lang === 'es' ? 'Inicio' : 'Home';
+            document.getElementById('navBenefits').innerText = lang === 'es' ? 'Beneficios' : 'Benefits';
+            document.getElementById('navGallery').innerText = lang === 'es' ? 'Instalaciones' : 'Installations';
+            document.getElementById('navCommercial').innerText = lang === 'es' ? 'Comercial 🎬' : 'Commercial 🎬';
+            const navBtnCalc = document.getElementById('navBtnCalc');
+            if (navBtnCalc) {
+                navBtnCalc.innerText = lang === 'es' ? 'Calcula tu Ahorro' : 'Calculate Savings';
+            }
+
+            // Traducir Selector de Modo
+            document.getElementById('btnSlidesMode').innerHTML = lang === 'es' 
+                ? '<span>✨</span> Presentación Animada' 
+                : '<span>✨</span> Animated Presentation';
+            document.getElementById('btnVideoMode').innerHTML = lang === 'es' 
+                ? '<span>🎬</span> Comercial de Video' 
+                : '<span>🎬</span> Video Commercial';
+
+            // Traducir Botones de Narrador y Cotización
+            const btnVoiceover = document.getElementById('btnVoiceover');
+            if (btnVoiceover) {
+                btnVoiceover.innerHTML = lang === 'es' ? '🔊 Narrador IA' : '🔊 AI Narrator';
+            }
+            const btnQuote = document.getElementById('btnQuote');
+            if (btnQuote) {
+                btnQuote.innerHTML = lang === 'es' ? '💰 Cotizar' : '💰 Get Quote';
+            }
+
+            // Traducir Textos de la Slide
+            updateSlide();
+
+            // Traducir Footer / CTA
+            const footerCta = document.querySelector('.commercial-footer-cta');
+            if (footerCta) {
+                footerCta.querySelector('h3').innerText = lang === 'es' 
+                    ? '¡Empieza a Ahorrar Cero Inicial! ☀️' 
+                    : 'Start Saving with Zero Down! ☀️';
+                footerCta.querySelector('p').innerText = lang === 'es' 
+                    ? 'Este comercial abarca las garantías reales de los programas federales de energía renovable. Mira si tu propiedad califica en solo 30 segundos.' 
+                    : 'This commercial covers the real guarantees of federal clean energy programs. See if your property qualifies in just 30 seconds.';
+                footerCta.querySelector('.btn-primary').innerText = lang === 'es' 
+                    ? 'Calcular Mi Ahorro Ahora 🚀' 
+                    : 'Calculate My Savings Now 🚀';
+                const specsBtn = footerCta.querySelector('.btn-secondary');
+                if (specsBtn) {
+                    specsBtn.innerText = lang === 'es' 
+                        ? '📋 Ver Fichas de Equipos' 
+                        : '📋 View Equipment Specs';
+                }
+            }
+
+            // Traducir Modal de Fichas Técnicas
+            translateModal(lang);
+
+            // Re-renderizar la cuadrícula lateral
+            renderSummaryGrid();
+        }
+
+        function translateModal(lang) {
+            const modal = document.getElementById('specsModal');
+            if (!modal) return;
+
+            // Título y Subtítulo
+            modal.querySelector('h2').innerText = lang === 'es' 
+                ? '📋 Fichas Técnicas de Equipos Premium' 
+                : '📋 Premium Equipment Datasheets';
+            modal.querySelector('p').innerText = lang === 'es' 
+                ? 'Especificaciones técnicas de materiales domésticos de última generación instalados por Equity Solar.' 
+                : 'Technical specifications of latest generation domestic equipment installed by Equity Solar.';
+
+            // Tabs
+            document.getElementById('tabPanels').innerText = lang === 'es' ? '☀️ Paneles Solares' : '☀️ Solar Panels';
+            document.getElementById('tabBatteries').innerText = lang === 'es' ? '🔋 Baterías Inteligentes' : '🔋 Smart Batteries';
+
+            // Contenido Paneles (Silfab)
+            const panelSpecs = document.getElementById('panelSpecs');
+            panelSpecs.querySelector('h3').innerHTML = lang === 'es' 
+                ? '<span>☀️</span> Silfab Prime SIL-440 QD (Última Generación N-Type)' 
+                : '<span>☀️</span> Silfab Prime SIL-440 QD (Latest Generation N-Type)';
+            panelSpecs.querySelector('p').innerHTML = lang === 'es' 
+                ? 'Utiliza tecnología de celdas de silicio de tipo N (N-Type NTC) de última generación, superando las limitaciones de los paneles estándar. Cuenta con un elegante diseño completamente negro ("triple black") y excelente coeficiente térmico para el clima caluroso de Florida.' 
+                : 'Utilizes next-generation N-type silicon cell technology (NTC), overcoming standard solar cell limitations. Features an elegant all-black ("triple black") design and premium temperature coefficient ideal for Florida heat.';
+
+            // Tabla Paneles
+            const panelTableHead = panelSpecs.querySelector('table thead tr');
+            panelTableHead.innerHTML = lang === 'es' 
+                ? `<th style="padding: 10px; color: var(--solar-yellow);">Parámetro Técnico</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Valor / Medida</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Beneficio para tu Hogar</th>`
+                : `<th style="padding: 10px; color: var(--solar-yellow);">Technical Parameter</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Value / Measurement</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Benefit for your Home</th>`;
+
+            const panelRows = panelSpecs.querySelectorAll('table tbody tr');
+            const panelData = lang === 'es' ? [
+                ["Potencia Nominal (Pmax)", "440 Watts (STC)", "Máxima generación de energía por metro cuadrado."],
+                ["Eficiencia del Módulo", "22.6%", "Requiere menos paneles en tu techo para cubrir el 100% de tu factura."],
+                ["Resistencia Mecánica", "5400 Pa frontal / 4000 Pa trasera", "Estructura duradera capaz de soportar vientos de huracán en Florida."],
+                ["Rendimiento a Alta Temp.", "Excelente (N-Type Wafer)", "Mantiene alta producción en los meses más calurosos del verano."],
+                ["Sensibilidad en Baja Luz", "Sensibilidad a luz difusa", "Sigue generando energía en días nublados y lluviosos en Florida."],
+                ["Peso y Dimensiones", "1721 x 1133 x 35 mm / 21 kg", "Alineamiento compacto, estético e ideal para techos residenciales."],
+                ["Garantía de Potencia", "25 años (Baja Degradación)", "Asegura un rendimiento superior y estable por décadas."]
+            ] : [
+                ["Nominal Power (Pmax)", "440 Watts (STC)", "Maximum power generation per square meter."],
+                ["Module Efficiency", "22.6%", "Requires fewer modules on your roof to cover 100% of your bill."],
+                ["Mechanical Resistance", "5400 Pa front / 4000 Pa rear", "Durable frame certified to withstand Florida hurricane winds."],
+                ["High Temp Performance", "Excellent (N-Type Wafer)", "Maintains higher power output during the hottest summer months."],
+                ["Low Light Sensitivity", "Diffused light sensitivity", "Continues generating power during cloudy and rainy Florida days."],
+                ["Weight & Dimensions", "1721 x 1133 x 35 mm / 21 kg", "Compact, aesthetic profile, ideal for residential roof styling."],
+                ["Power Warranty", "25 Years (Low Degradation)", "Ensures premium and stable performance for decades."]
+            ];
+
+            panelRows.forEach((row, i) => {
+                row.innerHTML = `<td style="padding: 10px; font-weight: bold; color: #fff;">${panelData[i][0]}</td>
+                                 <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">${panelData[i][1]}</td>
+                                 <td style="padding: 10px; color: var(--text-muted);">${panelData[i][2]}</td>`;
+            });
+
+            // Traducir botón de ficha técnica del panel
+            const panelDatasheetBtn = document.getElementById('panelDatasheetBtn');
+            if (panelDatasheetBtn) {
+                panelDatasheetBtn.innerHTML = lang === 'es'
+                    ? '📄 Ver Ficha Técnica (PDF)'
+                    : '📄 View Datasheet (PDF)';
+            }
+
+            // Contenido Baterías
+            const batterySpecs = document.getElementById('batterySpecs');
+            batterySpecs.querySelector('h3').innerHTML = lang === 'es' 
+                ? '<span>🔋</span> Tesla Powerwall 3 / FranklinWH LFP (Almacenamiento Inteligente)' 
+                : '<span>🔋</span> Tesla Powerwall 3 / FranklinWH LFP (Smart Storage)';
+            batterySpecs.querySelector('p').innerHTML = lang === 'es' 
+                ? 'Sistemas de respaldo doméstico de última generación con baterías de Litio-Ferrofosfato (LFP) integradas. Proporcionan energía de respaldo completa para cortes de luz, tormentas tropicales y optimizan el autoconsumo nocturno.' 
+                : 'Next-generation residential battery backup systems featuring Lithium Iron Phosphate (LFP) cells. Provides complete outage backup protection during tropical storms and optimizes night-time self-consumption.';
+
+            // Tabla Baterías
+            const batteryTableHead = batterySpecs.querySelector('table thead tr');
+            batteryTableHead.innerHTML = lang === 'es' 
+                ? `<th style="padding: 10px; color: var(--solar-yellow);">Parámetro Técnico</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Valor / Medida</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Beneficio para tu Hogar</th>`
+                : `<th style="padding: 10px; color: var(--solar-yellow);">Technical Parameter</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Value / Measurement</th>
+                   <th style="padding: 10px; color: var(--solar-yellow);">Benefit for your Home</th>`;
+
+            const batteryRows = batterySpecs.querySelectorAll('table tbody tr');
+            const batteryData = lang === 'es' ? [
+                ["Capacidad Nominal", "13.5 kWh por unidad", "Almacena el exceso solar diurno para usarlo toda la noche."],
+                ["Potencia de Salida", "5.8 kW continua / 11.5 kW pico", "Capacidad para arrancar motores de aire acondicionado de forma directa."],
+                ["Química de la Batería", "Litio-Ferrofosfato (LFP)", "La química más segura y estable, sin riesgo de incendio térmico y libre de cobalto."],
+                ["Inversor Solar Integrado", "Sí, con múltiples seguidores MPPT", "Instalación limpia, compacta y directa con menos cableado."],
+                ["Eficiencia (Ida y Vuelta)", "90%", "Menor pérdida de energía en los ciclos de carga diurna y descarga nocturna."],
+                ["Garantía y Ciclos", "10 años / ciclos ilimitados", "Protección de rendimiento de largo plazo garantizada."]
+            ] : [
+                ["Nominal Capacity", "13.5 kWh per unit", "Stores daytime excess solar power to run your home all night."],
+                ["Power Output", "5.8 kW continuous / 11.5 kW peak", "Sufficient output to directly start central A/C units."],
+                ["Battery Chemistry", "Lithium Iron Phosphate (LFP)", "The safest and most stable chemistry, cobalt-free with zero thermal runway risk."],
+                ["Built-in Solar Inverter", "Yes, with multiple MPPT trackers", "Clean, compact, direct installation with reduced wiring footprint."],
+                ["Round-Trip Efficiency", "90%", "Minimal energy lost during daytime charging and night-time discharge cycles."],
+                ["Warranty & Cycles", "10 Years / Unlimited cycles", "Guaranteed long-term performance and investment protection."]
+            ];
+
+            batteryRows.forEach((row, i) => {
+                row.innerHTML = `<td style="padding: 10px; font-weight: bold; color: #fff;">${batteryData[i][0]}</td>
+                                 <td style="padding: 10px; color: var(--tech-blue); font-weight: 600;">${batteryData[i][1]}</td>
+                                 <td style="padding: 10px; color: var(--text-muted);">${batteryData[i][2]}</td>`;
+            });
+
+            // Traducir botón de ficha técnica de la batería
+            const batteryDatasheetBtn = document.getElementById('batteryDatasheetBtn');
+            if (batteryDatasheetBtn) {
+                batteryDatasheetBtn.innerHTML = lang === 'es'
+                    ? '📄 Ver Ficha Técnica (Tesla)'
+                    : '📄 View Datasheet (Tesla)';
+            }
+        }
+
+        // Alternar modos (Video vs Slides)
+        function setMode(mode) {
+            const videoBtn = document.getElementById('btnVideoMode');
+            const slidesBtn = document.getElementById('btnSlidesMode');
+            const videoContent = document.getElementById('videoModeContent');
+            const slidesContent = document.getElementById('slidesModeContent');
+            const video = document.getElementById('commercialVideo');
+
+            if (mode === 'video') {
+                videoBtn.classList.add('active');
+                slidesBtn.classList.remove('active');
+                videoContent.classList.add('active');
+                slidesContent.classList.remove('active');
+                
+                // Detener autoplay y sonido de las diapositivas
+                stopAutoPlay();
+                stopAmbientMusic();
+                if (synth) synth.cancel();
+                
+                // Reproducir video
+                video.play().catch(e => console.log("Auto-reproducción de video bloqueada por el navegador"));
+            } else {
+                slidesBtn.classList.add('active');
+                videoBtn.classList.remove('active');
+                slidesContent.classList.add('active');
+                videoContent.classList.remove('active');
+                
+                // Pausar video
+                video.pause();
+                
+                // Iniciar diapositivas
+                isPlaying = true;
+                document.getElementById('btnPlayPause').innerText = '⏸️';
+                updateSlide();
+                startAutoPlay();
+                if (musicEnabled) playAmbientMusic();
+            }
+        }
+
+        // Renderizar barra lateral / resumen de beneficios
+        function renderSummaryGrid() {
+            const grid = document.getElementById('summaryGrid');
+            grid.innerHTML = '';
+            benefitsData.forEach((benefit, idx) => {
+                const card = document.createElement('div');
+                card.className = `benefit-summary-card ${idx === currentIndex ? 'active' : ''}`;
+                card.onclick = () => selectSlide(idx);
+                card.innerHTML = `
+                    <span class="number">${benefit.number}</span>
+                    <span class="title">${benefit.title}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Actualizar diapositiva actual
+        function updateSlide() {
+            const benefit = benefitsData[currentIndex];
+            
+            // Elementos de la slide
+            const graphicCircle = document.getElementById('slideGraphicCircle');
+            const badge = document.getElementById('slideBadge');
+            const title = document.getElementById('slideTitle');
+            const description = document.getElementById('slideDescription');
+            
+            // Animaciones de reinicio
+            graphicCircle.classList.remove('graphic-transition-in');
+            title.classList.remove('slide-transition-in');
+            description.classList.remove('slide-transition-in');
+            
+            // Forzar reflow para reiniciar animación
+            void graphicCircle.offsetWidth;
+            void title.offsetWidth;
+            void description.offsetWidth;
+            
+            // Asignar datos
+            graphicCircle.innerText = benefit.emoji;
+            badge.innerText = benefit.badge;
+            title.innerText = `${benefit.number}. ${benefit.title}`;
+            description.innerText = benefit.desc;
+            
+            // Aplicar animaciones
+            graphicCircle.classList.add('graphic-transition-in');
+            title.classList.add('slide-transition-in');
+            description.classList.add('slide-transition-in');
+
+            // Actualizar barra de progreso
+            const percent = ((currentIndex + 1) / benefitsData.length) * 100;
+            document.getElementById('progressBarFill').style.width = `${percent}%`;
+            document.getElementById('slideProgressText').innerText = `Beneficio ${currentIndex + 1} de 12`;
+            document.getElementById('slidePercent').innerText = `${Math.round(percent)}%`;
+
+            // Actualizar miniatura activa
+            const cards = document.querySelectorAll('.benefit-summary-card');
+            cards.forEach((card, idx) => {
+                if (idx === currentIndex) {
+                    card.classList.add('active');
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            // Hablar texto si la narración está habilitada
+            if (voiceoverEnabled) {
+                speakText(benefit.narrative);
+            }
+        }
+
+        // Seleccionar diapositiva específica
+        function selectSlide(index) {
+            currentIndex = index;
+            updateSlide();
+            if (isPlaying) {
+                resetAutoPlay();
+            }
+        }
+
+        // Diapositiva Siguiente
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % benefitsData.length;
+            updateSlide();
+            if (isPlaying) resetAutoPlay();
+        }
+
+        // Diapositiva Anterior
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + benefitsData.length) % benefitsData.length;
+            updateSlide();
+            if (isPlaying) resetAutoPlay();
+        }
+
+        // Control de Autoplay
+        function startAutoPlay() {
+            if (playInterval) clearInterval(playInterval);
+            playInterval = setInterval(() => {
+                nextSlide();
+            }, 8000); // 8 segundos por diapositiva
+        }
+
+        function stopAutoPlay() {
+            if (playInterval) clearInterval(playInterval);
+        }
+
+        function resetAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        function toggleAutoPlay() {
+            const btn = document.getElementById('btnPlayPause');
+            if (isPlaying) {
+                stopAutoPlay();
+                btn.innerText = '▶️';
+                btn.title = "Reproducir diapositivas";
+                isPlaying = false;
+                if (synth) synth.cancel();
+            } else {
+                isPlaying = true;
+                btn.innerText = '⏸️';
+                btn.title = "Pausar diapositivas";
+                updateSlide();
+                startAutoPlay();
+            }
+        }
+
+        // Narración IA con SpeechSynthesis
+        function toggleVoiceover() {
+            const btn = document.getElementById('btnVoiceover');
+            if (voiceoverEnabled) {
+                voiceoverEnabled = false;
+                btn.classList.remove('active');
+                if (synth) synth.cancel();
+            } else {
+                voiceoverEnabled = true;
+                btn.classList.add('active');
+                // Hablar de inmediato la diapositiva actual
+                speakText(benefitsData[currentIndex].narrative);
+            }
+        }
+
+        function speakText(text) {
+            if (!synth) return;
+            synth.cancel(); // Detener cualquier lectura previa
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-US'; // Voz en español de América Latina/EEUU
+            utterance.rate = 1.0; // Velocidad de lectura normal
+            utterance.pitch = 1.0; // Tono
+            
+            // Intentar elegir una voz femenina si está disponible
+            const voices = synth.getVoices();
+            const femaleVoice = voices.find(voice => 
+                (voice.lang.includes('es') || voice.lang.includes('ES')) && 
+                (voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('google') || voice.name.toLowerCase().includes('sabrina') || voice.name.toLowerCase().includes('helena'))
+            );
+            if (femaleVoice) {
+                utterance.voice = femaleVoice;
+            }
+            
+            synth.speak(utterance);
+        }
+
+        // Música ambiental generativa (Web Audio API)
+        // Crea una nota sostenida suave para simular música solar y evitar archivos externos pesados
+        function toggleMusic() {
+            const btn = document.getElementById('btnMusic');
+            if (!btn) return;
+            if (musicEnabled) {
+                musicEnabled = false;
+                btn.classList.remove('active');
+                stopAmbientMusic();
+            } else {
+                musicEnabled = true;
+                btn.classList.add('active');
+                playAmbientMusic();
+            }
+        }
+
+        function playAmbientMusic() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                stopAmbientMusic(); // Asegurar limpieza
+
+                // Master gain node
+                gainNode = audioCtx.createGain();
+                gainNode.gain.setValueAtTime(0.045, audioCtx.currentTime); // Volumen maestro del 4.5% (perfecto para parlantes pequeños)
+                gainNode.connect(audioCtx.destination);
+
+                // Armonía solar cálida y relajante (acorde mayor de Re): Re4 (293.66Hz), La4 (440.00Hz), Fa#5 (739.99Hz)
+                const notes = [293.66, 440.00, 739.99];
+                
+                notes.forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const oscGain = audioCtx.createGain();
+                    
+                    osc.type = 'sine'; // Ondas senoidales puras y suaves para un sonido etéreo
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    
+                    // Volumen distribuido: notas graves más presentes, agudas de fondo
+                    const baseVolume = index === 0 ? 0.35 : (index === 1 ? 0.3 : 0.2);
+                    oscGain.gain.setValueAtTime(baseVolume, audioCtx.currentTime);
+                    
+                    osc.connect(oscGain);
+                    oscGain.connect(gainNode);
+                    osc.start();
+                    
+                    activeOscillators.push(osc);
+                    
+                    // Modulación lenta de volumen (efecto de oleaje o "respiración" solar)
+                    const modulationInterval = setInterval(() => {
+                        if (musicEnabled && audioCtx && oscGain) {
+                            const now = audioCtx.currentTime;
+                            const newVolume = baseVolume * (0.6 + Math.random() * 0.5); // fluctúa entre 60% y 110%
+                            try {
+                                oscGain.gain.linearRampToValueAtTime(newVolume, now + 3 + Math.random() * 2);
+                            } catch(err) {}
+                        } else {
+                            clearInterval(modulationInterval);
+                        }
+                    }, 5000 + index * 1000);
+                });
+
+            } catch (e) {
+                console.log("La API Web Audio no pudo inicializarse:", e);
+            }
+        }
+
+        function stopAmbientMusic() {
+            if (activeOscillators && activeOscillators.length > 0) {
+                activeOscillators.forEach(osc => {
+                    try {
+                        osc.stop();
+                        osc.disconnect();
+                    } catch(e) {}
+                });
+                activeOscillators = [];
+            }
+            if (gainNode) {
+                try {
+                    gainNode.disconnect();
+                } catch(e) {}
+                gainNode = null;
+            }
+        }
+
+        // Cargar voces al iniciar (SpeechSynthesis de cromo tarda)
+        if (synth && synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = () => {};
+        }
+
+        // Funciones para el Modal de Fichas Técnicas
+        function openSpecsModal() {
+            document.getElementById('specsModal').style.display = 'flex';
+            document.getElementById('specsModal').classList.add('active');
+            stopAmbientMusic();
+            if (typeof fbq === 'function') fbq('track', 'ViewContent', { content_name: 'Fichas de Equipos Premium' });
+        }
+
+        // Detectar si el usuario viene de index.html solicitando ver fichas
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('specs') === 'true') {
+            // Esperar un pequeño lapso para que se cargue la UI
+            setTimeout(openSpecsModal, 800);
+        }
+
+        function closeSpecsModal() {
+            document.getElementById('specsModal').style.display = 'none';
+            document.getElementById('specsModal').classList.remove('active');
+            if (musicEnabled) playAmbientMusic();
+        }
+
+        function switchSpecTab(tab) {
+            const panelsTab = document.getElementById('tabPanels');
+            const batteriesTab = document.getElementById('tabBatteries');
+            const panelsContent = document.getElementById('panelSpecs');
+            const batteriesContent = document.getElementById('batterySpecs');
+
+            if (tab === 'panels') {
+                panelsTab.classList.add('active');
+                batteriesTab.classList.remove('active');
+                panelsContent.style.display = 'block';
+                batteriesContent.style.display = 'none';
+            } else {
+                batteriesTab.classList.add('active');
+                panelsTab.classList.remove('active');
+                batteriesContent.style.display = 'block';
+                panelsContent.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

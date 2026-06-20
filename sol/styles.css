@@ -1386,3 +1386,93 @@ footer {
         display: none;
     }
 }
+
+
+/* ==========================================================================
+   SORO BLOG PEARL WHITE READABILITY OVERRIDES
+   ========================================================================== */
+
+/* Root blog wrapper color override */
+.soro-blog {
+    color: #f4f6f9 !important; /* Blanco perlado principal */
+}
+
+/* Card titles and article titles */
+.soro-blog-card-title,
+h2.soro-blog-card-title,
+.soro-blog-article-title,
+.soro-blog-article-content h1,
+.soro-blog-article-content h2,
+.soro-blog-article-content h3 {
+    color: #ffffff !important; /* Blanco puro brillante para títulos */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Excerpts, long article texts, lists and content elements */
+.soro-blog-card-excerpt,
+.soro-blog-article-content,
+.soro-blog-article-content p,
+.soro-blog-article-content li,
+.soro-blog-article-content ol,
+.soro-blog-article-content ul {
+    color: #eaecef !important; /* Blanco perlado suave */
+}
+
+/* Dates, read times, and other metadata */
+.soro-blog-card-date,
+.soro-blog-article-date {
+    color: #b0b3b8 !important; /* Blanco grisáceo para metadatos */
+}
+
+/* Card styling overrides for dark theme compatibility */
+.soro-blog-card {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 12px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.soro-blog-card:hover {
+    border-color: rgba(255, 183, 3, 0.4) !important;
+    background: rgba(255, 183, 3, 0.03) !important;
+    box-shadow: 0 8px 32px rgba(255, 183, 3, 0.08) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Back to articles button */
+.soro-blog-back {
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #f4f6f9 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.soro-blog-back:hover {
+    background: rgba(255, 183, 3, 0.15) !important;
+    border-color: #ffb703 !important;
+    color: #ffb703 !important;
+}
+
+/* Links inside the article body */
+.soro-blog-article-content a {
+    color: #ffb703 !important; /* Amarillo solar premium */
+    font-weight: 600 !important;
+    transition: color 0.2s !important;
+}
+
+.soro-blog-article-content a:hover {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+}
+
+/* Loading, empty, and spinner indicators */
+.soro-blog-empty,
+.soro-blog-loading {
+    color: #b0b3b8 !important;
+}
+
+.soro-blog-spinner {
+    border: 2px solid rgba(255, 255, 255, 0.1) !important;
+    border-top-color: #ffb703 !important;
+}
