@@ -106,7 +106,7 @@ const upload = multer({ storage: storage });
 
 // Configuración de OpenAI (Requiere API Key en .env o entorno)
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY || 'mock-openai-key-for-startup',
 });
 
 // Configuración de HeyGen
