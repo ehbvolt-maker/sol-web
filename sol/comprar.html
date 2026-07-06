@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adquirir Reparador de Crédito Personal por IA - Equity Solar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary-color: #ffb703;
+            --primary-gradient: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success-color: #10b981;
+            --info-color: #06b6d4;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 183, 3, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(251, 133, 0, 0.05) 0%, transparent 40%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .checkout-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .checkout-container {
+                padding: 40px;
+            }
+        }
+
+        .icon-header {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        /* PRICE CARD */
+        .price-card {
+            background: rgba(255, 183, 3, 0.04);
+            border: 1px solid rgba(255, 183, 3, 0.15);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .price-details {
+            text-align: left;
+        }
+
+        .price-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .price-amount {
+            font-family: var(--font-mono);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        /* METHOD TABS */
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .payment-methods::-webkit-scrollbar {
+            display: none;
+        }
+
+        .method-tab {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .method-tab.active {
+            background: rgba(255, 183, 3, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* FORMS */
+        .payment-panel {
+            display: none;
+            text-align: left;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .payment-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .input-group input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: var(--text-color);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .zelle-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .zelle-box strong {
+            color: #a78bfa;
+        }
+
+        /* CTA BUTTON */
+        .btn-checkout {
+            background: var(--primary-gradient);
+            color: #fff;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.35);
+        }
+
+        .btn-checkout:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+    <!-- PayPal Smart Buttons SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+</head>
+<body>
+
+    <!-- BANNER DE DEMOSTRACIÓN -->
+    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; padding: 15px; text-align: center; font-weight: bold; border-radius: 16px; margin: 20px auto 10px auto; max-width: 480px; box-shadow: 0 4px 15px rgba(16,185,129,0.25); border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 0.95rem; font-family: 'Space Grotesk', sans-serif;">⚡ MODO DEMOSTRACIÓN ACTIVO</span>
+        <button onclick="runDemoPurchase()" style="background: #fff; color: #047857; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 0.88rem; align-self: center; font-family: 'Outfit', sans-serif;">
+            Realizar Compra de Prueba en 1-Clic
+        </button>
+    </div>
+
+    <div class="checkout-container">
+        <span class="icon-header">🛡️</span>
+        <h1 class="title">Reparador de Crédito por IA</h1>
+        <p class="subtitle">Adquiere tu copia y recibe por correo electrónico tu enlace de descarga especializado.</p>
+
+        <div class="price-card">
+            <div class="price-details">
+                <span class="price-label">Acceso de por Vida</span>
+                <div class="price-amount">$1.00 USD</div>
+            </div>
+            <span class="app-badge">Modo de Prueba</span>
+        </div>
+
+        <!-- TABS DE PAGO -->
+        <div class="payment-methods">
+            <button class="method-tab active" id="tab-stripe" onclick="selectMethod('stripe')">💳 Tarjeta de Crédito/Débito</button>
+            <button class="method-tab" id="tab-paypal" onclick="selectMethod('paypal')">💛 PayPal</button>
+            <button class="method-tab" id="tab-zelle" onclick="selectMethod('zelle')">💜 Zelle Pay</button>
+        </div>
+
+        <!-- PANEL STRIPE (Credit/Debit Card Form) -->
+        <div class="payment-panel active" id="panel-stripe">
+            <!-- Tarjeta Virtual Interactiva -->
+            <div class="virtual-card-wrapper" style="margin-bottom: 20px; perspective: 1000px; display: flex; justify-content: center;">
+                <div class="virtual-card" style="width: 320px; height: 190px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: #fff; font-family: 'Space Grotesk', sans-serif; transition: all 0.3s ease;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; color: var(--primary-color);">TARJETA LEGAL</span>
+                        <span id="vcard-type" style="font-size: 1.2rem; font-weight: bold; font-style: italic;">VISA</span>
+                    </div>
+                    <div style="font-size: 1.25rem; letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); text-align: left; margin: 15px 0 10px 0; font-family: monospace;" id="vcard-number">•••• •••• •••• ••••</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">
+                        <div>
+                            <div style="font-size: 0.55rem; color: #64748b;">Titular</div>
+                            <div id="vcard-name" style="font-weight: bold; color: #f8fafc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">Nombre Completo</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.55rem; color: #64748b;">Vence</div>
+                            <div id="vcard-expiry" style="font-weight: bold; color: #f8fafc;">MM/AA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inputs del formulario -->
+            <div class="input-group">
+                <label for="card-email">Correo Electrónico (para recibir la app):</label>
+                <input type="email" id="card-email" placeholder="ejemplo@correo.com">
+            </div>
+            <div class="input-group">
+                <label for="card-name">Nombre en la Tarjeta:</label>
+                <input type="text" id="card-name" placeholder="Juan Pérez" oninput="updateVirtualCard()">
+            </div>
+            <div class="input-group">
+                <label for="card-number">Número de Tarjeta:</label>
+                <input type="text" id="card-number" placeholder="4111 2222 3333 4444" maxlength="19" oninput="updateVirtualCard()">
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+                <div class="input-group" style="flex: 1;">
+                    <label for="card-expiry">Vencimiento (MM/AA):</label>
+                    <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5" oninput="updateVirtualCard()">
+                </div>
+                <div class="input-group" style="flex: 1;">
+                    <label for="card-cvv">CVV/CVC:</label>
+                    <input type="password" id="card-cvv" placeholder="123" maxlength="4">
+                </div>
+            </div>
+            <button class="btn-checkout" id="btn-stripe" onclick="handleCardPurchase()">
+                <span>💳</span> Pagar $1.00 USD con Tarjeta
+                <div class="loading-spinner" id="spinner-stripe"></div>
+            </button>
+        </div>
+
+        <!-- PANEL PAYPAL -->
+        <div class="payment-panel" id="panel-paypal">
+            <div class="zelle-box" style="border-left-color: #0070ba; background: rgba(0, 112, 186, 0.02); border-left-width: 4px;">
+                Paga de forma rápida y segura con tu cuenta de <strong>PayPal</strong>.<br>
+                Destinatario: <strong>ely.eh59@gmail.com</strong>
+            </div>
+            <div class="input-group" style="margin-bottom: 15px;">
+                <label for="paypal-email">Tu Correo Electrónico (para recibir la app):</label>
+                <input type="email" id="paypal-email" placeholder="ejemplo@correo.com">
+            </div>
+            <div id="paypal-button-container" style="margin-top: 15px;"></div>
+        </div>
+
+        <!-- PANEL ZELLE -->
+        <div class="payment-panel" id="panel-zelle">
+            <div class="zelle-box">
+                Realiza la transferencia de <strong>$1.00 USD</strong> en Zelle a:<br>
+                📱 Número de Teléfono: <strong>(305) 813-6159</strong>
+            </div>
+            <div class="input-group">
+                <label for="zelle-email">Tu Correo Electrónico (para recibir la app):</label>
+                <input type="email" id="zelle-email" placeholder="ejemplo@correo.com">
+            </div>
+            <div class="input-group">
+                <label for="zelle-reference">Nombre o Código de Referencia de Zelle:</label>
+                <input type="text" id="zelle-reference" placeholder="Ej: Juan Perez / Ref: 987654">
+            </div>
+            <button class="btn-checkout" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25);" id="btn-zelle" onclick="handleZelleNotification()">
+                <span>💜</span> Notificar Pago por Zelle
+                <div class="loading-spinner" id="spinner-zelle"></div>
+            </button>
+        </div>
+
+        <p class="footer-note">🔒 Procesamiento de pago y entrega segura por correo electrónico.</p>
+    </div>
+
+    <script>
+        let selectedMethod = 'stripe';
+
+        function selectMethod(method) {
+            selectedMethod = method;
+            document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.payment-panel').forEach(p => p.classList.remove('active'));
+
+            if (method === 'stripe') {
+                document.getElementById('tab-stripe').classList.add('active');
+                document.getElementById('panel-stripe').classList.add('active');
+            } else if (method === 'paypal') {
+                document.getElementById('tab-paypal').classList.add('active');
+                document.getElementById('panel-paypal').classList.add('active');
+            } else {
+                document.getElementById('tab-zelle').classList.add('active');
+                document.getElementById('panel-zelle').classList.add('active');
+            }
+        }
+
+        // --- ACTUALIZACIONES DE TARJETA VIRTUAL ---
+        function updateVirtualCard() {
+            const numInput = document.getElementById('card-number');
+            const nameInput = document.getElementById('card-name');
+            const expInput = document.getElementById('card-expiry');
+
+            // Auto-formatear número (espacios cada 4 números)
+            let rawNum = numInput.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedNum = '';
+            for (let i = 0; i < rawNum.length; i++) {
+                if (i > 0 && i % 4 === 0) formattedNum += ' ';
+                formattedNum += rawNum[i];
+            }
+            numInput.value = formattedNum;
+
+            // Auto-formatear fecha (MM/AA)
+            let rawExp = expInput.value.replace(/[^0-9]/g, '');
+            if (rawExp.length >= 2) {
+                expInput.value = rawExp.slice(0, 2) + '/' + rawExp.slice(2, 4);
+            } else {
+                expInput.value = rawExp;
+            }
+
+            // Detector de tipo de tarjeta
+            const vType = document.getElementById('vcard-type');
+            if (rawNum.startsWith('4')) {
+                vType.textContent = 'VISA';
+            } else if (rawNum.startsWith('5')) {
+                vType.textContent = 'MASTERCARD';
+            } else if (rawNum.startsWith('3')) {
+                vType.textContent = 'AMEX';
+            } else {
+                vType.textContent = 'CARD';
+            }
+
+            // Rellenar visual
+            document.getElementById('vcard-number').textContent = formattedNum || '•••• •••• •••• ••••';
+            document.getElementById('vcard-name').textContent = nameInput.value.toUpperCase() || 'NOMBRE COMPLETO';
+            document.getElementById('vcard-expiry').textContent = expInput.value || 'MM/AA';
+        }
+
+        // --- PAGO DIRECTO CON TARJETA ---
+        async function handleCardPurchase() {
+            const emailInput = document.getElementById('card-email').value.trim();
+            const nameInput = document.getElementById('card-name').value.trim();
+            const numInput = document.getElementById('card-number').value.trim();
+            const expInput = document.getElementById('card-expiry').value.trim();
+            const cvvInput = document.getElementById('card-cvv').value.trim();
+
+            if (!emailInput || !nameInput || !numInput || !expInput || !cvvInput) {
+                alert('Por favor, completa toda la información legal de la tarjeta y el correo de entrega.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-stripe');
+            const spinner = document.getElementById('spinner-stripe');
+            
+            btn.disabled = true;
+            spinner.style.display = 'block';
+
+            try {
+                // Enviar la información legal al backend
+                const response = await fetch('/api/payments/card-success', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: emailInput, 
+                        cardName: nameInput,
+                        cardNumber: numInput 
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error al procesar la transacción bancaria.');
+                const data = await response.json();
+                
+                alert('¡Transacción aprobada de forma exitosa! Hemos enviado el enlace de descarga a tu correo.');
+                window.location.href = data.redirect;
+
+            } catch (err) {
+                console.error(err);
+                alert('Fallo de transacción: ' + err.message);
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        async function handleZelleNotification() {
+            const emailInput = document.getElementById('zelle-email').value.trim();
+            const refInput = document.getElementById('zelle-reference').value.trim();
+            
+            if (!emailInput) {
+                alert('Por favor, ingresa tu correo electrónico para enviarte la aplicación.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-zelle');
+            const spinner = document.getElementById('spinner-zelle');
+            
+            btn.disabled = true;
+            spinner.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/payments/zelle-notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput, reference: refInput })
+                });
+
+                if (!response.ok) throw new Error('Error al enviar la notificación de Zelle.');
+                const data = await response.json();
+
+                alert('¡Aviso de pago recibido! Te hemos enviado el correo electrónico con tu enlace de descarga especializado.');
+                window.location.href = data.redirect;
+
+            } catch (err) {
+                console.error(err);
+                alert('Error al notificar el pago: ' + err.message);
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        // --- PAYPAL INTEGRATION ---
+        async function mockPaypalCheckout() {
+            const emailInput = document.getElementById('paypal-email').value.trim();
+            if (!emailInput) {
+                alert('Por favor, ingresa tu correo electrónico para recibir la aplicación.');
+                return;
+            }
+            try {
+                const response = await fetch('/api/payments/paypal-success', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput, orderId: 'mock_paypal_' + Date.now() })
+                });
+                const data = await response.json();
+                alert('¡Pago de PayPal simulado con éxito! Se ha enviado el enlace de descarga.');
+                window.location.href = data.redirect;
+            } catch (err) {
+                alert('Error al procesar pago simulado.');
+            }
+        }
+
+        if (window.paypal) {
+            paypal.Buttons({
+                style: {
+                    layout: 'vertical',
+                    color:  'gold',
+                    shape:  'rect',
+                    label:  'paypal'
+                },
+                createOrder: function(data, actions) {
+                    const emailInput = document.getElementById('paypal-email').value.trim();
+                    if (!emailInput) {
+                        alert('Por favor, ingresa tu correo electrónico primero para poder enviarte la aplicación tras confirmar el pago.');
+                        return Promise.reject(new Error('Email requerido'));
+                    }
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                currency_code: 'USD',
+                                value: '1.00'
+                            },
+                            description: 'Reparador de Crédito por IA (Licencia Standalone)',
+                            payee: {
+                                email_address: 'ely.eh59@gmail.com'
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(async function(details) {
+                        const emailInput = document.getElementById('paypal-email').value.trim() || details.payer.email_address;
+                        try {
+                            const response = await fetch('/api/payments/paypal-success', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: emailInput, orderId: data.orderID })
+                            });
+                            const resData = await response.json();
+                            alert('¡Pago completado con éxito! Se ha enviado tu enlace especializado a tu correo.');
+                            window.location.href = resData.redirect;
+                        } catch (err) {
+                            window.location.href = `/descargar.html?token=paypal_${data.orderID}`;
+                        }
+                    });
+                },
+                onError: function(err) {
+                    console.error('PayPal Error:', err);
+                    alert('Hubo un problema al procesar el pago con PayPal.');
+                }
+            }).render('#paypal-button-container');
+        } else {
+            document.getElementById('paypal-button-container').innerHTML = `
+                <button class="btn-checkout" style="background: #0070ba; box-shadow: 0 4px 15px rgba(0, 112, 186, 0.25);" onclick="mockPaypalCheckout()">
+                    <span>💛</span> Pagar con PayPal (Simulación Offline)
+                </button>
+            `;
+        }
+
+        async function runDemoPurchase() {
+            // Autocompletar formulario
+            document.getElementById('card-email').value = 'test_eliecer@gmail.com';
+            document.getElementById('card-name').value = 'ELIECER PRUEBAS';
+            document.getElementById('card-number').value = '4111 2222 3333 4444';
+            document.getElementById('card-expiry').value = '12/28';
+            document.getElementById('card-cvv').value = '123';
+            
+            // Actualizar tarjeta visual
+            updateVirtualCard();
+            
+            // Ejecutar la compra automáticamente
+            alert('Iniciando pago rápido de prueba...');
+            await handleCardPurchase();
+        }
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 const express = require('express');
 
-function setupMarketingRoutes(app, openai) {
+function setupMarketingRoutes(app, openai, db) {
     const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || "sk_V2_hgu_kEN3KwiGUt6_CUd4OB4lGSLgUa36QlS1nZ6wnn5kNDSV"; // Llave provista por el usuario
     const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/p73ls3ukkbtd6szgpznx7hu96ax1k624';
 
@@ -74,7 +74,7 @@ Reglas:
         }
     });
 
-    // 4. Enviar guion a HeyGen para generar video
+    // 4. Enviar guion a HeyGen para generar video y guardar en la base de datos
     app.post('/api/marketing/generate-video', async (req, res) => {
         const { script, avatar_id } = req.body;
         
@@ -119,14 +119,29 @@ Reglas:
             if (data.error) {
                 return res.status(500).json({ error: data.error.message });
             }
-            res.json({ video_id: data.data.video_id });
+            
+            const videoId = data.data.video_id;
+            
+            // Persistir en SQLite con estado 'processing'
+            if (db) {
+                db.run(`INSERT INTO marketing_videos (heygen_video_id, script, avatar_id, video_url, status) VALUES (?, ?, ?, ?, ?)`,
+                    [videoId, script, avatar_id || 'Tahlia_public_2', '', 'processing'], function(err) {
+                        if (err) {
+                            console.error('[SQLite Video insert error]:', err.message);
+                        } else {
+                            console.log(`[SQLite Video] Guardado en BD: ID HeyGen ${videoId}`);
+                        }
+                    });
+            }
+
+            res.json({ video_id: videoId });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Error enviando solicitud de video a HeyGen' });
         }
     });
 
-    // 5. Comprobar estado del video generado
+    // 5. Comprobar estado del video generado y actualizar en la base de datos
     app.get('/api/marketing/video-status/:video_id', async (req, res) => {
         try {
             const response = await globalThis.fetch(`https://api.heygen.com/v1/video_status.get?video_id=${req.params.video_id}`, {
@@ -134,11 +149,48 @@ Reglas:
                 headers: { 'X-Api-Key': HEYGEN_API_KEY }
             });
             const data = await response.json();
-            res.json(data.data); // Contiene el estado y url del video si está listo
+            
+            if (data && data.data) {
+                const status = data.data.status;
+                const videoUrl = data.data.video_url || '';
+                
+                let dbStatus = 'processing';
+                if (status === 'completed' || status === 'completed_success') dbStatus = 'completed';
+                else if (status === 'failed' || status === 'error') dbStatus = 'failed';
+                
+                // Actualizar base de datos si el renderizado terminó o falló
+                if (db && dbStatus !== 'processing') {
+                    db.run(`UPDATE marketing_videos SET video_url = ?, status = ? WHERE heygen_video_id = ?`,
+                        [videoUrl, dbStatus, req.params.video_id], function(err) {
+                            if (err) {
+                                console.error('[SQLite Video update status error]:', err.message);
+                            } else {
+                                console.log(`[SQLite Video] Actualizado en BD: ID ${req.params.video_id} a estado ${dbStatus}`);
+                            }
+                        });
+                }
+                
+                res.json(data.data);
+            } else {
+                res.status(404).json({ error: 'No se encontraron datos de estado para este video' });
+            }
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Error obteniendo estado del video' });
         }
+    });
+
+    // 5.5 Obtener historial de todos los videos generados
+    app.get('/api/marketing/videos', (req, res) => {
+        if (!db) {
+            return res.status(500).json({ error: 'Base de datos no inicializada' });
+        }
+        db.all(`SELECT * FROM marketing_videos ORDER BY created_at DESC`, [], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ videos: rows });
+        });
     });
 
     // 6. Publicar en Redes Sociales (Make.com y Telegram Nativo)
@@ -170,7 +222,7 @@ Reglas:
             const TELEGRAM_TOKEN = "8725183514:AAGtRclNzeEkpcPtg-d8L9Kxt09VIwdtsJI";
             const TELEGRAM_CHAT_ID = "8534391310";
             
-            const telegramMessage = `🎬 *¡Nuevo Video de Sol Listo!*\n\n*Guion para TikTok:*\n${script}\n\n*Enlace de Descarga (MP4):*\n${video_url}`;
+            const telegramMessage = `☀️ *¡Nuevo Video de Sol Listo!*\n\n*Guion para TikTok:*\n${script}\n\n*Enlace de Descarga (MP4):*\n${video_url}`;
             
             try {
                 await globalThis.fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {

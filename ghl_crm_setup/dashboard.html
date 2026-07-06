@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHL CRM Dashboard | Control de Prospectos</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #060813;
+            --bg-panel: rgba(11, 17, 32, 0.7);
+            --primary: #0066ff;
+            --secondary: #00f2fe;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-active: rgba(0, 102, 255, 0.3);
+            --success: #2ecc71;
+            --danger: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            padding: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ghl-arrows {
+            display: flex;
+            gap: 2px;
+        }
+
+        .ghl-arrows span {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .arrow-yellow { color: #f1c40f; }
+        .arrow-blue { color: #3498db; }
+        .arrow-green { color: #2ecc71; }
+
+        .logo-txt {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .logo-txt span {
+            color: var(--primary);
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--bg-panel);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .metric-footer {
+            font-size: 0.75rem;
+            color: var(--secondary);
+        }
+
+        /* Controls Block */
+        .controls-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .status-badge-demo {
+            background: rgba(241, 196, 15, 0.1);
+            color: #f1c40f;
+            border: 1px solid rgba(241, 196, 15, 0.25);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Table Design */
+        .table-container {
+            background: var(--bg-panel);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow-x: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 16px 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-owner {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+
+        .badge-not-owner {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--danger);
+        }
+
+        .badge-software {
+            background: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+        }
+
+        .badge-feature {
+            background: rgba(155, 89, 182, 0.15);
+            color: #9b59b6;
+        }
+
+        .no-leads {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-block">
+            <div class="ghl-arrows">
+                <span class="arrow-yellow">?</span>
+                <span class="arrow-blue">?</span>
+                <span class="arrow-green">?</span>
+            </div>
+            <span class="logo-txt">GHL Setup <span>Pro</span></span>
+        </div>
+        <a href="index.html" class="btn-back">? Volver a la Web</a>
+    </header>
+
+    <!-- Metrics Summary -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <span class="metric-label">Total Leads</span>
+            <span class="metric-value" id="valTotalLeads">0</span>
+            <span class="metric-footer" id="valTotalFooter">Registros en total</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Decisores Clave (Dueños)</span>
+            <span class="metric-value" id="valOwners">0%</span>
+            <span class="metric-footer" style="color: var(--success);">Perfil Directivo</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Presupuesto listo</span>
+            <span class="metric-value" id="valBudgetReady">0%</span>
+            <span class="metric-footer" style="color: var(--secondary);">Calificados B2B</span>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-block">
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, negocio o nicho...">
+        </div>
+        <div id="demoBadge" class="status-badge-demo" style="display: none;">
+            ?? Modo Demo: Mostrando registros de ejemplo local
+        </div>
+    </div>
+
+    <!-- Table container -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Negocio</th>
+                    <th>Nicho</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dueño</th>
+                    <th>Paga Software</th>
+                    <th>Automatización</th>
+                    <th>Registro</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Dynamic leads rows go here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.getElementById('tableBody');
+            const searchInput = document.getElementById('searchInput');
+            const valTotalLeads = document.getElementById('valTotalLeads');
+            const valOwners = document.getElementById('valOwners');
+            const valBudgetReady = document.getElementById('valBudgetReady');
+            const demoBadge = document.getElementById('demoBadge');
+            
+            let allLeads = [];
+
+            // Dummy leads for offline fallback
+            const dummyLeads = [
+                {
+                    id: 1,
+                    name: 'Juan Pérez',
+                    phone: '305-813-6159',
+                    address: 'Inmobiliaria Pérez FL',
+                    email: 'juan@perezrealestate.com',
+                    zipcode: 'Real Estate',
+                    bill_over_100: 'Sí, gasto más de $100/mes',
+                    credit_score: 'Sí',
+                    roof_type: 'Funnels + IA',
+                    is_owner: 'Sí',
+                    created_at: '2026-06-30T10:15:30Z'
+                },
+                {
+                    id: 2,
+                    name: 'Sofía Rodríguez',
+                    phone: '407-784-6363',
+                    address: 'Rodríguez Clinic',
+                    email: 'contacto@rodriguezclinic.com',
+                    zipcode: 'Servicios Locales',
+                    bill_over_100: 'No, uso herramientas gratuitas',
+                    credit_score: 'Sí',
+                    roof_type: 'Agente AI 24/7',
+                    is_owner: 'Sí',
+                    created_at: '2026-06-29T18:42:15Z'
+                },
+                {
+                    id: 3,
+                    name: 'Carlos Mendoza',
+                    phone: '786-905-2311',
+                    address: 'Mendoza Consulting',
+                    email: 'carlos@mendozaconsulting.com',
+                    zipcode: 'Agencia / Consulting',
+                    bill_over_100: 'Sí, gasto más de $100/mes',
+                    credit_score: 'No',
+                    roof_type: 'Embudos de Venta',
+                    is_owner: 'Sí',
+                    created_at: '2026-06-29T08:10:00Z'
+                }
+            ];
+
+            function renderLeads(leads) {
+                tableBody.innerHTML = '';
+                if (leads.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="9" class="no-leads">No se encontraron prospectos.</td></tr>';
+                    return;
+                }
+
+                leads.forEach(lead => {
+                    const tr = document.createElement('tr');
+                    
+                    const ownerBadge = lead.is_owner === 'Sí' || lead.is_owner === 'Si'
+                        ? `<span class="badge badge-owner">Sí</span>` 
+                        : `<span class="badge badge-not-owner">No</span>`;
+
+                    const softwareVal = lead.bill_over_100 || 'No';
+                    const softwareBadge = softwareVal.toLowerCase().includes('sí') || softwareVal.toLowerCase().includes('si')
+                        ? `<span class="badge badge-software">Sí</span>`
+                        : `<span class="badge badge-not-owner">No</span>`;
+
+                    const date = new Date(lead.created_at).toLocaleString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    tr.innerHTML = `
+                        <td><strong>${lead.name}</strong></td>
+                        <td>${lead.address || '-'}</td>
+                        <td>${lead.zipcode || '-'}</td>
+                        <td>${lead.phone}</td>
+                        <td>${lead.email || '-'}</td>
+                        <td>${ownerBadge}</td>
+                        <td>${softwareBadge}</td>
+                        <td><span class="badge badge-feature">${lead.roof_type || '-'}</span></td>
+                        <td style="color: var(--text-muted); font-size: 0.8rem;">${date}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Update Metrics values
+                valTotalLeads.innerText = leads.length;
+                
+                const total = leads.length;
+                if (total > 0) {
+                    const ownersCount = leads.filter(l => l.is_owner === 'Sí' || l.is_owner === 'Si').length;
+                    const ownersPct = Math.round((ownersCount / total) * 100);
+                    valOwners.innerText = `${ownersPct}%`;
+
+                    const budgetCount = leads.filter(l => l.bill_over_100 && (l.bill_over_100.toLowerCase().includes('sí') || l.bill_over_100.toLowerCase().includes('si'))).length;
+                    const budgetPct = Math.round((budgetCount / total) * 100);
+                    valBudgetReady.innerText = `${budgetPct}%`;
+                } else {
+                    valOwners.innerText = '0%';
+                    valBudgetReady.innerText = '0%';
+                }
+            }
+
+            async function fetchLeads() {
+                try {
+                    const res = await fetch('/api/leads');
+                    if (res.ok) {
+                        allLeads = await res.json();
+                        demoBadge.style.display = 'none';
+                        renderLeads(allLeads);
+                    } else {
+                        throw new Error('API failed');
+                    }
+                } catch (error) {
+                    console.warn('Usando base de datos de demo (sin servidor activo):', error);
+                    allLeads = dummyLeads;
+                    demoBadge.style.display = 'block';
+                    renderLeads(allLeads);
+                }
+            }
+
+            // Search filter functionality
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase().trim();
+                if (!term) {
+                    renderLeads(allLeads);
+                    return;
+                }
+
+                const filtered = allLeads.filter(lead => {
+                    return (lead.name && lead.name.toLowerCase().includes(term)) ||
+                           (lead.address && lead.address.toLowerCase().includes(term)) ||
+                           (lead.zipcode && lead.zipcode.toLowerCase().includes(term)) ||
+                           (lead.email && lead.email.toLowerCase().includes(term));
+                });
+                renderLeads(filtered);
+            });
+
+            // Initial fetch
+            fetchLeads();
+        });
+    </script>
+</body>
+</html>

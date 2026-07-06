@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado - Descargar Reparador de Crédito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary-color: #ffb703;
+            --primary-gradient: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success-color: #10b981;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(255, 183, 3, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.03) 0%, transparent 40%);
+            padding: 20px;
+        }
+
+        .download-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (min-width: 768px) {
+            .download-container {
+                padding: 40px;
+            }
+        }
+
+        .success-icon {
+            font-size: 3.5rem;
+            color: var(--success-color);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .title {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* DOWNLOAD BUTTON */
+        .btn-download {
+            background: var(--primary-gradient);
+            color: #070a13;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-family: var(--font-main);
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-bottom: 25px;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.35);
+            background: #fff;
+            color: #070a13;
+        }
+
+        /* INSTRUCTIONS CARD */
+        .instructions-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .instructions-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .instruction-step {
+            display: flex;
+            gap: 10px;
+            font-size: 0.88rem;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .step-num {
+            background: rgba(255, 183, 3, 0.1);
+            color: var(--primary-color);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="download-container">
+        <span class="success-icon">🏆</span>
+        <h1 class="title">¡Pago Confirmado!</h1>
+        <p class="subtitle">Tu transacción se completó con éxito. Haz clic en el botón de abajo para descargar tu copia personal en un archivo <strong>ZIP comprimido</strong> (para evitar bloqueos de seguridad del navegador).</p>
+
+        <a href="#" class="btn-download" id="download-link">
+            <span>📥</span> Descargar Reparador de Crédito (ZIP)
+        </a>
+
+        <div class="instructions-card">
+            <h3 class="instructions-title">🔑 ¿Cómo abrir la aplicación?</h3>
+            <div class="instruction-step">
+                <span class="step-num">1</span>
+                <span><strong>Descomprime el archivo</strong>: Localiza el archivo descargado <strong>Reparador_de_Credito.zip</strong> en tu carpeta de descargas, hazle doble clic (o clic derecho -> Extraer) para obtener el archivo <strong>Reparador_de_Credito.html</strong>.</span>
+            </div>
+            <div class="instruction-step">
+                <span class="step-num">2</span>
+                <span><strong>En Computadora (PC/Mac)</strong>: Guarda el archivo extraído en tu Escritorio y hazle doble clic. Se abrirá en tu navegador web como una aplicación local 100% interactiva.</span>
+            </div>
+            <div class="instruction-step">
+                <span class="step-num">3</span>
+                <span><strong>En Celular (iOS/Android)</strong>: Guarda el archivo extraído en la app "Archivos" de tu teléfono. Selecciónalo para ejecutar el analizador de reportes.</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el token de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            alert('Acceso no autorizado: no se encontró ningún token de compra.');
+            window.location.href = '/comprar.html';
+        } else {
+            const downloadLink = document.getElementById('download-link');
+            downloadLink.href = `/api/payments/download?token=${token}`;
+            
+            // Iniciar la descarga automáticamente tras 1.5 segundos por conveniencia
+            setTimeout(() => {
+                window.location.href = downloadLink.href;
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

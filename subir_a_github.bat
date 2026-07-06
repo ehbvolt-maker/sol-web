@@ -5,7 +5,11 @@ echo ============================================================
 echo   SUBIENDO CAMBIOS A GITHUB (ehbvolt-maker/sol-web)
 echo ============================================================
 echo.
-echo Ejecutando git push forzado para actualizar tu repositorio...
+echo Agregando y confirmando cambios locales...
+git\cmd\git.exe add .
+git\cmd\git.exe commit -m "Actualizacion Reparador de Credito: modulo bancarrotas, traduccion, checkout y desktop"
+echo.
+echo Ejecutando git push para actualizar tu repositorio...
 echo.
 echo NOTA: Si aparece una ventana emergente de GitHub, por favor
 echo autorizala en tu navegador para completar la subida.

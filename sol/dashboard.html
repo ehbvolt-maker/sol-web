@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Leads, WhatsApp AI & Agenda | Equity Solar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --success-color: #06d6a0;
+            --danger-color: #ef476f;
+            --warning-color: #ffd166;
+            --info-color: #118ab2;
+            --card-bg: rgba(15, 23, 42, 0.45);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 110px auto 40px;
+            padding: 20px;
+            width: 95%;
+        }
+
+        /* Cabecera del Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-title h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dashboard-title p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Tabs de Navegación */
+        .tabs-navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-gold);
+            color: #0b0f19;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-action.primary {
+            background: var(--gradient-gold);
+            color: #0b0f19;
+            border: none;
+            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.3);
+        }
+
+        .btn-action.primary:hover {
+            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Grid de Métricas (KPI Cards) */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            padding: 24px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .metric-info h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.1;
+        }
+
+        .metric-icon {
+            font-size: 2.2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .metric-card.leads .metric-icon { color: var(--primary-color); background: rgba(255, 183, 3, 0.1); }
+        .metric-card.owners .metric-icon { color: var(--success-color); background: rgba(6, 214, 160, 0.1); }
+        .metric-card.bills .metric-icon { color: var(--info-color); background: rgba(33, 158, 188, 0.1); }
+        .metric-card.credits .metric-icon { color: var(--warning-color); background: rgba(255, 209, 102, 0.1); }
+
+        /* Sección de Filtros y Búsqueda */
+        .controls-card {
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.15);
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 15px;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 900px) {
+            .filters-group {
+                justify-content: flex-start;
+            }
+        }
+
+        .filter-btn {
+            padding: 10px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+        }
+
+        .filter-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active {
+            color: #0b0f19;
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* Tabla de Contenido */
+        .table-card {
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .leads-table th {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 18px 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .leads-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+        }
+
+        .leads-table tr {
+            transition: background 0.2s ease;
+        }
+
+        .leads-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Badges de Validación */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge.yes {
+            background: rgba(6, 214, 160, 0.15);
+            color: var(--success-color);
+            border: 1px solid rgba(6, 214, 160, 0.25);
+        }
+
+        .badge.no {
+            background: rgba(239, 71, 111, 0.15);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 71, 111, 0.25);
+        }
+
+        .badge.pending {
+            background: rgba(255, 209, 102, 0.15);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 209, 102, 0.25);
+        }
+
+        .badge.roof {
+            background: rgba(33, 158, 188, 0.15);
+            color: var(--secondary-color);
+            border: 1px solid rgba(33, 158, 188, 0.25);
+        }
+
+        /* ==========================================
+           SECCIÓN DE SIMULACIÓN DE WHATSAPP
+           ========================================== */
+        .whatsapp-view {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+            height: calc(100vh - 280px);
+            min-height: 550px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1100px) {
+            .whatsapp-view {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        /* Lista de Chats Izquierda */
+        .chats-sidebar {
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        .chats-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chats-list-header h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .chats-scroll-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-session-item {
+            padding: 12px 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .chat-session-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-session-item.active {
+            background: rgba(33, 158, 188, 0.15);
+            border-color: var(--secondary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .chat-phone {
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .chat-preview {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Caja de Chat Central */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .chat-box-header {
+            padding: 15px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #0b0f19;
+            font-weight: bold;
+        }
+
+        .chat-contact-info h4 {
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .chat-contact-status {
+            font-size: 0.75rem;
+            color: var(--success-color);
+        }
+
+        .chat-messages-area {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(0,0,0,0.15);
+        }
+
+        .message-bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            position: relative;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-bubble.user {
+            background: #056162;
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 4px;
+        }
+
+        .message-bubble.bot {
+            background: #262d31;
+            color: #e9edef;
+            align-self: flex-start;
+            border-top-left-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: right;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .typing-bubble {
+            align-self: flex-start;
+            background: #262d31;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border-top-left-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .chat-input-area {
+            padding: 15px 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-msg-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .chat-msg-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .btn-send {
+            background: var(--secondary-color);
+            color: #0b0f19;
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-send:hover {
+            background: #219ebc;
+            transform: scale(1.03);
+        }
+
+        .btn-send:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* AI Lead Tracker Derecho */
+        .tracker-sidebar {
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .tracker-sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tracker-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .tracker-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .tracker-field {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .tracker-field.filled {
+            background: rgba(6, 214, 160, 0.05);
+            border-color: rgba(6, 214, 160, 0.25);
+        }
+
+        .tracker-field.appointment {
+            background: rgba(33, 158, 188, 0.03);
+        }
+
+        .tracker-field.appointment.filled {
+            background: rgba(33, 158, 188, 0.08);
+            border-color: rgba(33, 158, 188, 0.4);
+        }
+
+        .tracker-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .tracker-value-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tracker-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .tracker-field.filled .tracker-value {
+            color: white;
+        }
+
+        .tracker-status-icon {
+            font-size: 0.9rem;
+        }
+
+        .qualification-banner {
+            background: rgba(6, 214, 160, 0.15);
+            border: 1px solid var(--success-color);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            display: none;
+            animation: pulseBanner 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseBanner {
+            0%, 100% { box-shadow: 0 0 5px rgba(6, 214, 160, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(6, 214, 160, 0.6); }
+        }
+
+        /* ==========================================
+           SECCIÓN DE AGENDA DE CITAS (TIMELINE)
+           ========================================== */
+        .agenda-view {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 30px;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 70px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .timeline-badge {
+            position: absolute;
+            left: 17px;
+            top: 5px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #0b0f19;
+            border: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            z-index: 2;
+            color: var(--primary-color);
+        }
+
+        .timeline-badge.today {
+            background: var(--primary-color);
+            color: #0b0f19;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .timeline-badge.passed {
+            border-color: var(--text-muted);
+            color: var(--text-muted);
+        }
+
+        .timeline-card {
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .timeline-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .timeline-time {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .timeline-lead-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .timeline-status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(33, 158, 188, 0.15);
+            color: var(--secondary-color);
+            border: 1px solid rgba(33, 158, 188, 0.25);
+        }
+
+        .timeline-status-badge.today {
+            background: rgba(255, 183, 3, 0.15);
+            color: var(--primary-color);
+            border-color: rgba(255, 183, 3, 0.25);
+        }
+
+        .timeline-status-badge.passed {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border-color: transparent;
+        }
+
+        .timeline-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+
+        .timeline-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-detail-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .timeline-detail-value {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .timeline-notes {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        /* Estilos para Historial de Llamadas */
+        .audio-player-container {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .audio-player-container label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        audio {
+            width: 100%;
+            outline: none;
+        }
+        .transcript-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+            font-family: inherit;
+            white-space: pre-line;
+        }
+        .call-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .call-badge.qualified {
+            background: rgba(6, 214, 160, 0.15);
+            color: var(--success-color);
+            border: 1px solid rgba(6, 214, 160, 0.25);
+        }
+        .call-badge.not_qualified {
+            background: rgba(239, 71, 111, 0.15);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 71, 111, 0.25);
+        }
+        .call-badge.pending {
+            background: rgba(255, 209, 102, 0.15);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 209, 102, 0.25);
+        }
+
+        /* Estilos para Video Marketing */
+        .mkt-video-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+        .mkt-video-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-2px);
+        }
+        .mkt-video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .mkt-video-status {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+        }
+        .mkt-video-status.processing {
+            background: rgba(255, 209, 102, 0.15);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 209, 102, 0.25);
+        }
+        .mkt-video-status.completed {
+            background: rgba(6, 214, 160, 0.15);
+            color: var(--success-color);
+            border: 1px solid rgba(6, 214, 160, 0.25);
+        }
+        .mkt-video-status.failed {
+            background: rgba(239, 71, 111, 0.15);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 71, 111, 0.25);
+        }
+        .mkt-script-preview {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #cbd5e1;
+            font-style: italic;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar glass">
+        <div class="logo" style="font-size: 1.3rem;">La energia solar es gratis. <span>Usala.</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="gallery.html">Galería</a></li>
+            <li><a href="marketing.html">Marketing</a></li>
+            <li><a href="admin.html">Subir Fotos</a></li>
+            <li><a href="dashboard.html" class="active">Panel CRM</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <h1>Panel de Leads CRM & AI Setter</h1>
+                <p>Monitoreo de leads calificados y citas automáticas agendadas por la IA "Sol".</p>
+            </div>
+        </div>
+
+        <!-- Pestañas de Navegación del Panel -->
+        <div class="tabs-navigation">
+            <button class="tab-btn active" id="tabLeads" onclick="switchTab('leads')">📋 Leads del CRM</button>
+            <button class="tab-btn" id="tabWhatsApp" onclick="switchTab('whatsapp')">💬 Simulador WhatsApp AI</button>
+            <button class="tab-btn" id="tabAgenda" onclick="switchTab('agenda')">📅 Agenda de Citas</button>
+            <button class="tab-btn" id="tabLlamadas" onclick="switchTab('llamadas')">📞 Llamadas de Voz AI</button>
+            <button class="tab-btn" id="tabMarketing" onclick="switchTab('marketing')">🎬 Video Marketing</button>
+        </div>
+
+        <!-- ==========================================
+             VISTA 1: TABLA DE LEADS
+             ========================================== -->
+        <div id="leadsView">
+            <!-- KPIs Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card leads glass">
+                    <div class="metric-info">
+                        <h3>Leads Totales</h3>
+                        <div class="metric-value" id="totalLeads">0</div>
+                    </div>
+                    <div class="metric-icon">👥</div>
+                </div>
+                <div class="metric-card owners glass">
+                    <div class="metric-info">
+                        <h3>Propietarios</h3>
+                        <div class="metric-value" id="ownerLeads">0</div>
+                    </div>
+                    <div class="metric-icon">🏠</div>
+                </div>
+                <div class="metric-card bills glass">
+                    <div class="metric-info">
+                        <h3>Factura > $100</h3>
+                        <div class="metric-value" id="billLeads">0</div>
+                    </div>
+                    <div class="metric-icon">⚡</div>
+                </div>
+                <div class="metric-card credits glass">
+                    <div class="metric-info">
+                        <h3>Crédito > 650</h3>
+                        <div class="metric-value" id="creditLeads">0</div>
+                    </div>
+                    <div class="metric-icon">💳</div>
+                </div>
+            </div>
+
+            <!-- Controles de Búsqueda y Filtros -->
+            <div class="controls-card glass">
+                <div class="controls-grid">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, teléfono, email, dirección...">
+                    </div>
+                    <div class="filters-group">
+                        <button class="filter-btn active" data-filter="all">Todos</button>
+                        <button class="filter-btn" data-filter="owners">Solo Propietarios</button>
+                        <button class="filter-btn" data-filter="all" id="kpiBillFilter" style="display:none;"></button> <!-- Placeholder for routing compatibility -->
+                        <button class="filter-btn" data-filter="bills">Factura > $100</button>
+                        <button class="filter-btn" data-filter="credits">Crédito > 650</button>
+                        <button class="filter-btn" data-filter="prequalified">⭐ Pre-calificados</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Leads -->
+            <div class="table-card glass">
+                <div class="table-responsive">
+                    <table class="leads-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Código Postal</th>
+                                <th>Dueño</th>
+                                <th>Factura > $100</th>
+                                <th>Crédito > 650</th>
+                                <th>Tipo de Techo</th>
+                                <th>Fecha de Registro</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsTableBody">
+                            <tr>
+                                <td colspan="10" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                    Cargando prospectos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; margin-top: -20px; margin-bottom: 40px; gap: 10px;">
+                <button class="btn-action" id="refreshBtn">🔄 Actualizar Lista</button>
+                <button class="btn-action primary" id="exportBtn">📥 Exportar CSV</button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             VISTA 2: SIMULADOR DE WHATSAPP
+             ========================================== -->
+        <div id="whatsappView" style="display: none;">
+            <div class="whatsapp-view">
+                
+                <!-- Columna Izquierda: Chats Activos -->
+                <div class="chats-sidebar glass">
+                    <div class="chats-list-header">
+                        <h3>Chats Activos</h3>
+                        <button class="btn-action" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 8px;" onclick="createNewChatSession()">+ Nuevo</button>
+                    </div>
+                    <div class="chats-scroll-list" id="chatsList">
+                        <!-- Cargado por JS -->
+                        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 20px;">
+                            Sin chats activos
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Central: Área de Conversación -->
+                <div class="chat-box glass">
+                    <div class="chat-box-header">
+                        <div class="chat-avatar">S</div>
+                        <div class="chat-contact-info">
+                            <h4 id="activeChatPhone">Selecciona un chat</h4>
+                            <span class="chat-contact-status" id="activeChatStatus">En línea (Simulado)</span>
+                        </div>
+                    </div>
+                    <div class="chat-messages-area" id="chatMessages">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); text-align: center;">
+                            <span style="font-size: 3rem; margin-bottom: 10px;">💬</span>
+                            <h4>Bienvenido al Simulador AI Setter</h4>
+                            <p style="font-size: 0.85rem; max-width: 300px; margin-top: 5px;">Crea o selecciona un número de teléfono en la barra lateral para empezar a chatear con tu IA "Sol" y ver la calificación en vivo.</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatMsgInput" class="chat-msg-input" placeholder="Escribe un mensaje de WhatsApp..." disabled onkeydown="if(event.key === 'Enter') sendSimulatedMessage()">
+                        <button id="sendChatMsgBtn" class="btn-send" disabled onclick="sendSimulatedMessage()">Enviar</button>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: AI Lead Tracker -->
+                <div class="tracker-sidebar glass">
+                    <div class="qualification-banner" id="qualificationBanner">
+                        ⭐ ¡LEAD PRE-CALIFICADO! ✅
+                    </div>
+                    
+                    <h3>Rastreador de IA (CRM)</h3>
+                    <p class="tracker-desc">Muestra los datos extraídos en tiempo real por el analizador estructurado de OpenAI a partir de la conversación.</p>
+                    
+                    <div class="tracker-fields">
+                        <div class="tracker-field" id="track-name">
+                            <div class="tracker-label">Nombre Completo</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-name">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-name">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-email">
+                            <div class="tracker-label">Correo Electrónico</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-email">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-email">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-address">
+                            <div class="tracker-label">Dirección Propiedad</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-address">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-address">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-zipcode">
+                            <div class="tracker-label">Código Postal (ZIP)</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-zipcode">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-zipcode">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-is_owner">
+                            <div class="tracker-label">¿Dueño de Casa?</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-is_owner">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-is_owner">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-bill_over_100">
+                            <div class="tracker-label">¿Factura > $100?</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-bill_over_100">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-bill_over_100">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-credit_score">
+                            <div class="tracker-label">¿Crédito > 650?</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-credit_score">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-credit_score">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field" id="track-roof_type">
+                            <div class="tracker-label">Tipo de Techo</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-roof_type">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-roof_type">▫️</span>
+                            </div>
+                        </div>
+                        <div class="tracker-field appointment" id="track-appointment_date">
+                            <div class="tracker-label">📅 Cita Agendada</div>
+                            <div class="tracker-value-container">
+                                <span class="tracker-value" id="val-appointment_date" style="color: var(--secondary-color);">⏳ Pendiente</span>
+                                <span class="tracker-status-icon" id="icon-appointment_date">▫️</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==========================================
+             VISTA 3: AGENDA DE CITAS (TIMELINE)
+             ========================================== -->
+        <div id="agendaView" style="display: none;">
+            <div class="agenda-view">
+                <div class="dashboard-header" style="margin-bottom: 20px;">
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; color: white;">Próximas Consultas Agendadas</h2>
+                    <button class="btn-action" onclick="fetchAppointments()">🔄 Actualizar Agenda</button>
+                </div>
+                
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Cargado dinámicamente por JS -->
+                    <div style="text-align: center; color: var(--text-muted); padding: 50px 0;">
+                        No hay citas agendadas actualmente.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             VISTA 4: HISTORIAL DE LLAMADAS VAPI
+             ========================================== -->
+        <div id="llamadasView" style="display: none;">
+            <div class="calls-view">
+                <div class="dashboard-header" style="margin-bottom: 20px;">
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; color: white;">Registro de Llamadas (Vapi AI Agent)</h2>
+                    <button class="btn-action" onclick="fetchVoiceCalls()">🔄 Actualizar Registro</button>
+                </div>
+                
+                <div class="table-card glass">
+                    <div class="table-responsive">
+                        <table class="leads-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha/Hora</th>
+                                    <th>Cliente</th>
+                                    <th>Teléfono</th>
+                                    <th>Duración</th>
+                                    <th>Estado Calificación</th>
+                                    <th style="text-align: center;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="callsTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                        Cargando registro de llamadas...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             VISTA 5: CENTRO DE VIDEO MARKETING (HEYGEN)
+             ========================================== -->
+        <div id="marketingView" style="display: none;">
+            <div class="marketing-view" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: start;">
+                <!-- Panel de Control (Izquierda) -->
+                <div class="card glass" style="padding: 24px; border-radius: 20px;">
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; color: white; margin-bottom: 10px;">🎥 Creador de Videos Virales</h2>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Genera un guion magnético con Inteligencia Artificial y renderiza un video de avatar realista de Sol en HeyGen para tus redes sociales.</p>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--primary-color); font-weight: bold; font-size: 0.9rem;">1. Tema de la Campaña</label>
+                        <input type="text" id="mktTopic" class="search-input" style="width: 100%; border-radius:10px;" placeholder="Ej: Rompiendo mitos de la renta solar en Florida...">
+                    </div>
+                    
+                    <button class="btn-action primary" id="btnGenScript" style="margin-bottom: 25px; width: 100%; justify-content: center;" onclick="generateScriptMkt()">🤖 Generar Guion con OpenAI</button>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--secondary-color); font-weight: bold; font-size: 0.9rem;">2. Guion de Video (TikTok/Reels ~30s)</label>
+                        <textarea id="mktScript" class="search-input" style="width: 100%; min-height: 140px; font-family: inherit; line-height: 1.5; padding: 12px; resize: vertical; border-radius:10px;" placeholder="El guion de la presentadora aparecerá aquí..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--warning-color); font-weight: bold; font-size: 0.9rem;">3. Seleccionar Avatar</label>
+                        <select id="mktAvatar" class="search-input" style="width: 100%; background: #0b0f19; border: 1px solid var(--glass-border); color: white; border-radius:10px; padding: 10px;">
+                            <option value="Tahlia_public_2">Tahlia - Presentadora Oficial (Sol)</option>
+                            <option value="Annie_Casual_Standing_Front_public">Annie - Casual Parada (TikTok)</option>
+                            <option value="Tahlia_office_public">Tahlia - Oficina Ejecutiva</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-action" id="btnGenVideo" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #06d6a0 0%, #118ab2 100%); color: #0b0f19; font-weight: bold; font-size: 1rem; border: none; box-shadow: 0 4px 15px rgba(6, 214, 160, 0.25); border-radius:12px; padding:12px;" onclick="generateVideoMkt()">🎬 Renderizar Video con HeyGen</button>
+                </div>
+
+                <!-- Panel de Galería (Derecha) -->
+                <div class="card glass" style="padding: 24px; display: flex; flex-direction: column; gap: 20px; max-height: 750px; overflow-y: auto; border-radius: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;">
+                        <h3 style="color: white; font-family: 'Space Grotesk', sans-serif;">🎬 Historial de Videos</h3>
+                        <button class="btn-action" style="padding: 5px 12px; font-size: 0.8rem; border-radius: 8px;" onclick="fetchMktVideos()">🔄 Actualizar</button>
+                    </div>
+                    <div id="mktVideosList" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                            Cargando historial de videos...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Detalle Lead -->
+    <div class="modal-overlay" id="leadModal">
+        <div class="modal-container glass">
+            <button class="modal-close" id="closeModal">✕</button>
+            <h2 class="modal-title">Detalles del Prospecto</h2>
+            
+            <div class="detail-grid" id="modalDetails">
+                <!-- Se inyecta por JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allLeads = [];
+        let activeFilter = 'all';
+        let currentTab = 'leads';
+        
+        // Estado WhatsApp
+        let activePhone = null;
+
+        // Elementos del DOM - Leads
+        const leadsTableBody = document.getElementById('leadsTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        
+        const totalLeadsEl = document.getElementById('totalLeads');
+        const ownerLeadsEl = document.getElementById('ownerLeads');
+        const billLeadsEl = document.getElementById('billLeads');
+        const creditLeadsEl = document.getElementById('creditLeads');
+        
+        const leadModal = document.getElementById('leadModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalDetails = document.getElementById('modalDetails');
+
+        // Elementos del DOM - WhatsApp
+        const chatsList = document.getElementById('chatsList');
+        const activeChatPhone = document.getElementById('activeChatPhone');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatMsgInput = document.getElementById('chatMsgInput');
+        const sendChatMsgBtn = document.getElementById('sendChatMsgBtn');
+        const qualificationBanner = document.getElementById('qualificationBanner');
+
+        // Elementos del DOM - Agenda
+        const timelineContainer = document.getElementById('timelineContainer');
+
+        // Alternar Pestañas (Tabs)
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabLeads').classList.toggle('active', tab === 'leads');
+            document.getElementById('tabWhatsApp').classList.toggle('active', tab === 'whatsapp');
+            document.getElementById('tabAgenda').classList.toggle('active', tab === 'agenda');
+            document.getElementById('tabLlamadas').classList.toggle('active', tab === 'llamadas');
+            document.getElementById('tabMarketing').classList.toggle('active', tab === 'marketing');
+            
+            document.getElementById('leadsView').style.display = tab === 'leads' ? 'block' : 'none';
+            document.getElementById('whatsappView').style.display = tab === 'whatsapp' ? 'block' : 'none';
+            document.getElementById('agendaView').style.display = tab === 'agenda' ? 'block' : 'none';
+            document.getElementById('llamadasView').style.display = tab === 'llamadas' ? 'block' : 'none';
+            document.getElementById('marketingView').style.display = tab === 'marketing' ? 'block' : 'none';
+            
+            if (tab === 'leads') {
+                fetchLeads();
+            } else if (tab === 'whatsapp') {
+                fetchWhatsAppChats();
+            } else if (tab === 'agenda') {
+                fetchAppointments();
+            } else if (tab === 'llamadas') {
+                fetchVoiceCalls();
+            } else {
+                fetchMktVideos();
+            }
+        }
+
+        // Cargar Leads desde la API
+        async function fetchLeads() {
+            try {
+                leadsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            🔄 Consultando base de datos...
+                        </td>
+                    </tr>
+                `;
+                const response = await fetch('/api/leads');
+                const data = await response.json();
+                
+                if (data && data.leads) {
+                    allLeads = data.leads;
+                    updateDashboard();
+                } else {
+                    renderEmptyState();
+                }
+            } catch (error) {
+                console.error('Error fetching leads:', error);
+                leadsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 40px; color: #ef476f;">
+                            ❌ Error al conectar con el servidor. Por favor, verifica que la API esté corriendo.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Calcular y actualizar métricas de KPI globales
+        function calculateKPIs(leads) {
+            totalLeadsEl.textContent = leads.length;
+            ownerLeadsEl.textContent = leads.filter(l => l.is_owner === 'yes').length;
+            billLeadsEl.textContent = leads.filter(l => l.bill_over_100 === 'yes').length;
+            creditLeadsEl.textContent = leads.filter(l => l.credit_score === 'yes').length;
+        }
+
+        // Renderizar la tabla con leads filtrados y buscados
+        function updateDashboard() {
+            const searchText = searchInput.value.toLowerCase().trim();
+            
+            let filteredLeads = allLeads.filter(lead => {
+                if (activeFilter === 'owners' && lead.is_owner !== 'yes') return false;
+                if (activeFilter === 'bills' && lead.bill_over_100 !== 'yes') return false;
+                if (activeFilter === 'credits' && lead.credit_score !== 'yes') return false;
+                if (activeFilter === 'prequalified') {
+                    if (lead.is_owner !== 'yes' || lead.bill_over_100 !== 'yes' || lead.credit_score !== 'yes') {
+                        return false;
+                    }
+                }
+                
+                if (searchText !== '') {
+                    const matchName = (lead.name || '').toLowerCase().includes(searchText);
+                    const matchPhone = (lead.phone || '').toLowerCase().includes(searchText);
+                    const matchEmail = (lead.email || '').toLowerCase().includes(searchText);
+                    const matchAddress = (lead.address || '').toLowerCase().includes(searchText);
+                    const matchZip = (lead.zipcode || '').toLowerCase().includes(searchText);
+                    return matchName || matchPhone || matchEmail || matchAddress || matchZip;
+                }
+                
+                return true;
+            });
+
+            calculateKPIs(allLeads);
+
+            if (filteredLeads.length === 0) {
+                renderEmptyState();
+                return;
+            }
+
+            leadsTableBody.innerHTML = '';
+            filteredLeads.forEach(lead => {
+                const tr = document.createElement('tr');
+                tr.style.cursor = 'pointer';
+                
+                const dateObj = new Date(lead.created_at);
+                const formattedDate = isNaN(dateObj.getTime()) ? lead.created_at : dateObj.toLocaleString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const getBadgeHtml = (val) => {
+                    if (!val) return `<span class="badge pending">-</span>`;
+                    return val.toLowerCase() === 'yes' 
+                        ? `<span class="badge yes">Sí</span>` 
+                        : `<span class="badge no">No</span>`;
+                };
+
+                const isPrequalified = lead.is_owner === 'yes' && lead.bill_over_100 === 'yes' && lead.credit_score === 'yes';
+                const nameStyle = isPrequalified ? 'font-weight: 700; color: var(--primary-color);' : 'font-weight: 600;';
+                const nameText = isPrequalified ? `⭐ ${escapeHtml(lead.name)}` : escapeHtml(lead.name);
+
+                tr.innerHTML = `
+                    <td style="${nameStyle}">${nameText}</td>
+                    <td>${escapeHtml(lead.phone)}</td>
+                    <td>${escapeHtml(lead.email || '-')}</td>
+                    <td>${escapeHtml(lead.zipcode || '-')}</td>
+                    <td>${getBadgeHtml(lead.is_owner)}</td>
+                    <td>${getBadgeHtml(lead.bill_over_100)}</td>
+                    <td>${getBadgeHtml(lead.credit_score)}</td>
+                    <td><span class="badge roof">${escapeHtml(lead.roof_type || 'Desconocido')}</span></td>
+                    <td style="color: var(--text-muted); font-size: 0.85rem;">${formattedDate}</td>
+                    <td style="text-align: center;">
+                        <button class="btn-action" style="padding: 4px 10px; font-size: 0.8rem; border-radius: 8px;" onclick="showLeadDetails(${lead.id}); event.stopPropagation();">👁️ Ver</button>
+                    </td>
+                `;
+                
+                tr.addEventListener('click', () => showLeadDetails(lead.id));
+                leadsTableBody.appendChild(tr);
+            });
+        }
+
+        function renderEmptyState() {
+            leadsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="10">
+                        <div class="empty-state">
+                            <span class="empty-state-icon">📂</span>
+                            <h3>No se encontraron prospectos</h3>
+                            <p style="margin-top: 5px;">Ajusta tus filtros de búsqueda o simula chats en la otra pestaña.</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function showLeadDetails(id) {
+            const lead = allLeads.find(l => l.id === id);
+            if (!lead) return;
+
+            const dateObj = new Date(lead.created_at);
+            const formattedDate = isNaN(dateObj.getTime()) ? lead.created_at : dateObj.toLocaleString('es-ES', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const yesNoSpan = (val) => val && val.toLowerCase() === 'yes' 
+                ? '<span style="color:var(--success-color)">Sí (Calificado)</span>' 
+                : '<span style="color:var(--danger-color)">No (No Calificado)</span>';
+
+            modalDetails.innerHTML = `
+                <div class="detail-item" style="grid-column: span 2;">
+                    <div class="detail-label">Nombre Completo</div>
+                    <div class="detail-value" style="font-size: 1.2rem; color: var(--primary-color);">${escapeHtml(lead.name)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Número de Teléfono</div>
+                    <div class="detail-value">${escapeHtml(lead.phone)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Correo Electrónico</div>
+                    <div class="detail-value">${escapeHtml(lead.email || 'No proporcionado')}</div>
+                </div>
+                <div class="detail-item" style="grid-column: span 2;">
+                    <div class="detail-label">Dirección Completa</div>
+                    <div class="detail-value">${escapeHtml(lead.address || 'No especificada')}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Código Postal (ZIP)</div>
+                    <div class="detail-value">${escapeHtml(lead.zipcode || '-')}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Tipo de Techo</div>
+                    <div class="detail-value" style="text-transform: capitalize;">${escapeHtml(lead.roof_type || 'No especificado')}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">¿Dueño de Propiedad?</div>
+                    <div class="detail-value">${yesNoSpan(lead.is_owner)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">¿Factura Mayor a $100?</div>
+                    <div class="detail-value">${yesNoSpan(lead.bill_over_100)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">¿Crédito Mayor a 650?</div>
+                    <div class="detail-value">${yesNoSpan(lead.credit_score)}</div>
+                </div>
+                <div class="detail-item" style="grid-column: span 2;">
+                    <div class="detail-label">Fecha de Registro</div>
+                    <div class="detail-value" style="font-size: 0.9rem; color: var(--text-muted);">${formattedDate}</div>
+                </div>
+            `;
+
+            leadModal.classList.add('active');
+        }
+
+        function exportToCSV() {
+            if (allLeads.length === 0) {
+                alert('No hay leads para exportar');
+                return;
+            }
+
+            const headers = ['ID', 'Nombre', 'Telefono', 'Email', 'Direccion', 'Codigo Postal', 'Es Dueno', 'Factura > 100', 'Credito > 650', 'Tipo Techo', 'Fecha Registro'];
+            const rows = allLeads.map(lead => [
+                lead.id,
+                `"${(lead.name || '').replace(/"/g, '""')}"`,
+                `"${(lead.phone || '')}"`,
+                `"${(lead.email || '')}"`,
+                `"${(lead.address || '').replace(/"/g, '""')}"`,
+                `"${(lead.zipcode || '')}"`,
+                lead.is_owner === 'yes' ? 'SI' : 'NO',
+                lead.bill_over_100 === 'yes' ? 'SI' : 'NO',
+                lead.credit_score === 'yes' ? 'SI' : 'NO',
+                lead.roof_type || '',
+                lead.created_at
+            ]);
+
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF" + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `leads_equity_solar_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        closeModal.addEventListener('click', () => { leadModal.classList.remove('active'); });
+        leadModal.addEventListener('click', (e) => { if (e.target === leadModal) { leadModal.classList.remove('active'); } });
+        searchInput.addEventListener('input', updateDashboard);
+        refreshBtn.addEventListener('click', fetchLeads);
+        exportBtn.addEventListener('click', exportToCSV);
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.getAttribute('data-filter');
+                updateDashboard();
+            });
+        });
+
+        // ==========================================
+        // CÓDIGO JS DEL SIMULADOR DE WHATSAPP
+        // ==========================================
+
+        async function fetchWhatsAppChats() {
+            try {
+                const response = await fetch('/api/whatsapp/chats');
+                const data = await response.json();
+                
+                if (data && data.chats && data.chats.length > 0) {
+                    renderChatsList(data.chats);
+                } else {
+                    chatsList.innerHTML = `
+                        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 30px;">
+                            Ningún chat activo.<br>Crea uno nuevo arriba.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching chats:', error);
+            }
+        }
+
+        function renderChatsList(phones) {
+            chatsList.innerHTML = '';
+            phones.forEach(phone => {
+                const btn = document.createElement('button');
+                btn.className = `chat-session-item ${activePhone === phone ? 'active' : ''}`;
+                btn.onclick = () => selectChatSession(phone);
+                
+                btn.innerHTML = `
+                    <div class="chat-phone">${escapeHtml(phone)}</div>
+                    <div class="chat-preview">Ver conversación con Sol</div>
+                `;
+                chatsList.appendChild(btn);
+            });
+        }
+
+        function createNewChatSession() {
+            const phoneInput = prompt('Ingresa un número de teléfono para simular (ej: +13055550199):');
+            if (!phoneInput) return;
+            
+            const sanitizedPhone = phoneInput.trim();
+            if (sanitizedPhone === '') return;
+            
+            activePhone = sanitizedPhone;
+            selectChatSession(sanitizedPhone);
+        }
+
+        async function selectChatSession(phone) {
+            activePhone = phone;
+            activeChatPhone.textContent = phone;
+            
+            chatMsgInput.removeAttribute('disabled');
+            sendChatMsgBtn.removeAttribute('disabled');
+            chatMsgInput.focus();
+            
+            document.querySelectorAll('.chat-session-item').forEach(el => {
+                const isThis = el.querySelector('.chat-phone').textContent === phone;
+                el.classList.toggle('active', isThis);
+            });
+
+            try {
+                chatMessages.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding-top: 20px;">Cargando mensajes...</div>';
+                
+                const response = await fetch(`/api/whatsapp/chats/${encodeURIComponent(phone)}`);
+                const data = await response.json();
+                
+                if (data && data.messages && data.messages.length > 0) {
+                    chatMessages.innerHTML = '';
+                    data.messages.forEach(msg => {
+                        appendMessageBubble(msg.sender, msg.message, msg.created_at);
+                    });
+                    scrollToBottom();
+                } else {
+                    chatMessages.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); text-align: center; padding: 20px;">
+                            <span style="font-size: 2rem;">💬</span>
+                            <h4>Inicio de Chat con ${phone}</h4>
+                            <p style="font-size: 0.8rem; margin-top: 5px;">Escribe tu primer mensaje como cliente (ej. "Hola Sol, cuánto cuestan los paneles?") para iniciar la conversación.</p>
+                        </div>
+                    `;
+                }
+
+                updateLeadTracker(data.leadState);
+
+            } catch (error) {
+                console.error('Error loading chat session:', error);
+                chatMessages.innerHTML = '<div style="text-align: center; color: #ef476f; padding-top: 20px;">Error al cargar el historial.</div>';
+            }
+        }
+
+        function appendMessageBubble(sender, text, timestamp) {
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${sender}`;
+            
+            const timeStr = timestamp ? new Date(timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            bubble.innerHTML = `
+                <div>${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+                <span class="message-time">${timeStr}</span>
+            `;
+            chatMessages.appendChild(bubble);
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        let typingIndicator = null;
+        function showTypingIndicator() {
+            if (typingIndicator) return;
+            
+            typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-bubble message-bubble bot';
+            typingIndicator.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            chatMessages.appendChild(typingIndicator);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            if (typingIndicator && typingIndicator.parentNode) {
+                typingIndicator.parentNode.removeChild(typingIndicator);
+            }
+            typingIndicator = null;
+        }
+
+        async function sendSimulatedMessage() {
+            const messageText = chatMsgInput.value.trim();
+            if (messageText === '' || !activePhone) return;
+            
+            chatMsgInput.value = '';
+            appendMessageBubble('user', messageText);
+            scrollToBottom();
+            
+            chatMsgInput.setAttribute('disabled', 'true');
+            sendChatMsgBtn.setAttribute('disabled', 'true');
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('/api/whatsapp/simulate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: activePhone,
+                        message: messageText
+                    })
+                });
+                
+                const data = await response.json();
+                removeTypingIndicator();
+                
+                if (data && data.reply) {
+                    appendMessageBubble('bot', data.reply);
+                    scrollToBottom();
+                    updateLeadTracker(data.leadState);
+                    fetchWhatsAppChats();
+                }
+            } catch (error) {
+                console.error('Error sending simulated message:', error);
+                removeTypingIndicator();
+                appendMessageBubble('bot', '⚠️ Error de conexión: No se pudo obtener respuesta de la Inteligencia Artificial.');
+            } finally {
+                chatMsgInput.removeAttribute('disabled');
+                sendChatMsgBtn.removeAttribute('disabled');
+                chatMsgInput.focus();
+            }
+        }
+
+        function updateLeadTracker(leadState) {
+            if (!leadState) {
+                const fields = ['name', 'email', 'address', 'zipcode', 'is_owner', 'bill_over_100', 'credit_score', 'roof_type', 'appointment_date'];
+                fields.forEach(field => {
+                    const card = document.getElementById(`track-${field}`);
+                    const valueEl = document.getElementById(`val-${field}`);
+                    const iconEl = document.getElementById(`icon-${field}`);
+                    
+                    card.classList.remove('filled');
+                    valueEl.textContent = '⏳ Pendiente';
+                    iconEl.textContent = '▫️';
+                });
+                qualificationBanner.style.display = 'none';
+                return;
+            }
+
+            const fields = [
+                { id: 'name', label: 'Nombre', val: leadState.name },
+                { id: 'email', label: 'Email', val: leadState.email },
+                { id: 'address', label: 'Dirección', val: leadState.address },
+                { id: 'zipcode', label: 'Zipcode', val: leadState.zipcode },
+                { id: 'is_owner', label: 'Dueño', val: leadState.is_owner },
+                { id: 'bill_over_100', label: 'Factura > $100', val: leadState.bill_over_100 },
+                { id: 'credit_score', label: 'Crédito > 650', val: leadState.credit_score },
+                { id: 'roof_type', label: 'Techo', val: leadState.roof_type },
+                { id: 'appointment_date', label: 'Cita Agendada', val: leadState.appointment_date }
+            ];
+
+            fields.forEach(f => {
+                const card = document.getElementById(`track-${f.id}`);
+                const valueEl = document.getElementById(`val-${f.id}`);
+                const iconEl = document.getElementById(`icon-${f.id}`);
+                
+                let isFilled = false;
+                let displayVal = '⏳ Pendiente';
+                
+                if (f.val) {
+                    if (f.id === 'name' && f.val.includes("Prospecto WhatsApp")) {
+                        isFilled = false;
+                        displayVal = '⏳ Pendiente';
+                    } else {
+                        isFilled = true;
+                        displayVal = f.val;
+                        
+                        if (f.val === 'yes') displayVal = 'Sí ✅';
+                        if (f.val === 'no') displayVal = 'No ❌';
+                        
+                        // Formatear fecha para el tracker
+                        if (f.id === 'appointment_date') {
+                            const dateObj = new Date(f.val);
+                            displayVal = isNaN(dateObj.getTime()) ? f.val : dateObj.toLocaleString('es-ES', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        }
+                    }
+                }
+                
+                if (isFilled) {
+                    card.classList.add('filled');
+                    valueEl.textContent = displayVal;
+                    iconEl.textContent = '✅';
+                } else {
+                    card.classList.remove('filled');
+                    valueEl.textContent = '⏳ Pendiente';
+                    iconEl.textContent = '▫️';
+                }
+            });
+
+            const prequalified = leadState.is_owner === 'yes' && leadState.bill_over_100 === 'yes' && leadState.credit_score === 'yes';
+            qualificationBanner.style.display = prequalified ? 'block' : 'none';
+        }
+
+        // ==========================================
+        // CÓDIGO JS DE LA AGENDA DE CITAS
+        // ==========================================
+
+        async function fetchAppointments() {
+            try {
+                timelineContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 50px 0;">🔄 Cargando citas agendadas...</div>';
+                const response = await fetch('/api/appointments');
+                const data = await response.json();
+                
+                if (data && data.appointments && data.appointments.length > 0) {
+                    renderAppointments(data.appointments);
+                } else {
+                    timelineContainer.innerHTML = `
+                        <div style="text-align: center; color: var(--text-muted); padding: 50px 0;">
+                            <span style="font-size: 3rem; display: block; margin-bottom: 10px;">📅</span>
+                            <h4>No hay citas registradas</h4>
+                            <p style="font-size: 0.85rem; margin-top: 5px;">Las citas programadas por el AI Setter de WhatsApp aparecerán aquí de forma cronológica.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+                timelineContainer.innerHTML = '<div style="text-align: center; color: #ef476f; padding: 50px 0;">❌ Error al conectar con el servidor de agenda.</div>';
+            }
+        }
+
+        function renderAppointments(appointments) {
+            timelineContainer.innerHTML = '';
+            
+            appointments.forEach(appt => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                
+                const apptDate = new Date(appt.appointment_time);
+                const today = new Date();
+                
+                // Determinar el Badge de Tiempo
+                let badgeClass = '';
+                let statusLabel = 'Programada';
+                let isToday = false;
+                let isPassed = false;
+                
+                // Formatear comparación de fechas
+                const diffTime = apptDate.getTime() - today.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                const apptDateString = apptDate.toDateString();
+                const todayDateString = today.toDateString();
+                
+                if (apptDateString === todayDateString) {
+                    isToday = true;
+                    badgeClass = 'today';
+                    statusLabel = '¡Hoy!';
+                } else if (apptDate < today) {
+                    isPassed = true;
+                    badgeClass = 'passed';
+                    statusLabel = 'Pasada';
+                } else if (diffDays === 1) {
+                    statusLabel = 'Mañana';
+                }
+
+                // Formatear fecha y hora
+                const formattedTime = isNaN(apptDate.getTime()) ? appt.appointment_time : apptDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const formattedDate = isNaN(apptDate.getTime()) ? '' : apptDate.toLocaleDateString('es-ES', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                const badgeIcon = isToday ? '🔥' : (isPassed ? '✓' : '📅');
+                const badgeElementClass = isToday ? 'timeline-badge today' : (isPassed ? 'timeline-badge passed' : 'timeline-badge');
+                
+                item.innerHTML = `
+                    <div class="${badgeElementClass}">${badgeIcon}</div>
+                    <div class="timeline-card glass">
+                        <div class="timeline-card-header">
+                            <div class="timeline-lead-name">${escapeHtml(appt.name)}</div>
+                            <div class="timeline-status-badge ${isToday ? 'today' : (isPassed ? 'passed' : '')}">${statusLabel}</div>
+                        </div>
+                        <div class="timeline-time">
+                            🕒 ${formattedTime} &nbsp;&bull;&nbsp; <span style="font-size: 0.95rem; font-weight: normal; color: var(--text-muted);">${formattedDate}</span>
+                        </div>
+                        <div style="margin-top: 15px;" class="timeline-details-grid">
+                            <div class="timeline-detail-item">
+                                <span class="timeline-detail-label">Teléfono</span>
+                                <span class="timeline-detail-value">${escapeHtml(appt.phone)}</span>
+                            </div>
+                            <div class="timeline-detail-item">
+                                <span class="timeline-detail-label">Correo</span>
+                                <span class="timeline-detail-value">${escapeHtml(appt.email || '-')}</span>
+                            </div>
+                            <div class="timeline-detail-item">
+                                <span class="timeline-detail-label">Precalificación</span>
+                                <span class="timeline-detail-value" style="font-size: 0.8rem;">
+                                    ${appt.is_owner === 'yes' ? '🏠 Dueño ' : ''}
+                                    ${appt.bill_over_100 === 'yes' ? '⚡ Bill>100 ' : ''}
+                                    ${appt.credit_score === 'yes' ? '💳 Crédito ' : ''}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="timeline-notes">
+                            <strong>Notas de IA:</strong> ${escapeHtml(appt.notes)}
+                        </div>
+                    </div>
+                `;
+                
+                timelineContainer.appendChild(item);
+            });
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // ==========================================
+        // CÓDIGO JS DE REGISTRO DE LLAMADAS VAPI
+        // ==========================================
+        let allCalls = [];
+        const callModal = document.getElementById('callModal');
+        const closeCallModal = document.getElementById('closeCallModal');
+        const callModalContent = document.getElementById('callModalContent');
+        const callsTableBody = document.getElementById('callsTableBody');
+
+        closeCallModal.addEventListener('click', () => { callModal.classList.remove('active'); });
+        callModal.addEventListener('click', (e) => { if (e.target === callModal) { callModal.classList.remove('active'); } });
+
+        async function fetchVoiceCalls() {
+            try {
+                callsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            🔄 Cargando registro de llamadas...
+                        </td>
+                    </tr>
+                `;
+                const response = await fetch('/api/voice-calls');
+                const data = await response.json();
+                
+                if (data && data.calls && data.calls.length > 0) {
+                    allCalls = data.calls;
+                    renderVoiceCalls(data.calls);
+                } else {
+                    callsTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                📞 No se encontraron registros de llamadas.
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching voice calls:', error);
+                callsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #ef476f;">
+                            ❌ Error al conectar con el servidor de llamadas.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function renderVoiceCalls(calls) {
+            callsTableBody.innerHTML = '';
+            calls.forEach(call => {
+                const tr = document.createElement('tr');
+                tr.style.cursor = 'pointer';
+                
+                const dateObj = new Date(call.created_at);
+                const formattedDate = isNaN(dateObj.getTime()) ? call.created_at : dateObj.toLocaleString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const durationMinSec = (secStr) => {
+                    const sec = parseInt(secStr || '0');
+                    const mins = Math.floor(sec / 60);
+                    const secs = sec % 60;
+                    return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                };
+
+                let badgeHtml = '';
+                if (call.status === 'qualified') badgeHtml = '<span class="call-badge qualified">Calificado</span>';
+                else if (call.status === 'not_qualified') badgeHtml = '<span class="call-badge not_qualified">No Califica</span>';
+                else badgeHtml = '<span class="call-badge pending">Pendiente</span>';
+
+                tr.innerHTML = `
+                    <td style="font-weight: 600;">${formattedDate}</td>
+                    <td>${escapeHtml(call.customer_name)}</td>
+                    <td>${escapeHtml(call.phone)}</td>
+                    <td>${durationMinSec(call.duration)}</td>
+                    <td>${badgeHtml}</td>
+                    <td style="text-align: center;">
+                        <button class="btn-action" style="padding: 4px 10px; font-size: 0.8rem; border-radius: 8px;" onclick="showCallDetails(${call.id}); event.stopPropagation();">👁️ Ver</button>
+                    </td>
+                `;
+                tr.addEventListener('click', () => showCallDetails(call.id));
+                callsTableBody.appendChild(tr);
+            });
+        }
+
+        function showCallDetails(id) {
+            const call = allCalls.find(c => c.id === id);
+            if (!call) return;
+
+            const dateObj = new Date(call.created_at);
+            const formattedDate = isNaN(dateObj.getTime()) ? call.created_at : dateObj.toLocaleString('es-ES', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            let badgeHtml = '';
+            if (call.status === 'qualified') badgeHtml = '<span class="call-badge qualified">Calificado</span>';
+            else if (call.status === 'not_qualified') badgeHtml = '<span class="call-badge not_qualified">No Califica</span>';
+            else badgeHtml = '<span class="call-badge pending">Pendiente</span>';
+
+            callModalContent.innerHTML = `
+                <div class="detail-grid" style="margin-bottom: 20px;">
+                    <div class="detail-item">
+                        <div class="detail-label">Nombre del Cliente</div>
+                        <div class="detail-value" style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">${escapeHtml(call.customer_name)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Teléfono</div>
+                        <div class="detail-value">${escapeHtml(call.phone)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Fecha y Hora</div>
+                        <div class="detail-value">${formattedDate}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Calificación</div>
+                        <div class="detail-value">${badgeHtml}</div>
+                    </div>
+                </div>
+
+                ${call.recording_url ? `
+                <div class="audio-player-container">
+                    <label>🔊 Grabación de la llamada</label>
+                    <audio controls style="width:100%">
+                        <source src="${escapeHtml(call.recording_url)}" type="audio/mpeg">
+                        Tu navegador no soporta la reproducción de audio.
+                    </audio>
+                </div>
+                ` : `
+                <div class="audio-player-container" style="color: var(--text-muted); text-align: center; padding: 15px;">
+                    🔇 Grabación no disponible para esta llamada.
+                </div>
+                `}
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 8px;">🤖 Resumen de la IA</h4>
+                    <div style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary-color); font-size: 0.9rem; color: #cbd5e1;">
+                        ${escapeHtml(call.summary)}
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--secondary-color); margin-bottom: 8px;">📝 Transcripción Completa</h4>
+                    <div class="transcript-container">
+                        ${escapeHtml(call.transcript)}
+                    </div>
+                </div>
+            `;
+
+            callModal.classList.add('active');
+        }
+
+        // ==========================================
+        // CÓDIGO JS DE VIDEO MARKETING (HEYGEN)
+        // ==========================================
+        const mktTopic = document.getElementById('mktTopic');
+        const mktScript = document.getElementById('mktScript');
+        const mktAvatar = document.getElementById('mktAvatar');
+        const btnGenScript = document.getElementById('btnGenScript');
+        const btnGenVideo = document.getElementById('btnGenVideo');
+        const mktVideosList = document.getElementById('mktVideosList');
+
+        let isPollingMarketing = false;
+
+        async function generateScriptMkt() {
+            const topic = mktTopic.value.trim();
+            if (topic === '') {
+                alert('Por favor ingresa un tema para el video.');
+                return;
+            }
+
+            btnGenScript.textContent = '⏳ Generando guion...';
+            btnGenScript.disabled = true;
+
+            try {
+                const response = await fetch('/api/marketing/generate-script', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic })
+                });
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                
+                mktScript.value = data.script;
+            } catch (error) {
+                console.error('Error generating script:', error);
+                alert('Error al generar guion: ' + error.message);
+            } finally {
+                btnGenScript.textContent = '🤖 Generar Guion con OpenAI';
+                btnGenScript.disabled = false;
+            }
+        }
+
+        async function generateVideoMkt() {
+            const script = mktScript.value.trim();
+            const avatar_id = mktAvatar.value;
+
+            if (script === '') {
+                alert('El guion no puede estar vacío.');
+                return;
+            }
+
+            btnGenVideo.textContent = '⏳ Iniciando render en HeyGen...';
+            btnGenVideo.disabled = true;
+
+            try {
+                const response = await fetch('/api/marketing/generate-video', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ script, avatar_id })
+                });
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                
+                mktTopic.value = '';
+                mktScript.value = '';
+                fetchMktVideos();
+            } catch (error) {
+                console.error('Error generating video:', error);
+                alert('Error al enviar video: ' + error.message);
+            } finally {
+                btnGenVideo.textContent = '🎬 Renderizar Video con HeyGen';
+                btnGenVideo.disabled = false;
+            }
+        }
+
+        async function fetchMktVideos() {
+            try {
+                const response = await fetch('/api/marketing/videos');
+                const data = await response.json();
+                
+                if (data && data.videos && data.videos.length > 0) {
+                    renderMktVideos(data.videos);
+                    startMktStatusPolling(data.videos);
+                } else {
+                    mktVideosList.innerHTML = `
+                        <div style="text-align: center; color: var(--text-muted); padding: 50px 0;">
+                            <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🎬</span>
+                            <h4>No hay videos generados</h4>
+                            <p style="font-size: 0.85rem; margin-top: 5px;">Los videos creados aparecerán aquí para su reproducción y publicación.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+                mktVideosList.innerHTML = '<div style="text-align: center; color: #ef476f; padding: 30px 0;">❌ Error al cargar historial de videos.</div>';
+            }
+        }
+
+        function renderMktVideos(videos) {
+            mktVideosList.innerHTML = '';
+            videos.forEach(vid => {
+                const card = document.createElement('div');
+                card.className = 'mkt-video-card';
+                
+                const dateObj = new Date(vid.created_at);
+                const formattedDate = isNaN(dateObj.getTime()) ? vid.created_at : dateObj.toLocaleString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                let statusBadge = '';
+                let mediaHtml = '';
+                let actionsHtml = '';
+
+                if (vid.status === 'processing') {
+                    statusBadge = '<span class="mkt-video-status processing">Renderizando ⏳</span>';
+                    mediaHtml = `
+                        <div style="background: rgba(0,0,0,0.2); height: 180px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text-muted); font-size: 0.85rem;">
+                            <div class="loader" style="display: block; margin: 0;"></div>
+                            <span>HeyGen está renderizando el avatar...</span>
+                        </div>
+                    `;
+                    actionsHtml = `<button class="btn-action" style="width:100%; justify-content:center;" onclick="checkMktStatusSingle('${vid.heygen_video_id}')">🔄 Consultar Estado</button>`;
+                } else if (vid.status === 'completed') {
+                    statusBadge = '<span class="mkt-video-status completed">Completado ✅</span>';
+                    mediaHtml = `
+                        <video controls style="width: 100%; border-radius: 10px; border: 1px solid var(--glass-border);">
+                            <source src="${escapeHtml(vid.video_url)}" type="video/mp4">
+                            Tu navegador no soporta reproducción de video.
+                        </video>
+                    `;
+                    actionsHtml = `
+                        <button class="btn-action primary" style="width:100%; justify-content:center;" onclick="publishMktVideo('${vid.heygen_video_id}', '${escapeHtml(vid.video_url)}', \`${escapeHtml(vid.script).replace(/'/g, "\'")}\`, '${escapeHtml(vid.avatar_id)}')">
+                            📤 Publicar en Redes (Instagram / Telegram)
+                        </button>
+                    `;
+                } else {
+                    statusBadge = '<span class="mkt-video-status failed">Fallido ❌</span>';
+                    mediaHtml = `
+                        <div style="background: rgba(239, 71, 111, 0.05); height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--danger-color); font-size: 0.85rem; border: 1px solid rgba(239, 71, 111, 0.15);">
+                            ❌ Error al generar avatar en HeyGen. Revisa tus créditos.
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="mkt-video-header">
+                        <span>📅 ${formattedDate} &bull; Avatar: <strong>${escapeHtml(vid.avatar_id)}</strong></span>
+                        ${statusBadge}
+                    </div>
+                    <div class="mkt-script-preview" style="margin-bottom: 10px;">
+                        "${escapeHtml(vid.script)}"
+                    </div>
+                    ${mediaHtml}
+                    <div style="margin-top: 10px;">
+                        ${actionsHtml}
+                    </div>
+                `;
+                mktVideosList.appendChild(card);
+            });
+        }
+
+        async function checkMktStatusSingle(videoId) {
+            try {
+                const response = await fetch(`/api/marketing/video-status/${videoId}`);
+                const data = await response.json();
+                
+                if (data && (data.status === 'completed' || data.status === 'completed_success' || data.status === 'failed' || data.status === 'error')) {
+                    fetchMktVideos();
+                } else {
+                    alert('El video aún se encuentra en proceso de renderizado. Por favor espera.');
+                }
+            } catch (error) {
+                console.error('Error checking video status:', error);
+            }
+        }
+
+        async function publishMktVideo(videoId, videoUrl, script, avatarId) {
+            const btn = document.querySelector(`button[onclick*="${videoId}"]`);
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Publicando...';
+            }
+
+            try {
+                const response = await fetch('/api/marketing/publish-social', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        video_id: videoId,
+                        video_url: videoUrl,
+                        script: script,
+                        avatar_id: avatarId
+                    })
+                });
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                
+                alert('¡Video publicado exitosamente en Telegram e Instagram (Make.com)!');
+            } catch (error) {
+                console.error('Error publishing video:', error);
+                alert('Error al publicar: ' + error.message);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '📤 Publicar en Redes (Instagram / Telegram)';
+                }
+            }
+        }
+
+        // Polling automático en segundo plano para videos en proceso
+        function startMktStatusPolling(videos) {
+            const processingVids = videos.filter(v => v.status === 'processing');
+            if (processingVids.length === 0 || isPollingMarketing) return;
+
+            isPollingMarketing = true;
+            
+            const pollInterval = setInterval(async () => {
+                let allDone = true;
+                
+                for (let vid of processingVids) {
+                    try {
+                        const res = await fetch(`/api/marketing/video-status/${vid.heygen_video_id}`);
+                        const data = await res.json();
+                        
+                        if (data && (data.status === 'completed' || data.status === 'completed_success' || data.status === 'failed' || data.status === 'error')) {
+                            allDone = true; // Forzará una recarga
+                            break;
+                        } else {
+                            allDone = false;
+                        }
+                      } catch (err) {
+                          console.error('Polling error:', err);
+                      }
+                  }
+
+                  if (allDone) {
+                      clearInterval(pollInterval);
+                      isPollingMarketing = false;
+                      fetchMktVideos();
+                  }
+              }, 15000); // Consultar cada 15 segundos
+          }
+
+        // Cargar datos al inicio
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchLeads();
+        });
+    </script>
+
+    <!-- Modal Detalle Llamada -->
+    <div class="modal-overlay" id="callModal">
+        <div class="modal-container glass" style="max-width: 800px;">
+            <button class="modal-close" id="closeCallModal">✕</button>
+            <h2 class="modal-title">Detalles de la Llamada</h2>
+            
+            <div id="callModalContent">
+                <!-- Se inyecta por JS -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

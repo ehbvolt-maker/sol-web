@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoHighLevel CRM Setup | Configuración en 24 Horas</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar glass">
+        <div class="logo">
+            <div class="ghl-arrows">
+                <span class="arrow-yellow">?</span>
+                <span class="arrow-blue">?</span>
+                <span class="arrow-green">?</span>
+            </div>
+            <span class="logo-text">GHL Setup <span>Pro</span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#hero">Inicio</a></li>
+            <li><a href="#features">Características</a></li>
+            <li><a href="#roi-calculator">Calculadora ROI</a></li>
+            <li><a href="#faq">Preguntas</a></li>
+            <li><a href="dashboard.html" class="nav-dashboard-link">?? Dashboard</a></li>
+        </ul>
+        <button class="btn-primary desktop-only" id="navRequestBtn">Solicitar Ahora</button>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section id="hero" class="hero">
+        <div class="hero-grid">
+            
+            <!-- Contenido Izquierdo (Textos y Oferta) -->
+            <div class="hero-text-content">
+                <div class="brand-badge animate-fade">
+                    <span class="badge-icon">??</span> Servicio Exclusivo de Automatización
+                </div>
+                <h1 class="animate-up">Tu CRM configurado <br><span class="text-gradient">en 24 horas</span></h1>
+                
+                <div class="ghl-included-badge">
+                    <span class="checkmark-icon">?</span> Cuenta GoHighLevel incluida en el servicio
+                </div>
+                
+                <!-- Lista de Características (Foto) -->
+                <ul class="hero-feature-list">
+                    <li class="animate-up delay-1">
+                        <div class="feature-bullet-icon">??</div>
+                        <div class="feature-bullet-text">
+                            <strong>Agente AI</strong>
+                            <span>Atiende, responde y convierte 24/7 en piloto automático.</span>
+                        </div>
+                        <span class="check-badge">?</span>
+                    </li>
+                    <li class="animate-up delay-1">
+                        <div class="feature-bullet-icon">??</div>
+                        <div class="feature-bullet-text">
+                            <strong>Embudos</strong>
+                            <span>Diseñados profesionalmente para atraer tráfico y convertir visitas.</span>
+                        </div>
+                        <span class="check-badge">?</span>
+                    </li>
+                    <li class="animate-up delay-2">
+                        <div class="feature-bullet-icon">??</div>
+                        <div class="feature-bullet-text">
+                            <strong>Website y Funnels</strong>
+                            <span>Sitios y embudos listos para vender tu oferta principal.</span>
+                        </div>
+                        <span class="check-badge">?</span>
+                    </li>
+                    <li class="animate-up delay-2">
+                        <div class="feature-bullet-icon">??</div>
+                        <div class="feature-bullet-text">
+                            <strong>Automatizaciones</strong>
+                            <span>Ahorra tiempo valioso, elimina tareas manuales y escala tu negocio.</span>
+                        </div>
+                        <span class="check-badge">?</span>
+                    </li>
+                </ul>
+
+                <!-- Tarjeta de Oferta Única -->
+                <div class="pricing-card glass animate-up delay-3">
+                    <div class="price-value">$450</div>
+                    <div class="price-details">
+                        <span class="price-type">UN SOLO PAGO</span>
+                        <span class="price-subtitle">Sin mensualidades por configuración</span>
+                    </div>
+                </div>
+
+                <!-- Botón de Acción y Entrega -->
+                <div class="cta-container animate-up delay-3">
+                    <button class="btn-primary btn-cta" id="heroRequestBtn">
+                        ?? SOLICITA EL TUYO
+                    </button>
+                    <div class="delivery-time">
+                        <span class="clock-icon">??</span> ENTREGA Y CONFIGURACIÓN LISTA EN 24 HORAS
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido Derecho (Clon del Mockup Laptop & Móvil de la Foto) -->
+            <div class="hero-mockup-content">
+                <div class="mockup-container">
+                    
+                    <!-- Laptop Mockup -->
+                    <div class="laptop-shell">
+                        <div class="laptop-screen glass">
+                            <!-- Dashboard Header -->
+                            <div class="dash-header">
+                                <div class="dash-logo">
+                                    <span class="arrow-yellow">?</span>
+                                    <span class="arrow-blue">?</span>
+                                    <span class="logo-txt">GoHighLevel</span>
+                                </div>
+                                <div class="dash-user">?? Administrador</div>
+                            </div>
+                            <!-- Dashboard Body -->
+                            <div class="dash-body">
+                                <div class="dash-stats">
+                                    <div class="stat-box">
+                                        <span class="stat-label">Contactos</span>
+                                        <span class="stat-number">2,568</span>
+                                        <span class="stat-trend text-green">? 12.5%</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <span class="stat-label">Oportunidades</span>
+                                        <span class="stat-number">$125,430</span>
+                                        <span class="stat-trend text-green">? 18.6%</span>
+                                    </div>
+                                </div>
+                                <div class="dash-visuals">
+                                    <!-- Funnels Chart -->
+                                    <div class="dash-funnel-card">
+                                        <h4>Funnels</h4>
+                                        <div class="funnel-chart-svg">
+                                            <div class="funnel-tier tier-1"></div>
+                                            <div class="funnel-tier tier-2"></div>
+                                            <div class="funnel-tier tier-3"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Automations Status -->
+                                    <div class="dash-auto-card">
+                                        <h4>Automatizaciones</h4>
+                                        <div class="circular-progress">
+                                            <div class="progress-value">287</div>
+                                            <div class="progress-label">Activas</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="laptop-keyboard"></div>
+                    </div>
+
+                    <!-- Smartphone Mockup (Floating Overlap) -->
+                    <div class="phone-shell glass-border">
+                        <div class="phone-screen">
+                            <div class="phone-header">
+                                <span class="back-arrow">?</span>
+                                <span class="phone-title">Contacto</span>
+                                <span class="phone-menu">?</span>
+                            </div>
+                            
+                            <!-- Contact Profile -->
+                            <div class="phone-profile">
+                                <div class="profile-avatar">JP</div>
+                                <h3 class="profile-name">Juan Pérez</h3>
+                                <span class="profile-status">Cliente potencial</span>
+                                
+                                <div class="profile-actions">
+                                    <button class="action-btn" title="Llamar">??</button>
+                                    <button class="action-btn" title="Mensaje">??</button>
+                                    <button class="action-btn" title="Email">?</button>
+                                </div>
+                            </div>
+
+                            <!-- Recent Activity -->
+                            <div class="phone-activity">
+                                <h4>Actividad reciente</h4>
+                                <ul class="activity-log">
+                                    <li>
+                                        <span class="log-icon icon-form">??</span>
+                                        <div class="log-details">
+                                            <span class="log-title">Formulario enviado</span>
+                                            <span class="log-time">Hace 5 min</span>
+                                        </div>
+                                        <span class="log-status">?</span>
+                                    </li>
+                                    <li>
+                                        <span class="log-icon icon-wa">??</span>
+                                        <div class="log-details">
+                                            <span class="log-title">Mensaje de WhatsApp</span>
+                                            <span class="log-time">Hace 4 min</span>
+                                        </div>
+                                        <span class="log-status">?</span>
+                                    </li>
+                                    <li>
+                                        <span class="log-icon icon-mail">?</span>
+                                        <div class="log-details">
+                                            <span class="log-title">Correo abierto</span>
+                                            <span class="log-time">Hace 2 min</span>
+                                        </div>
+                                        <span class="log-status">?</span>
+                                    </li>
+                                    <li>
+                                        <span class="log-icon icon-calendar">??</span>
+                                        <div class="log-details">
+                                            <span class="log-title">Cita agendada</span>
+                                            <span class="log-time">Hace 1 min</span>
+                                        </div>
+                                        <span class="log-status">?</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Características Detalladas -->
+    <section id="features" class="features-section">
+        <div class="section-header">
+            <h2>Soluciones de Automatización Incluidas</h2>
+            <p>Cada elemento está sincronizado para trabajar en armonía y maximizar tus conversiones.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card glass">
+                <div class="card-icon">??</div>
+                <h3>Agente Conversacional AI</h3>
+                <p>Configuramos un bot de Inteligencia Artificial que chatea en lenguaje natural para calificar prospectos y agendar citas automáticamente en tu calendario.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="card-icon">??</div>
+                <h3>Embudos Altamente Persuasivos</h3>
+                <p>Páginas de captura y landing pages con copys optimizados psicológicamente para guiar a los prospectos hacia la conversión sin fricciones.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="card-icon">??</div>
+                <h3>Automatizaciones Workflow</h3>
+                <p>Secuencias automatizadas por correo y SMS. Si un lead llena un formulario, recibe un WhatsApp instantáneo y un recordatorio de llamada automatizada.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="card-icon">??</div>
+                <h3>Cuenta Oficial Listada</h3>
+                <p>Te guiamos y dejamos activa tu propia cuenta oficial de GoHighLevel, conectando tu dominio propio, SMTP para emails y pasarelas de pago (Stripe/PayPal).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculadora ROI de Automatización -->
+    <section id="roi-calculator" class="calculator-section">
+        <div class="section-header">
+            <h2>Simulador de Ahorro y ROI</h2>
+            <p>Calcula el impacto inmediato que tiene automatizar tu seguimiento de prospectos en tu negocio.</p>
+        </div>
+
+        <div class="calculator-container glass">
+            <div class="calc-input-block">
+                <label for="hoursSlider">Horas semanales dedicadas a tareas manuales (seguimientos, agendamiento, chats):</label>
+                <div class="range-slider">
+                    <input type="range" id="hoursSlider" min="2" max="60" value="15" step="1">
+                    <span id="hoursValue" class="value-display">15 horas</span>
+                </div>
+                
+                <label for="leadValue" style="margin-top: 25px; display: block;">Valor estimado de un solo cliente cerrado (USD):</label>
+                <div class="range-slider">
+                    <input type="range" id="leadValueSlider" min="50" max="5000" value="500" step="50">
+                    <span id="leadValueDisplay" class="value-display">$500</span>
+                </div>
+            </div>
+
+            <div class="calc-results-block">
+                <div class="result-box">
+                    <h3>Tiempo Recuperado</h3>
+                    <div class="number text-gradient" id="timeSavedVal">60 horas/mes</div>
+                </div>
+                <div class="result-box">
+                    <h3>Dinero de Labor Ahorrado</h3>
+                    <div class="number text-gradient" id="laborSavedVal">$1,500/mes</div>
+                </div>
+                <div class="result-box">
+                    <h3>Leads Recuperados Estimados</h3>
+                    <div class="number text-green" id="leadsRecoveredVal">+$1,000/mes</div>
+                </div>
+            </div>
+            <button class="btn-primary full-width" id="calcCtaBtn">Obtener Mi CRM Automatizado</button>
+        </div>
+    </section>
+
+    <!-- Preguntas Frecuentes -->
+    <section id="faq" class="faq-section">
+        <div class="section-header">
+            <h2>Preguntas Frecuentes</h2>
+            <p>Aclara tus dudas sobre el servicio de configuración de GoHighLevel.</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">¿Realmente se configura todo en 24 horas? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>Sí, una vez que realizas el pago y nos completas el formulario con los accesos básicos y la información de tu oferta, nuestro equipo de ingenieros monta la infraestructura, embudos y automatizaciones en menos de 24 horas hábiles.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">¿Qué costos adicionales tiene la plataforma? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>El pago de $450 es por nuestra configuración profesional completa y de por vida. Para mantener funcionando el sistema, necesitas tener tu suscripción activa de GoHighLevel (que inicia en $97/mes). Nosotros te ayudamos a abrirla con un periodo de prueba gratis.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">¿Cómo funciona el Agente de IA para responder chats? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>Conectamos la API de OpenAI (GPT) dentro de tus flujos de conversación del CRM. Entrenamos a la IA con las preguntas frecuentes y las objeciones de tu negocio para que pueda conversar con los clientes y agendar citas en tu calendario de Google o GoHighLevel.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">¿Se requiere experiencia técnica previa? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">
+                    <p>Ninguna. Nosotros nos encargamos de toda la parte técnica (DNS, automatizaciones, APIs, webhook de WhatsApp). Te entregamos un video de entrenamiento de 10 minutos explicándote cómo usar tu nuevo dashboard y cómo responder a los leads calificados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 GHL Setup Pro. Todos los derechos reservados. Este servicio no está afiliado directamente con GoHighLevel Inc.</p>
+    </footer>
+
+    <!-- Quiz Modal de Calificación -->
+    <div class="modal-overlay" id="quizModal">
+        <div class="modal-content glass">
+            <button class="close-modal" id="closeQuiz">×</button>
+            
+            <!-- Step 1: Decision Maker -->
+            <div class="quiz-step active" id="step1">
+                <h3>Paso 1: Tu Rol</h3>
+                <p>¿Eres el dueño del negocio, director o tomador de decisiones clave?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-val="Si" data-next="step2">Sí</button>
+                    <button class="btn-secondary quiz-btn" data-val="No" data-next="step2">No</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Niche -->
+            <div class="quiz-step" id="step2">
+                <h3>Paso 2: Industria / Nicho</h3>
+                <p>¿A qué sector pertenece principalmente tu negocio?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-val="Real Estate" data-next="step3">Bienes Raíces</button>
+                    <button class="btn-secondary quiz-btn" data-val="Agencia / Consulting" data-next="step3">Agencias y Consultoría</button>
+                    <button class="btn-secondary quiz-btn" data-val="Servicios Locales" data-next="step3">Servicios Locales / Home Services</button>
+                    <button class="btn-secondary quiz-btn" data-val="E-commerce / Retail" data-next="step3">E-commerce y Comercio</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Current Software -->
+            <div class="quiz-step" id="step3">
+                <h3>Paso 3: Software Actual</h3>
+                <p>¿Pagas actualmente por herramientas de software para tu negocio (CRM, Email Marketing, Calendarios, Hosting)?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-val="Si" data-next="step4">Sí, gasto más de $100/mes</button>
+                    <button class="btn-secondary quiz-btn" data-val="No" data-next="step4">No, uso herramientas gratuitas</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Core Needs -->
+            <div class="quiz-step" id="step4">
+                <h3>Paso 4: Automatización Deseada</h3>
+                <p>¿Cuál es la función más urgente que deseas resolver?</p>
+                <div class="quiz-options">
+                    <button class="btn-secondary quiz-btn" data-val="Agente AI 24/7" data-next="step5">Agente de IA para responder chats</button>
+                    <button class="btn-secondary quiz-btn" data-val="Embudos de Venta" data-next="step5">Embudos y Landing Pages</button>
+                    <button class="btn-secondary quiz-btn" data-val="Funnels + IA" data-next="step5">Todo en Uno (Embudo + IA + CRM)</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Lead Info -->
+            <div class="quiz-step" id="step5">
+                <h3 class="text-gradient">?? ¡Perfil Calificado!</h3>
+                <p>Cumples con los requisitos para la configuración exprés de tu CRM en 24 horas.</p>
+                <p>Por favor ingresa los datos de contacto para registrar tu orden e iniciar el proceso:</p>
+                <div class="quiz-input-group">
+                    <input type="text" id="leadName" placeholder="Nombre completo" class="glass-input" required>
+                    <input type="text" id="leadBusiness" placeholder="Nombre de tu negocio" class="glass-input" required>
+                    <input type="email" id="leadEmail" placeholder="Correo electrónico corporativo" class="glass-input" required>
+                    <input type="tel" id="leadPhone" placeholder="Número de celular (WhatsApp)" class="glass-input" required>
+                    <button class="btn-primary" id="submitLead" style="margin-top: 15px;">Enviar y Reservar</button>
+                </div>
+                <div id="successMsg" style="display: none; color: #2ecc71; margin-top: 15px; text-align: center; font-weight: 500;">
+                    ¡Enviado! Revisa tu correo en unos minutos.
+                </div>
+                <div id="whatsappContactBlock" style="display: none; margin-top: 15px; text-align: center;">
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Para acelerar el inicio del proyecto, escríbele a tu especialista asignado:</p>
+                    <a id="waContactBtn" href="#" target="_blank" class="btn-primary" style="background: #25D366; border-color: #25D366; text-decoration: none;">?? Hablar con Asesor por WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget Eva (AI Agent) -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chatToggle">
+            <span class="widget-avatar">??</span>
+            <span class="notification-badge">1</span>
+        </button>
+        <div class="chat-window glass" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-avatar">
+                    ??
+                    <span class="status-dot"></span>
+                </div>
+                <div class="chat-header-info">
+                    <h4>Eva</h4>
+                    <p class="status-text">Asesora de Automatización IA</p>
+                </div>
+                <button class="close-chat" id="closeChat">×</button>
+            </div>
+            
+            <div class="chat-body" id="chatBody">
+                <div class="message bot-msg">
+                    <p>¡Hola! Soy Eva, tu especialista en IA ??. Estoy aquí para resolver tus dudas sobre nuestra configuración exprés de GoHighLevel por $450 USD. ¿Qué nicho tiene tu negocio?</p>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Pregúntame sobre la oferta de CRM...">
+                <button id="sendChatBtn">?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

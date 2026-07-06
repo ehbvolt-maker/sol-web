@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparador de Crédito por IA - Multiplataforma (Móvil & Escritorio)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- PDF.js para procesar PDFs de forma 100% local en móviles o escritorio -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --bg-card-hover: rgba(31, 41, 55, 0.9);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary-color: #ffb703;
+            --primary-gradient: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            line-height: 1.5;
+            background-image: 
+                radial-gradient(circle at 5% 5%, rgba(255, 183, 3, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 95% 95%, rgba(251, 133, 0, 0.04) 0%, transparent 45%);
+            background-attachment: fixed;
+            padding-bottom: 30px;
+        }
+
+        /* HEADER RESPONSIVO */
+        .app-header {
+            background: rgba(7, 10, 19, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            font-size: 1.6rem;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-badge {
+            background: rgba(255, 183, 3, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(255, 183, 3, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* BOTÓN DE IDIOMA LLAMATIVO */
+        .lang-toggle-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 3px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            outline: none;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-color);
+        }
+
+        .lang-btn.active {
+            background: var(--primary-gradient);
+            color: #0b0f19 !important;
+            box-shadow: 0 2px 10px rgba(251, 133, 0, 0.35);
+        }
+
+        /* NAVIGATION TABS SCROLLABLE PARA MÓVILES */
+        .tabs-container {
+            max-width: 1400px;
+            margin: 20px auto 0 auto;
+            padding: 0 15px;
+        }
+
+        .tabs-list {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .tabs-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-family: var(--font-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            background: var(--primary-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(251, 133, 0, 0.25);
+        }
+
+        /* MAIN CONTENTS */
+        .main-content {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS & RESPONSIVE PADDING */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(12px);
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 30px;
+                border-radius: 20px;
+            }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1.15fr 0.85fr;
+                gap: 30px;
+            }
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-top: 4px;
+        }
+
+        /* SETTINGS BOX */
+        .settings-bar {
+            background: rgba(255, 183, 3, 0.03);
+            border: 1px solid rgba(255, 183, 3, 0.1);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-header-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        .settings-content {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 183, 3, 0.08);
+        }
+
+        .settings-content.active {
+            display: flex;
+        }
+
+        /* UPLOAD ZONE */
+        .upload-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 25px 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.01);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--primary-color);
+            background: rgba(255, 183, 3, 0.03);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+        }
+
+        .upload-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .upload-subtext {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* LOADING ANIMATION */
+        .loading-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(7, 10, 19, 0.9);
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 183, 3, 0.15);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* AUDIT REPORT CARD */
+        .audit-card {
+            background: rgba(255, 183, 3, 0.02);
+            border: 1px solid rgba(255, 183, 3, 0.12);
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .audit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 183, 3, 0.1);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .audit-title {
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .audit-badge {
+            background: var(--success-color);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .audit-summary {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        .audit-list-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .audit-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .audit-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .audit-item-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        .audit-item-status {
+            font-size: 0.75rem;
+            color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            align-self: flex-start;
+        }
+
+        .audit-item-reason {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .audit-item-btn {
+            background: var(--primary-color);
+            color: #0b0f19;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+
+        .audit-item-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .audit-inconsistencies {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .inconsistency-item {
+            font-size: 0.8rem;
+            color: var(--warning-color);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* CHECKLIST INTERACTIVO */
+        .checklist-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checklist-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 183, 3, 0.15);
+        }
+
+        .checklist-checkbox-wrapper {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 22px;
+            width: 22px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+        }
+
+        .checklist-checkbox:checked ~ .checkmark {
+            background: var(--primary-gradient);
+            border-color: transparent;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checklist-checkbox:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checklist-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .checklist-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .checklist-checkbox:checked ~ .checklist-text .checklist-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checklist-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+            align-self: flex-start;
+            margin-bottom: 4px;
+        }
+
+        .badge-p1 { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .badge-p2 { background: rgba(245, 158, 11, 0.15); color: #fca5a5; }
+        .badge-p3 { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+
+        /* SIMULADOR FICO */
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .simulator-grid {
+                grid-template-columns: 1.25fr 0.75fr;
+                gap: 30px;
+            }
+        }
+
+        .sliders-group {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .slider-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .slider-value {
+            font-family: var(--font-mono);
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .gauge-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .gauge-svg-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .gauge-svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 12;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 0.5s ease-out, stroke 0.5s ease;
+        }
+
+        .gauge-text-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .gauge-score {
+            font-family: var(--font-mono);
+            font-size: 2.3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .gauge-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-status {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-top: 12px;
+            padding: 4px 12px;
+            border-radius: 10px;
+        }
+
+        .target-box {
+            margin-top: 15px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* GENERADOR DE CARTAS - FORM Y PREVIEW */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-grid-span-2 {
+                grid-column: span 1 !important;
+            }
+        }
+
+        .form-grid-span-2 {
+            grid-column: span 2;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: var(--text-color);
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .letter-preview-card {
+            background: #ffffff;
+            color: #1e293b;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(0,0,0,0.1);
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        @media (min-width: 768px) {
+            .letter-preview-card {
+                padding: 30px;
+                font-size: 0.88rem;
+                max-height: 400px;
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-action-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+
+        .btn-action-primary:hover {
+            box-shadow: 0 4px 12px rgba(251, 133, 0, 0.2);
+        }
+
+        .btn-action-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-action-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* TAB 4: PORTALES Y CONTACTOS */
+        .bureau-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .bureau-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 20px;
+            }
+        }
+
+        .bureau-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .bureau-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 183, 3, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .bureau-badge {
+            display: inline-block;
+            padding: 3px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-family: var(--font-mono);
+        }
+
+        .badge-exp { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .badge-eqf { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+        .badge-tru { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+
+        .bureau-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .bureau-desc {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+        }
+
+        .address-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 15px;
+        }
+
+        .address-box strong {
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 3px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .btn-link {
+            background: rgba(255, 183, 3, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-link:hover {
+            background: var(--primary-gradient);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success-color);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            font-size: 0.85rem;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* PRINT CONFIG */
+        .print-container-clean {
+            display: none;
+        }
+
+        @media print {
+            body > * {
+                display: none !important;
+            }
+            .print-container-clean {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: #fff;
+                color: #000;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 11pt;
+                line-height: 1.5;
+                white-space: pre-wrap;
+                padding: 30px;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo">
+                <span>🛡️</span> <span data-i18n="logo_text">REPARADOR DE CRÉDITO POR IA</span>
+            </div>
+            <div class="header-controls">
+                <div class="app-badge" data-i18n="badge_text">Multiplataforma</div>
+                <!-- BOTÓN LLAMATIVO DE IDIOMAS -->
+                <div class="lang-toggle-container">
+                    <button class="lang-btn active" id="btn-lang-es" onclick="switchLanguage('es')">🇪🇸 ES</button>
+                    <button class="lang-btn" id="btn-lang-en" onclick="switchLanguage('en')">🇺🇸 EN</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="tabs-container">
+        <!-- CONFIGURACIÓN DE IA DUAL -->
+        <div class="settings-bar">
+            <div class="settings-header-toggle" onclick="toggleSettings()">
+                <span id="label-settings-toggle">⚙️ Configuración del Analizador IA (Clic para expandir)</span>
+                <span id="settings-arrow">▼</span>
+            </div>
+            <div class="settings-content" id="settings-panel">
+                <div class="input-group">
+                    <label for="select-api-mode" id="label-api-mode">Modo de Conexión IA:</label>
+                    <select id="select-api-mode" onchange="changeAPIMode()">
+                        <option value="local-server" id="opt-local-server">Servidor Local de Equity Solar (Puerto 3000)</option>
+                        <option value="direct-api" id="opt-direct-api">Conexión Directa a OpenAI (iOS, Android, Offline)</option>
+                    </select>
+                </div>
+                <div class="input-group" id="settings-key-group" style="display: none;">
+                    <label for="input-api-key" id="label-api-key">OpenAI API Key (se guarda localmente en este dispositivo):</label>
+                    <input type="password" id="input-api-key" placeholder="sk-proj-... (Tu clave secreta de OpenAI)" oninput="saveAPIKey()">
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-list">
+            <button class="tab-btn active" onclick="switchTab('tab-strategy')" id="btn-tab-strategy">📅 Plan de 90 Días</button>
+            <button class="tab-btn" onclick="switchTab('tab-bankruptcy')" id="btn-tab-bankruptcy">⚖️ Borrar Bancarrota</button>
+            <button class="tab-btn" onclick="switchTab('tab-simulator')" id="btn-tab-simulator">📉 Simulador FICO</button>
+            <button class="tab-btn" onclick="switchTab('tab-generator')" id="btn-tab-generator">✉️ Generador de Cartas</button>
+            <button class="tab-btn" onclick="switchTab('tab-bureaus')" id="btn-tab-bureaus">🌐 Portales y Contactos</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <!-- TAB 1: PLAN DE 90 DÍAS INTERACTIVO -->
+        <div id="tab-strategy" class="tab-content active">
+            
+            <!-- TARJETA DE AUDITORÍA INTELIGENTE -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%); border-color: rgba(6, 182, 212, 0.15);">
+                <div class="section-header" style="border: none; margin-bottom: 15px; padding-bottom: 0;">
+                    <h2 class="section-title" style="color: var(--info-color);" id="title-upload">📂 Paso 1: Sube tu Reporte de Crédito</h2>
+                    <p class="section-desc" id="desc-upload">Sube tu reporte completo en formato PDF o TXT. El analizador inteligente procesará los datos en cualquier plataforma.</p>
+                </div>
+
+                <div class="upload-zone" id="drop-zone-report">
+                    <span class="upload-icon">📄</span>
+                    <span class="upload-text" id="upload-status-text">Arrastra tu reporte PDF aquí o pulsa para buscar</span>
+                    <span class="upload-subtext" id="subtext-upload">Soporta PDFs descargados de Experian, Equifax o TransUnion.</span>
+                    <input type="file" id="file-report" class="file-input" accept=".pdf,.txt">
+                </div>
+
+                <div class="loading-overlay" id="loading-report">
+                    <div class="spinner"></div>
+                    <div class="loading-text" id="loading-report-text">Extrayendo texto del PDF...</div>
+                </div>
+
+                <!-- AUDITORÍA DE RESULTADOS GENERADOS -->
+                <div class="audit-card" id="audit-results">
+                    <div class="audit-header">
+                        <div class="audit-title" id="title-audit-results">🔍 Auditoría del Reporte por IA</div>
+                        <span class="audit-badge" id="audit-score-badge">Score Base FICO: 520</span>
+                    </div>
+                    <div class="audit-summary" id="audit-summary-text">
+                        Resumen del análisis crediticio de la IA...
+                    </div>
+                    
+                    <!-- NUEVA SECCIÓN DE ESTUDIO DE ESTRATEGIAS -->
+                    <div class="audit-strategies" id="audit-strategies-section" style="display: none; margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div class="audit-list-title" style="color: var(--info-color); margin-bottom: 10px;" id="title-strategies-audit">🧠 Estudio de Estrategias Sugeridas por IA (Inglés):</div>
+                        <ol id="audit-strategies-list" style="font-size: 0.88rem; line-height: 1.5; color: #cbd5e1; padding-left: 20px;">
+                            <!-- Estrategias inyectadas -->
+                        </ol>
+                    </div>
+
+                    <div class="audit-list-title" style="margin-top: 15px;" id="title-accounts-found">Cuentas Negativas Encontradas:</div>
+                    <div id="audit-accounts-list">
+                        <!-- Items de cuenta inyectados dinámicamente -->
+                    </div>
+
+                    <div class="audit-inconsistencies" id="audit-inconsistencies-section" style="display: none;">
+                        <div class="audit-list-title" style="color: var(--warning-color);" id="title-inconsistencies">Incongruencias Técnicas Detectadas:</div>
+                        <div id="audit-inconsistencies-list">
+                            <!-- Items de inconsistencias -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHECKLIST INTERACTIVO -->
+            <div class="card">
+                <div class="section-header">
+                    <h2 class="section-title" id="title-checklist">📅 Progreso de la Estrategia de Reparación</h2>
+                    <p class="section-desc" id="desc-checklist">Monitorea y marca tu avance. La aplicación te guiará y activará las siguientes herramientas al marcar los pasos.</p>
+                </div>
+
+                <div class="checklist-group">
+                    
+                    <div class="checklist-item" id="item-chk-1" onclick="toggleCheck('chk-1')">
+                        <div class="checklist-checkbox-wrapper">
+                            <input type="checkbox" id="chk-1" class="checklist-checkbox" onchange="saveProgress()">
+                            <span class="checkmark"></span>
+                        </div>
+                        <div class="checklist-text">
+                            <span class="phase-badge badge-p1" id="badge-phase-1">Fase 1: Análisis (Día 1-7)</span>
+                            <span class="checklist-title" id="chk-title-1">Obtener y Cargar tu Reporte de Crédito</span>
+                            <span class="checklist-desc" id="chk-desc-1">Descarga tu reporte oficial en AnnualCreditReport.com y súbelo arriba para que el sistema configure tu simulador y cartas.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" id="item-chk-2" onclick="toggleCheck('chk-2')">
+                        <div class="checklist-checkbox-wrapper">
+                            <input type="checkbox" id="chk-2" class="checklist-checkbox" onchange="saveProgress()">
+                            <span class="checkmark"></span>
+                        </div>
+                        <div class="checklist-text">
+                            <span class="phase-badge badge-p1" id="badge-phase-1b">Fase 1: Análisis (Día 1-7)</span>
+                            <span class="checklist-title" id="chk-title-2">Revisión de Errores e Inconsistencias</span>
+                            <span class="checklist-desc" id="chk-desc-2">Verifica los errores sugeridos por el análisis de IA en la tarjeta de auditoría antes de redactar tus disputas.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" id="item-chk-3" onclick="toggleCheck('chk-3')">
+                        <div class="checklist-checkbox-wrapper">
+                            <input type="checkbox" id="chk-3" class="checklist-checkbox" onchange="saveProgress()">
+                            <span class="checkmark"></span>
+                        </div>
+                        <div class="checklist-text">
+                            <span class="phase-badge badge-p2" id="badge-phase-2">Fase 2: Acción Round 1 (Día 8-45)</span>
+                            <span class="checklist-title" id="chk-title-3">Generar y Enviar Cartas de Disputa</span>
+                            <span class="checklist-desc" id="chk-desc-3">Ve a la pestaña "Generador de Cartas". Imprime tus cartas generadas y envíalas por Correo Certificado con Acuse de Recibo a los burós.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" id="item-chk-4" onclick="toggleCheck('chk-4')">
+                        <div class="checklist-checkbox-wrapper">
+                            <input type="checkbox" id="chk-4" class="checklist-checkbox" onchange="saveProgress()">
+                            <span class="checkmark"></span>
+                        </div>
+                        <div class="checklist-text">
+                            <span class="phase-badge badge-p2" id="badge-phase-2b">Fase 2: Acción Round 1 (Día 8-45)</span>
+                            <span class="checklist-title" id="chk-title-4">Subir Respuestas y Respaldos</span>
+                            <span class="checklist-desc" id="chk-desc-4">Al recibir respuestas físicas o digitales de los burós, súbelas en la pestaña "Portales y Contactos" para registrar cuáles cuentas fueron borradas.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" id="item-chk-5" onclick="toggleCheck('chk-5')">
+                        <div class="checklist-checkbox-wrapper">
+                            <input type="checkbox" id="chk-5" class="checklist-checkbox" onchange="saveProgress()">
+                            <span class="checkmark"></span>
+                        </div>
+                        <div class="checklist-text">
+                            <span class="phase-badge badge-p3" id="badge-phase-3">Fase 3: Seguimiento (Día 46-90)</span>
+                            <span class="checklist-title" id="chk-title-5">Seguimiento / Round 2 (Sec 609)</span>
+                            <span class="checklist-desc" id="chk-desc-5">Si hay elementos que el buró se niega a borrar sin dar pruebas, envía la carta Round 2 (Validación 609 de firmas físicas).</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ELIMINAR BANCARROTA -->
+        <div id="tab-bankruptcy" class="tab-content">
+            <div class="card">
+                <div class="section-header">
+                    <h2 class="section-title" id="title-bankruptcy">⚖️ Estrategia de Eliminación de Bancarrotas</h2>
+                    <p class="section-desc" id="desc-bankruptcy">Aplica las leyes de la FCRA y el vacío de verificación de registros públicos para remover bancarrotas de tu reporte de crédito de manera definitiva.</p>
+                </div>
+
+                <div class="bankruptcy-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <!-- Columna Izquierda: Estrategias Legales -->
+                    <div style="background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); padding: 20px; border-radius: 15px;">
+                        <h3 id="bk-strategy-title" style="color: #ffb703; font-family: var(--font-header); margin-top: 0; margin-bottom: 15px; font-size: 1.1rem;">Estrategias de Ley Federal (FCRA)</h3>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div style="border-left: 3px solid #219ebc; padding-left: 12px;">
+                                <strong id="bk-strategy-1-title" style="color: #e2e8f0; display: block; font-size: 0.9rem;">1. Vacío de Verificación Directa (FCRA Sec. 611)</strong>
+                                <span id="bk-strategy-1-desc" style="color: #94a3b8; font-size: 0.8rem; display: block; margin-top: 3px;">Los burós no consultan directamente a la corte de bancarrota. Los secretarios judiciales no verifican registros a agencias comerciales. Si exiges verificación del origen directo, no podrán verificarlo en 30 días.</span>
+                            </div>
+                            <div style="border-left: 3px solid #219ebc; padding-left: 12px;">
+                                <strong id="bk-strategy-2-title" style="color: #e2e8f0; display: block; font-size: 0.9rem;">2. Congelamiento de Intermediarios (LexisNexis/LCI)</strong>
+                                <span id="bk-strategy-2-desc" style="color: #94a3b8; font-size: 0.8rem; display: block; margin-top: 3px;">Los burós obtienen los registros a través de intermediarios de datos públicos. Al disputar y congelar con LexisNexis y LCI primero, bloqueas su fuente de verificación.</span>
+                            </div>
+                            <div style="border-left: 3px solid #219ebc; padding-left: 12px;">
+                                <strong id="bk-strategy-3-title" style="color: #e2e8f0; display: block; font-size: 0.9rem;">3. Inexactitudes de Reporte (Exactitud Máxima)</strong>
+                                <span id="bk-strategy-3-desc" style="color: #94a3b8; font-size: 0.8rem; display: block; margin-top: 3px;">Bajo la sección 607(b) de la FCRA, cualquier discrepancia en la fecha de presentación, fecha de descargo (discharge), activos o número de caso obliga a la remoción inmediata.</span>
+                            </div>
+                            <div style="border-left: 3px solid #219ebc; padding-left: 12px;">
+                                <strong id="bk-strategy-4-title" style="color: #e2e8f0; display: block; font-size: 0.9rem;">4. Deudas Descargadas a Cero</strong>
+                                <span id="bk-strategy-4-desc" style="color: #94a3b8; font-size: 0.8rem; display: block; margin-top: 3px;">Todas las cuentas incluidas en la bancarrota deben reportar saldo en $0. Si alguna reporta saldo activo o en cobranza, infringe la ley de bancarrotas y es motivo de disputa.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Generador Asistido de Disputa -->
+                    <div style="background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); padding: 20px; border-radius: 15px; display: flex; flex-direction: column; gap: 15px;">
+                        <h3 id="bk-assistant-title" style="color: #ffb703; font-family: var(--font-header); margin-top: 0; margin-bottom: 5px; font-size: 1.1rem;">Asistente de Disputa de Bancarrota</h3>
+                        
+                        <div class="input-group">
+                            <label id="bk-label-court" style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; display: block;">Tribunal de Bancarrota</label>
+                            <input type="text" id="bk-court" placeholder="Ej: U.S. Bankruptcy Court, Southern District of Florida" style="width: 100%; background: #070a13; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; color: #fff; font-family: var(--font-main); font-size: 0.9rem;">
+                        </div>
+
+                        <div class="input-group">
+                            <label id="bk-label-case" style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; display: block;">Número de Caso de Bancarrota</label>
+                            <input type="text" id="bk-case" placeholder="Ej: Case No: 23-12345-BKC" style="width: 100%; background: #070a13; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; color: #fff; font-family: var(--font-main); font-size: 0.9rem;">
+                        </div>
+
+                        <div>
+                            <label id="bk-label-select-strat" style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; display: block;">Selecciona la Estrategia a Rellenar:</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <button type="button" id="bk-btn-strat-1" onclick="setBkStrategy('source')" style="background: rgba(33, 158, 188, 0.1); border: 1px solid #219ebc; color: #219ebc; padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">1. Sin Verificación de Origen</button>
+                                <button type="button" id="bk-btn-strat-2" onclick="setBkStrategy('dates')" style="background: rgba(33, 158, 188, 0.1); border: 1px solid #219ebc; color: #219ebc; padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">2. Fechas Incorrectas</button>
+                                <button type="button" id="bk-btn-strat-3" onclick="setBkStrategy('balances')" style="background: rgba(33, 158, 188, 0.1); border: 1px solid #219ebc; color: #219ebc; padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">3. Balances de Cuentas</button>
+                                <button type="button" id="bk-btn-strat-4" onclick="setBkStrategy('lexis')" style="background: rgba(33, 158, 188, 0.1); border: 1px solid #219ebc; color: #219ebc; padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">4. Bloqueo LexisNexis</button>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label id="bk-label-details" style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; display: block;">Detalles Específicos de la Inexactitud (Inglés)</label>
+                            <textarea id="bk-details" rows="3" placeholder="Detalles de la disputa..." style="width: 100%; background: #070a13; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; color: #fff; font-family: var(--font-main); font-size: 0.85rem; resize: vertical;"></textarea>
+                        </div>
+
+                        <button type="button" id="bk-btn-generate" onclick="generateBkLetter()" style="background: linear-gradient(135deg, #fb8500 0%, #ffb703 100%); color: #0b0f19; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(251, 133, 0, 0.25); transition: transform 0.2s;">
+                            🚀 Generar Carta y Ver Vista Previa
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TAB 2: SIMULADOR FICO -->
+        <div id="tab-simulator" class="tab-content">
+            <div class="card">
+                <div class="section-header">
+                    <h2 class="section-title" id="title-sim">📉 Simulador FICO Interactivo</h2>
+                    <p class="section-desc" id="desc-sim">Ajusta los sliders para evaluar de forma interactiva qué combinaciones pueden elevar más tu puntaje de crédito.</p>
+                </div>
+
+                <div class="simulator-grid">
+                    <div class="sliders-group">
+                        <div class="slider-box">
+                            <div class="slider-header">
+                                <span id="lbl-sim-base">Puntaje de Partida (Base)</span>
+                                <span class="slider-value" id="val-base">550</span>
+                            </div>
+                            <input type="range" id="slide-base" min="350" max="750" value="550">
+                        </div>
+
+                        <div class="slider-box">
+                            <div class="slider-header">
+                                <span id="lbl-sim-util">Uso de Tarjetas (Utilización)</span>
+                                <span class="slider-value" id="val-utilization">75%</span>
+                            </div>
+                            <input type="range" id="slide-utilization" min="0" max="100" value="75">
+                        </div>
+
+                        <div class="slider-box">
+                            <div class="slider-header">
+                                <span id="lbl-sim-col">Cuentas en Colección</span>
+                                <span class="slider-value" id="val-collections">3</span>
+                            </div>
+                            <input type="range" id="slide-collections" min="0" max="8" value="3">
+                        </div>
+
+                        <div class="slider-box">
+                            <div class="slider-header">
+                                <span id="lbl-sim-late">Pagos Atrasados (2 Años)</span>
+                                <span class="slider-value" id="val-lates">2</span>
+                            </div>
+                            <input type="range" id="slide-lates" min="0" max="10" value="2">
+                        </div>
+
+                        <div class="slider-box">
+                            <div class="slider-header">
+                                <span id="lbl-sim-age">Historial de Crédito (Años)</span>
+                                <span class="slider-value" id="val-age">3 años</span>
+                            </div>
+                            <input type="range" id="slide-age" min="0" max="15" value="3">
+                        </div>
+                    </div>
+
+                    <div class="gauge-panel">
+                        <div class="gauge-svg-container">
+                            <svg class="gauge-svg" width="180" height="180">
+                                <circle class="gauge-bg" cx="90" cy="90" r="70"></circle>
+                                <circle class="gauge-fill" id="gauge-bar" cx="90" cy="90" r="70"></circle>
+                            </svg>
+                            <div class="gauge-text-container">
+                                <div class="gauge-score" id="score-number">510</div>
+                                <div class="gauge-label" id="lbl-gauge-est">Puntaje Est.</div>
+                            </div>
+                        </div>
+                        <div class="score-status status-poor" id="score-text">Pobre</div>
+                        
+                        <div class="target-box">
+                            <span id="lbl-target-txt">Objetivo para Excelente Financiamiento:</span> <strong style="color: var(--primary-color);">650+</strong><br>
+                            <span id="target-feedback">Te faltan 140 puntos.</span>
+                        </div>
+                        <button class="btn-action btn-action-secondary" onclick="resetSimulator()" style="margin-top: 15px; width: 100%; font-size: 0.82rem; padding: 10px;" id="btn-reset-sim" data-i18n="btn_reset_sim">🔄 Restablecer Valores</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: GENERADOR DE CARTAS -->
+        <div id="tab-generator" class="tab-content">
+            <div class="card">
+                <div class="section-header">
+                    <h2 class="section-title" id="title-letter-gen">✉️ Generador de Cartas de Disputa</h2>
+                    <p class="section-desc" id="desc-letter-gen">Rellena los datos o selecciona una cuenta negativa detectada por el análisis de IA para redactar la carta. Las cartas se generan obligatoriamente en inglés para los burós.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-grid">
+                        <div class="input-group form-grid-span-2" id="ai-accounts-selection-box" style="display: none; background: rgba(6, 182, 212, 0.05); border: 1px solid rgba(6, 182, 212, 0.15); padding: 12px; border-radius: 10px; margin-bottom: 10px;">
+                            <label for="select-ai-account" style="color: var(--info-color); font-weight: bold;" id="lbl-ai-accounts-found">⚡ Cuentas Negativas Encontradas por IA:</label>
+                            <select id="select-ai-account" style="border-color: rgba(6, 182, 212, 0.3);">
+                                <option value="">-- Selecciona una cuenta para rellenar la carta automáticamente --</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="input-name" id="lbl-form-name">Nombre Completo</label>
+                            <input type="text" id="input-name" placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-date" id="lbl-form-date">Fecha de Envío</label>
+                            <input type="date" id="input-date">
+                        </div>
+                        <div class="input-group form-grid-span-2">
+                            <label for="input-address" id="lbl-form-address">Dirección Completa (debe coincidir con tus recibos)</label>
+                            <input type="text" id="input-address" placeholder="Calle, Apto, Ciudad, Estado, ZIP">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-ssn" id="lbl-form-ssn">Últimos 4 del Seguro Social</label>
+                            <input type="text" id="input-ssn" placeholder="Ej: 9876">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-dob" id="lbl-form-dob">Fecha de Nacimiento</label>
+                            <input type="date" id="input-dob">
+                        </div>
+                        <div class="input-group form-grid-span-2">
+                            <label for="select-type" id="lbl-form-type">Estrategia de Carta</label>
+                            <select id="select-type" onchange="updateLetterTemplate()">
+                                <option value="round1" id="opt-round1">Round 1: Disputa General (Errores Generales)</option>
+                                <option value="609" id="opt-609">Estrategia 609: Validación Física de Firma</option>
+                                <option value="paydelete" id="opt-paydelete">Pay for Delete: Liquidación en Cobros</option>
+                                <option value="goodwill" id="opt-goodwill">Carta de Buena Voluntad: Remover pago tardío</option>
+                                <option value="bankruptcy" id="opt-bankruptcy">Eliminación de Bancarrota (FCRA Sec. 611/Public Records)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="input-creditor" id="lbl-form-creditor">Acreedor / Agencia</label>
+                            <input type="text" id="input-creditor" placeholder="Ej: Capital One">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-account" id="lbl-form-account">Número de Cuenta</label>
+                            <input type="text" id="input-account" placeholder="Ej: 4128XXXXXXXX5678">
+                        </div>
+                        <div class="input-group form-grid-span-2" id="group-details">
+                            <label for="input-details" id="label-details">Detalles del Error (Inglés)</label>
+                            <textarea id="input-details" rows="2" placeholder="Detalla el por qué disputas esta cuenta..."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;" id="lbl-preview-title">Vista Previa de la Carta (En Inglés oficial)</label>
+                        <div class="letter-preview-card" id="letter-preview">Loading template...</div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-action btn-action-secondary" onclick="copyLetterText()" id="btn-copy-letter">📋 Copiar Texto</button>
+                            <button class="btn-action btn-action-primary" onclick="printLetter()" id="btn-print-letter">🖨️ Imprimir / PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: ENLACES Y PORTALES -->
+        <div id="tab-bureaus" class="tab-content">
+            <div class="card">
+                <div class="section-header">
+                    <h2 class="section-title" id="title-bureaus">🌐 Portales Oficiales y Contactos de los Burós</h2>
+                    <p class="section-desc" id="desc-bureaus">Acceso rápido a los enlaces gubernamentales y portales en línea de disputa.</p>
+                </div>
+
+                <div class="bureau-grid">
+                    
+                    <!-- EXPERIAN -->
+                    <div class="bureau-card">
+                        <div>
+                            <span class="bureau-badge badge-exp">Experian</span>
+                            <h3 class="bureau-title">Experian</h3>
+                            <p class="bureau-desc" id="desc-bureau-exp">El buró principal. Úsalo para disputas en línea o envío de disputas 609.</p>
+                            <div class="address-box">
+                                <strong>Dirección de Envío:</strong>
+                                Experian<br>
+                                P.O. Box 4500<br>
+                                Allen, TX 75013
+                            </div>
+                        </div>
+                        <a href="https://www.experian.com/disputes/main.html" target="_blank" class="btn-link" id="btn-link-exp">Ir a Disputa Web</a>
+                    </div>
+
+                    <!-- EQUIFAX -->
+                    <div class="bureau-card">
+                        <div>
+                            <span class="bureau-badge badge-eqf">Equifax</span>
+                            <h3 class="bureau-title">Equifax</h3>
+                            <p class="bureau-desc" id="desc-bureau-eqf">Buró enfocado en registros bancarios e historial tradicional.</p>
+                            <div class="address-box">
+                                <strong>Dirección de Envío:</strong>
+                                Equifax Information Services LLC<br>
+                                P.O. Box 740256<br>
+                                Atlanta, GA 30374-0256
+                            </div>
+                        </div>
+                        <a href="https://www.equifax.com/personal/education/credit/report/how-to-dispute-credit-report-errors/" target="_blank" class="btn-link" id="btn-link-eqf">Ir a Disputa Web</a>
+                    </div>
+
+                    <!-- TRANSUNION -->
+                    <div class="bureau-card">
+                        <div>
+                            <span class="bureau-badge badge-tru">TransUnion</span>
+                            <h3 class="bureau-title">TransUnion</h3>
+                            <p class="bureau-desc" id="desc-bureau-tru">Buró comúnmente ligado a financiamientos vehiculares y préstamos de consumo.</p>
+                            <div class="address-box">
+                                <strong>Dirección de Envío:</strong>
+                                TransUnion Consumer Solutions<br>
+                                P.O. Box 2000<br>
+                                Chester, PA 19016-2000
+                            </div>
+                        </div>
+                        <a href="https://www.transunion.com/credit-disputes/dispute-your-credit" target="_blank" class="btn-link" id="btn-link-tru">Ir a Disputa Web</a>
+                    </div>
+
+                    <!-- SUBIR RESPUESTAS DE LOS BURÓS -->
+                    <div class="bureau-card" style="grid-column: span 3; background: rgba(16, 185, 129, 0.03); border-color: rgba(16, 185, 129, 0.15); margin-top: 15px; padding: 25px;">
+                        <h3 class="bureau-title" style="color: var(--success-color); display: flex; align-items: center; gap: 8px;" id="title-upload-reply">📬 ¿Recibiste respuesta de un buró de crédito?</h3>
+                        <p class="bureau-desc" style="max-width: 900px; margin-bottom: 15px;" id="desc-upload-reply">
+                            Sube la carta de respuesta (PDF o TXT). La IA analizará qué cuentas fueron **borradas** vs cuáles fueron **verificadas**, actualizará automáticamente tu simulador y generará la carta Round 2 (Sec 609).
+                        </p>
+                        
+                        <div class="upload-zone" id="drop-zone-reply" style="border-color: rgba(16, 185, 129, 0.25);">
+                            <span class="upload-icon">📥</span>
+                            <span class="upload-text" id="reply-status-text">Arrastra la respuesta del buró aquí</span>
+                            <input type="file" id="file-reply" class="file-input" accept=".pdf,.txt">
+                        </div>
+
+                        <div class="loading-overlay" id="loading-reply">
+                            <div class="spinner"></div>
+                            <div class="loading-text" id="loading-reply-text">Analizando respuesta del buró...</div>
+                        </div>
+
+                        <!-- RESULTADOS DEL ANÁLISIS DE RESPUESTAS -->
+                        <div id="reply-results-card" style="display: none; background: rgba(0,0,0,0.2); border: 1px dashed var(--success-color); border-radius: 12px; padding: 20px; margin-top: 20px;">
+                            <h4 style="color: var(--success-color); font-weight: bold; font-family: var(--font-mono); font-size: 1.1rem; margin-bottom: 10px;" id="title-analysis-reply">📉 Resultados del Análisis de Respuesta</h4>
+                            <div id="reply-results-summary" style="font-size: 0.95rem; line-height: 1.5; color: #e2e8f0; margin-bottom: 15px;"></div>
+                            <div id="reply-results-actions" style="display: flex; gap: 10px;">
+                                <!-- Botón dinámico -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CFPB COMPLAINTS -->
+                    <div class="bureau-card" style="grid-column: span 3; background: rgba(6, 182, 212, 0.03); border-color: rgba(6, 182, 212, 0.15); margin-top: 10px;">
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <h3 class="bureau-title" style="color: var(--info-color);">Consumer Financial Protection Bureau (CFPB)</h3>
+                            <p class="bureau-desc" style="margin-bottom: 5px;" id="desc-cfpb">
+                                Si los burós de crédito no responden en un plazo de 30 días hábiles o se niegan a corregir un error flagrante y verificado tras enviar tu carta certificada, ingresa de inmediato una reclamación ante la CFPB. Suelen responder y ordenar al buró la remoción de la cuenta en 15 días.
+                            </p>
+                            <a href="https://www.consumerfinance.gov/complaint/" target="_blank" class="btn-link" style="background: var(--info-color); border-color: var(--info-color); color: #fff; align-self: flex-start; padding: 10px 20px;" id="btn-link-cfpb">Presentar Queja Oficial en la CFPB</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <span>✅</span> <span id="toast-message">Copiado</span>
+    </div>
+
+    <script>
+        // Configuración de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        // --- SISTEMA DE TRADUCCIÓN ---
+        let currentLang = 'es';
+        const i18n = {
+            es: {
+                "logo_text": "REPARADOR DE CRÉDITO POR IA",
+                "badge_text": "Multiplataforma",
+                "btn_tab_strategy": "📅 Plan de 90 Días",
+                "btn-tab-bankruptcy": "⚖️ Borrar Bancarrota",
+                "title-bankruptcy": "⚖️ Estrategia de Eliminación de Bancarrotas",
+                "desc-bankruptcy": "Aplica las leyes de la FCRA y el vacío de verificación de registros públicos para remover bancarrotas de tu reporte de crédito de manera definitiva.",
+                "bk-strategy-title": "Estrategias de Ley Federal (FCRA)",
+                "bk-assistant-title": "Asistente de Disputa de Bancarrota",
+                "bk-strategy-1-title": "1. Vacío de Verificación Directa (FCRA Sec. 611)",
+                "bk-strategy-1-desc": "Los burós no consultan directamente a la corte de bancarrota. Los secretarios judiciales no verifican registros a agencias comerciales. Si exiges verificación del origen directo, no podrán verificarlo en 30 días.",
+                "bk-strategy-2-title": "2. Congelamiento de Intermediarios (LexisNexis/LCI)",
+                "bk-strategy-2-desc": "Los burós obtienen los registros a través de intermediarios de datos públicos. Al disputar y congelar con LexisNexis y LCI primero, bloqueas su fuente de verificación.",
+                "bk-strategy-3-title": "3. Inexactitudes de Reporte (Exactitud Máxima)",
+                "bk-strategy-3-desc": "Bajo la sección 607(b) de la FCRA, cualquier discrepancia en la fecha de presentación, fecha de descargo (discharge), activos o número de caso obliga a la remoción inmediata.",
+                "bk-strategy-4-title": "4. Deudas Descargadas a Cero",
+                "bk-strategy-4-desc": "Todas las cuentas incluidas en la bancarrota deben reportar saldo en $0. Si alguna reporta saldo activo o en cobranza, infringe la ley de bancarrotas y es motivo de disputa.",
+                "bk-label-court": "Tribunal de Bancarrota",
+                "bk-label-case": "Número de Caso de Bancarrota",
+                "bk-label-select-strat": "Selecciona la Estrategia a Rellenar:",
+                "bk-btn-strat-1": "1. Sin Verificación de Origen",
+                "bk-btn-strat-2": "2. Fechas Incorrectas",
+                "bk-btn-strat-3": "3. Balances de Cuentas",
+                "bk-btn-strat-4": "4. Bloqueo LexisNexis",
+                "bk-label-details": "Detalles Específicos de la Inexactitud (Inglés)",
+                "bk-btn-generate": "🚀 Generar Carta y Ver Vista Previa",
+                "btn_tab_simulator": "📉 Simulador FICO",
+                "btn_tab_generator": "✉️ Generador de Cartas",
+                "btn_tab_bureaus": "🌐 Portales y Contactos",
+                "title_upload": "📂 Paso 1: Sube tu Reporte de Crédito",
+                "desc_upload": "Sube tu reporte completo en formato PDF o TXT. El analizador inteligente procesará los datos en cualquier plataforma.",
+                "upload_status_text": "Arrastra tu reporte PDF aquí o pulsa para buscar",
+                "subtext_upload": "Soporta PDFs descargados de Experian, Equifax o TransUnion.",
+                "title_audit_results": "🔍 Auditoría del Reporte por IA",
+                "title_strategies_audit": "🧠 Estudio de Estrategias Sugeridas por IA (Inglés):",
+                "title_accounts_found": "Cuentas Negativas Encontradas:",
+                "title_inconsistencies": "Incongruencias Técnicas Detectadas:",
+                "title_checklist": "📅 Progreso de la Estrategia de Reparación",
+                "desc_checklist": "Monitorea y marca tu avance. La aplicación te guiará y activará las siguientes herramientas al marcar los pasos.",
+                "badge_phase_1": "Fase 1: Análisis (Día 1-7)",
+                "badge_phase_1b": "Fase 1: Análisis (Día 1-7)",
+                "badge_phase_2": "Fase 2: Acción Round 1 (Día 8-45)",
+                "badge_phase_2b": "Fase 2: Acción Round 1 (Día 8-45)",
+                "badge_phase_3": "Fase 3: Seguimiento (Día 46-90)",
+                "chk_title_1": "Obtener y Cargar tu Reporte de Crédito",
+                "chk_desc_1": "Descarga tu reporte oficial en AnnualCreditReport.com y súbelo arriba para que el sistema configure tu simulador y cartas.",
+                "chk_title_2": "Revisión de Errores e Inconsistencias",
+                "chk_desc_2": "Verifica los errores sugeridos por el análisis de IA en la tarjeta de auditoría antes de redactar tus disputas.",
+                "chk_title_3": "Generar y Enviar Cartas de Disputa",
+                "chk_desc_3": "Ve a la pestaña 'Generador de Cartas'. Imprime tus cartas generadas y envíalas por Correo Certificado con Acuse de Recibo a los burós.",
+                "chk_title_4": "Subir Respuestas y Respaldos",
+                "chk_desc_4": "Al recibir respuestas físicas o digitales de los burós, súbelas en la pestaña 'Portales y Contactos' para registrar cuáles cuentas fueron borradas.",
+                "chk_title_5": "Seguimiento / Round 2 (Sec 609)",
+                "chk_desc_5": "Si hay elementos que el buró se niega a borrar sin dar pruebas, envía la carta Round 2 (Validación 609 de firmas físicas).",
+                "title_sim": "📉 Simulador FICO Interactivo",
+                "desc_sim": "Ajusta los sliders para evaluar de forma interactiva qué combinaciones pueden elevar más tu puntaje de crédito.",
+                "lbl_sim-base": "Puntaje de Partida (Base)",
+                "lbl_sim-util": "Uso de Tarjetas (Utilización)",
+                "lbl_sim-col": "Cuentas en Colección",
+                "lbl_sim-late": "Pagos Atrasados (2 Años)",
+                "lbl_sim-age": "Historial de Crédito (Años)",
+                "lbl_gauge-est": "Puntaje Est.",
+                "lbl_target-txt": "Objetivo para Excelente Financiamiento:",
+                "title_letter-gen": "✉️ Generador de Cartas de Disputa",
+                "desc_letter-gen": "Rellena los datos o selecciona una cuenta negativa detectada por el análisis de IA para redactar la carta. Las cartas se generan obligatoriamente en inglés para los burós.",
+                "lbl_ai-accounts-found": "⚡ Cuentas Negativas Encontradas por IA:",
+                "lbl_form-name": "Nombre Completo",
+                "lbl_form-date": "Fecha de Envío",
+                "lbl_form-address": "Dirección Completa (debe coincidir con tus recibos)",
+                "lbl_form-ssn": "Últimos 4 del Seguro Social",
+                "lbl_form-dob": "Fecha de Nacimiento",
+                "lbl_form-type": "Estrategia de Carta",
+                "opt-round1": "Round 1: Disputa General (Errores Generales)",
+                "opt-609": "Estrategia 609: Validación Física de Firma",
+                "opt-paydelete": "Pay for Delete: Liquidación en Cobros",
+                "opt-goodwill": "Carta de Buena Voluntad: Remover pago tardío",
+                "opt-bankruptcy": "Eliminación de Bancarrota (FCRA Sec. 611/Public Records)",
+                "lbl_form-creditor": "Acreedor / Agencia",
+                "lbl_form-account": "Número de Cuenta",
+                "lbl_preview-title": "Vista Previa de la Carta (En Inglés oficial)",
+                "btn_copy-letter": "📋 Copiar Texto",
+                "btn_print-letter": "🖨️ Imprimir / PDF",
+                "btn_reset_sim": "🔄 Restablecer Valores",
+                "title_bureaus": "🌐 Portales Oficiales y Contactos de los Burós",
+                "desc_bureaus": "Acceso rápido a los enlaces gubernamentales y portales en línea de disputa.",
+                "desc_bureau-exp": "El buró principal. Úsalo para disputas en línea o envío de disputas 609.",
+                "btn_link-exp": "Ir a Disputa Web",
+                "desc_bureau-eqf": "Buró enfocado en registros bancarios e historial tradicional.",
+                "btn_link-eqf": "Ir a Disputa Web",
+                "desc_bureau-tru": "Buró comúnmente ligado a financiamientos vehiculares y préstamos de consumo.",
+                "btn_link-tru": "Ir a Disputa Web",
+                "title_upload-reply": "📬 ¿Recibiste respuesta de un buró de crédito?",
+                "desc_upload-reply": "Sube la carta de respuesta (PDF o TXT). La IA analizará qué cuentas fueron **borradas** vs cuáles fueron **verificadas**, actualizará automáticamente tu simulador y generará la carta Round 2 (Sec 609).",
+                "title_analysis-reply": "📉 Resultados del Análisis de Respuesta",
+                "desc_cfpb": "Si los burós de crédito no responden en un plazo de 30 días hábiles o se niegan a corregir un error flagrante y verificado tras enviar tu carta certificada, ingresa de inmediato una reclamación ante la CFPB. Suelen responder y ordenar al buró la remoción de la cuenta en 15 días.",
+                "btn_link-cfpb": "Presentar Queja Oficial en la CFPB"
+            },
+            en: {
+                "logo_text": "AI CREDIT REPAIR PORTAL",
+                "badge_text": "Multiplatform",
+                "btn_tab_strategy": "📅 90-Day Plan",
+                "btn-tab-bankruptcy": "⚖️ Delete Bankruptcy",
+                "title-bankruptcy": "⚖️ Bankruptcy Deletion Strategy",
+                "desc-bankruptcy": "Apply FCRA laws and public record verification loopholes to permanently remove bankruptcies from your credit report.",
+                "bk-strategy-title": "Federal Law (FCRA) Strategies",
+                "bk-assistant-title": "Bankruptcy Dispute Assistant",
+                "bk-strategy-1-title": "1. Direct Verification Loophole (FCRA Sec. 611)",
+                "bk-strategy-1-desc": "Bureaus do not consult bankruptcy courts directly. Court clerks do not verify records for commercial agencies. If you demand direct verification, they cannot verify it within 30 days.",
+                "bk-strategy-2-title": "2. Public Record Intermediaries (LexisNexis/LCI)",
+                "bk-strategy-2-desc": "Bureaus get public records from third-party data brokers. By disputing and freezing LexisNexis and LCI first, you block their verification source.",
+                "bk-strategy-3-title": "3. Inaccurate Reporting (Maximum Accuracy)",
+                "bk-strategy-3-desc": "Under FCRA Section 607(b), any discrepancy in filing date, discharge date, assets, or case number warrants immediate deletion.",
+                "bk-strategy-4-title": "4. Discharged Accounts to Zero",
+                "bk-strategy-4-desc": "All accounts included in bankruptcy must report a $0 balance. Any reporting collection or active balance violates bankruptcy law.",
+                "bk-label-court": "Bankruptcy Court / District",
+                "bk-label-case": "Bankruptcy Case Number",
+                "bk-label-select-strat": "Select Strategy to Autofill:",
+                "bk-btn-strat-1": "1. No Verification Source",
+                "bk-btn-strat-2": "2. Inaccurate Dates",
+                "bk-btn-strat-3": "3. Discharged Balances",
+                "bk-btn-strat-4": "4. LexisNexis Block",
+                "bk-label-details": "Specific Inaccuracy Details (English)",
+                "bk-btn-generate": "🚀 Generate Letter and View Preview",
+                "btn_tab_simulator": "📉 FICO Simulator",
+                "btn_tab_generator": "✉️ Letter Generator",
+                "btn_tab_bureaus": "🌐 Portals & Contacts",
+                "title_upload": "📂 Step 1: Upload Your Credit Report",
+                "desc_upload": "Upload your full report in PDF or TXT format. The smart analyzer will process the data on any platform.",
+                "upload_status_text": "Drag your credit report PDF here or click to browse",
+                "subtext_upload": "Supports PDFs downloaded from Experian, Equifax, or TransUnion.",
+                "title_audit_results": "🔍 Credit Report AI Audit",
+                "title_strategies_audit": "🧠 AI-Suggested Cleaning Strategies (English):",
+                "title_accounts_found": "Negative Accounts Found:",
+                "title_inconsistencies": "Technical Inconsistencies Detected:",
+                "title_checklist": "📅 Repair Strategy Progress",
+                "desc_checklist": "Monitor and check off your progress. The app will guide you and activate the following tools as you check steps.",
+                "badge_phase_1": "Phase 1: Analysis (Day 1-7)",
+                "badge_phase_1b": "Phase 1: Analysis (Day 1-7)",
+                "badge_phase_2": "Phase 2: Action Round 1 (Day 8-45)",
+                "badge_phase_2b": "Phase 2: Action Round 1 (Day 8-45)",
+                "badge_phase_3": "Phase 3: Follow-Up (Day 46-90)",
+                "chk_title_1": "Get and Upload Your Credit Report",
+                "chk_desc_1": "Download your official report at AnnualCreditReport.com and upload it above to configure your simulator and letters.",
+                "chk_title_2": "Review Errors and Inconsistencies",
+                "chk_desc_2": "Verify errors suggested by the AI analysis in the audit card before drafting your disputes.",
+                "chk_title_3": "Generate and Send Dispute Letters",
+                "chk_desc_3": "Go to the 'Letter Generator' tab. Print your generated letters and mail them via Certified Mail with Return Receipt to the bureaus.",
+                "chk_title_4": "Upload Responses and Records",
+                "chk_desc_4": "Upon receiving physical or digital responses from the bureaus, upload them in the 'Portals & Contacts' tab to record deleted accounts.",
+                "chk_title_5": "Follow-Up / Round 2 (Sec 609)",
+                "chk_desc_5": "If there are items the bureau refuses to delete without proof, send the Round 2 letter (exigency of physical signatures).",
+                "title_sim": "📉 Interactive FICO Simulator",
+                "desc_sim": "Adjust the sliders to interactively evaluate which combinations can increase your credit score the most.",
+                "lbl_sim-base": "Starting Score (Base)",
+                "lbl_sim-util": "Card Usage (Utilization)",
+                "lbl_sim-col": "Accounts in Collection",
+                "lbl_sim-late": "Late Payments (Last 2 Years)",
+                "lbl_sim-age": "Credit History (Years)",
+                "lbl_gauge-est": "Est. Score",
+                "lbl_target-txt": "Goal for Excellent Financing:",
+                "title_letter-gen": "✉️ Dispute Letter Generator",
+                "desc_letter-gen": "Fill in the details or select a negative account detected by the AI analysis to write the letter. Letters are generated strictly in English for the bureaus.",
+                "lbl_ai-accounts-found": "⚡ Negative Accounts Found by AI:",
+                "lbl_form-name": "Full Name",
+                "lbl_form-date": "Mailing Date",
+                "lbl_form-address": "Full Address (must match your bills)",
+                "lbl_form-ssn": "Last 4 of Social Security",
+                "lbl_form-dob": "Date of Birth",
+                "lbl_form-type": "Letter Strategy",
+                "opt-round1": "Round 1: General Dispute (General Errors)",
+                "opt-609": "609 Strategy: Physical Signature Validation",
+                "opt-paydelete": "Pay for Delete: Collection Settlement Offer",
+                "opt-goodwill": "Goodwill Letter: Remove Late Payment",
+                "opt-bankruptcy": "Bankruptcy Deletion (FCRA Sec. 611/Public Records)",
+                "lbl_form-creditor": "Creditor / Agency",
+                "lbl_form-account": "Account Number",
+                "lbl_preview-title": "Letter Preview (In official English)",
+                "btn_copy-letter": "📋 Copy Text",
+                "btn_print-letter": "🖨️ Print / PDF",
+                "btn_reset_sim": "🔄 Reset Values",
+                "title_bureaus": "🌐 Official Bureau Portals and Contacts",
+                "desc_bureaus": "Quick access to government links and online dispute portals.",
+                "desc_bureau-exp": "The main bureau. Use it for online disputes or sending 609 disputes.",
+                "btn_link-exp": "Go to Web Dispute",
+                "desc_bureau-eqf": "Bureau focused on bank records and traditional history.",
+                "btn_link-eqf": "Go to Web Dispute",
+                "desc_bureau-tru": "Bureau commonly linked to vehicle financing and consumer loans.",
+                "btn_link-tru": "Go to Web Dispute",
+                "title_upload-reply": "📬 Did you receive a response from a bureau?",
+                "desc_upload-reply": "Upload the response letter (PDF or TXT). The AI will analyze which accounts were **deleted** vs **verified**, automatically update your simulator, and generate the Round 2 letter.",
+                "title_analysis-reply": "📉 Response Analysis Results",
+                "desc_cfpb": "If the credit bureaus do not respond within 30 business days or refuse to correct a verified error after sending your certified letter, immediately file a complaint with the CFPB. They usually respond and order the bureau to remove the account within 15 days.",
+                "btn_link-cfpb": "Submit Official Complaint on CFPB"
+            }
+        };
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('credit_repair_lang', lang);
+
+            // Actualizar botones de idioma
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            if (lang === 'es') {
+                document.getElementById('btn-lang-es').classList.add('active');
+            } else {
+                document.getElementById('btn-lang-en').classList.add('active');
+            }
+
+            // Traducir todos los elementos con ID de i18n o atributo data-i18n
+            for (const key in i18n[lang]) {
+                const element = document.getElementById(key) || 
+                                document.getElementById(key.replace(/_/g, '-')) || 
+                                document.querySelector(`[data-i18n="${key}"]`);
+                if (element) {
+                    element.textContent = i18n[lang][key];
+                }
+            }
+
+            // Traducir dinámicos específicos
+            document.getElementById('label-settings-toggle').textContent = lang === 'es' ? '⚙️ Configuración del Analizador IA (Clic para expandir)' : '⚙️ AI Analyzer Settings (Click to expand)';
+            document.getElementById('label-api-mode').textContent = lang === 'es' ? 'Modo de Conexión IA:' : 'AI Connection Mode:';
+            document.getElementById('opt-local-server').textContent = lang === 'es' ? 'Servidor Local de Equity Solar (Puerto 3000)' : 'Equity Solar Local Server (Port 3000)';
+            document.getElementById('opt-direct-api').textContent = lang === 'es' ? 'Conexión Directa a OpenAI (iOS, Android, Offline)' : 'Direct Connection to OpenAI (iOS, Android, Offline)';
+            document.getElementById('label-api-key').textContent = lang === 'es' ? 'OpenAI API Key (se guarda localmente):' : 'OpenAI API Key (saved locally):';
+            
+            // Textos del formulario
+            document.getElementById('label-details').textContent = lang === 'es' ? 'Detalles del Error (Inglés)' : 'Error Details (English)';
+            // Traducir placeholders de bancarrota
+            const courtInput = document.getElementById('bk-court');
+            const caseInput = document.getElementById('bk-case');
+            const detailsTextarea = document.getElementById('bk-details');
+            if (courtInput) courtInput.placeholder = lang === 'es' ? 'Ej: U.S. Bankruptcy Court, Southern District of Florida' : 'e.g. U.S. Bankruptcy Court, Southern District of Florida';
+            if (caseInput) caseInput.placeholder = lang === 'es' ? 'Ej: Case No: 23-12345-BKC' : 'e.g. Case No: 23-12345-BKC';
+            if (detailsTextarea) detailsTextarea.placeholder = lang === 'es' ? 'Detalles de la disputa...' : 'Dispute details...';
+            
+            // Actualizar simulador
+            calculateScore();
+            updateLetterTemplate();
+        }
+
+        function loadSavedLanguage() {
+            const savedLang = localStorage.getItem('credit_repair_lang');
+            if (savedLang) {
+                switchLanguage(savedLang);
+            } else {
+                switchLanguage('es'); // Por defecto español
+            }
+        }
+
+        // Variables globales
+        let detectedAccounts = [];
+
+        // --- CONFIGURACIÓN DE CONEXIÓN IA ---
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            const arrow = document.getElementById('settings-arrow');
+            if (panel.classList.contains('active')) {
+                panel.classList.remove('active');
+                arrow.textContent = '▼';
+            } else {
+                panel.classList.add('active');
+                arrow.textContent = '▲';
+            }
+        }
+
+        function changeAPIMode() {
+            const mode = document.getElementById('select-api-mode').value;
+            const keyGroup = document.getElementById('settings-key-group');
+            if (mode === 'direct-api') {
+                keyGroup.style.display = 'flex';
+            } else {
+                keyGroup.style.display = 'none';
+            }
+            localStorage.setItem('credit_repair_api_mode', mode);
+        }
+
+        function saveAPIKey() {
+            const key = document.getElementById('input-api-key').value.trim();
+            localStorage.setItem('credit_repair_direct_key', key);
+        }
+
+        function loadAPISettings() {
+            const savedMode = localStorage.getItem('credit_repair_api_mode');
+            const savedKey = localStorage.getItem('credit_repair_direct_key');
+            
+            if (savedMode) {
+                document.getElementById('select-api-mode').value = savedMode;
+                changeAPIMode();
+            } else {
+                if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.location.protocol === 'file:') {
+                    document.getElementById('select-api-mode').value = 'direct-api';
+                    changeAPIMode();
+                }
+            }
+            if (savedKey) {
+                document.getElementById('input-api-key').value = savedKey;
+            }
+        }
+
+        // TABS
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(tabId)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // CHECKLIST ACTIONS
+        function toggleCheck(id) {
+            const checkbox = document.getElementById(id);
+            if (event.target !== checkbox && event.target.className !== 'checkmark') {
+                checkbox.checked = !checkbox.checked;
+            }
+            saveProgress();
+        }
+
+        function saveProgress() {
+            const checklist = {};
+            document.querySelectorAll('.checklist-checkbox').forEach(chk => {
+                checklist[chk.id] = chk.checked;
+            });
+            localStorage.setItem('credit_repair_progress_ai', JSON.stringify(checklist));
+        }
+
+        function loadProgress() {
+            const progress = localStorage.getItem('credit_repair_progress_ai');
+            if (progress) {
+                const checklist = JSON.parse(progress);
+                for (const id in checklist) {
+                    const el = document.getElementById(id);
+                    if (el) el.checked = checklist[id];
+                }
+            }
+        }
+
+        // --- SIMULADOR FICO ---
+        const slideBase = document.getElementById('slide-base');
+        const slideUtilization = document.getElementById('slide-utilization');
+        const slideCollections = document.getElementById('slide-collections');
+        const slideLates = document.getElementById('slide-lates');
+        const slideAge = document.getElementById('slide-age');
+
+        const valBase = document.getElementById('val-base');
+        const valUtilization = document.getElementById('val-utilization');
+        const valCollections = document.getElementById('val-collections');
+        const valLates = document.getElementById('val-lates');
+        const valAge = document.getElementById('val-age');
+
+        const scoreNumber = document.getElementById('score-number');
+        const scoreText = document.getElementById('score-text');
+        const targetFeedback = document.getElementById('target-feedback');
+        const gaugeBar = document.getElementById('gauge-bar');
+
+        function calculateScore() {
+            const base = parseInt(slideBase.value);
+            const utilization = parseInt(slideUtilization.value);
+            const collections = parseInt(slideCollections.value);
+            const lates = parseInt(slideLates.value);
+            const age = parseInt(slideAge.value);
+
+            valBase.textContent = base;
+            valUtilization.textContent = utilization + '%';
+            valCollections.textContent = collections;
+            valLates.textContent = lates;
+            
+            if (currentLang === 'es') {
+                valAge.textContent = age + ' ' + (age === 1 ? 'año' : 'años');
+            } else {
+                valAge.textContent = age + ' ' + (age === 1 ? 'year' : 'years');
+            }
+
+            let score = base;
+
+            if (utilization <= 10) score += 45;
+            else if (utilization <= 30) score += 15;
+            else if (utilization > 50 && utilization <= 80) score -= 30;
+            else if (utilization > 80) score -= 75;
+
+            score -= (collections * 35);
+            score -= (lates * 25);
+            score += (age * 4);
+
+            if (score < 300) score = 300;
+            if (score > 850) score = 850;
+
+            score = Math.round(score);
+            scoreNumber.textContent = score;
+
+            const percentage = (score - 300) / (850 - 300);
+            const offset = 440 - (percentage * 440);
+            gaugeBar.style.strokeDashoffset = offset;
+
+            scoreText.className = 'score-status';
+            if (score < 580) {
+                scoreText.textContent = currentLang === 'es' ? 'Pobre' : 'Poor';
+                scoreText.classList.add('status-poor');
+                gaugeBar.style.stroke = 'var(--danger-color)';
+            } else if (score < 670) {
+                scoreText.textContent = currentLang === 'es' ? 'Aceptable (Fair)' : 'Fair';
+                scoreText.classList.add('status-fair');
+                gaugeBar.style.stroke = 'var(--warning-color)';
+            } else if (score < 740) {
+                scoreText.textContent = currentLang === 'es' ? 'Bueno' : 'Good';
+                scoreText.classList.add('status-good');
+                gaugeBar.style.stroke = 'var(--info-color)';
+            } else if (score < 800) {
+                scoreText.textContent = currentLang === 'es' ? 'Muy Bueno' : 'Very Good';
+                scoreText.classList.add('status-verygood');
+                gaugeBar.style.stroke = 'var(--success-color)';
+            } else {
+                scoreText.textContent = currentLang === 'es' ? 'Excepcional' : 'Exceptional';
+                scoreText.classList.add('status-exceptional');
+                gaugeBar.style.stroke = '#10b981';
+            }
+
+            if (score >= 650) {
+                targetFeedback.innerHTML = currentLang === 'es' ? `🎉 <strong>¡Cumples la Meta!</strong> Tu puntaje supera el mínimo de 650 para financiamiento a tasa cero.` : `🎉 <strong>Goal Achieved!</strong> Your score exceeds the 650 minimum for zero-rate solar financing.`;
+                targetFeedback.style.color = 'var(--success-color)';
+            } else {
+                const diff = 650 - score;
+                targetFeedback.innerHTML = currentLang === 'es' ? `Te faltan <strong>${diff} puntos</strong> para calificar a financiamiento solar a tasa cero.` : `You need <strong>${diff} more points</strong> to qualify for zero-interest solar financing.`;
+                targetFeedback.style.color = 'var(--text-muted)';
+            }
+        }
+
+        // --- EXTRACCIÓN DE TEXTO PDF Y TXT ---
+        async function extractTextFromFile(file) {
+            if (file.type === "text/plain") {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsText(file);
+                });
+            } else if (file.type === "application/pdf") {
+                const reader = new FileReader();
+                return new Promise((resolve, reject) => {
+                    reader.onload = async function (e) {
+                        try {
+                            const typedarray = new Uint8Array(e.target.result);
+                            const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                            let extractedText = "";
+                            for (let i = 1; i <= pdf.numPages; i++) {
+                                const page = await pdf.getPage(i);
+                                const textContent = await page.getTextContent();
+                                const pageText = textContent.items.map(item => item.str).join(" ");
+                                extractedText += `\n--- PAGE ${i} ---\n` + pageText;
+                            }
+                            resolve(extractedText);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                });
+            } else {
+                throw new Error("Formato no soportado. Sube un archivo PDF o TXT.");
+            }
+        }
+
+        // --- LLAMADAS AL SERVIDOR O DIRECTO A OPENAI ---
+        async function fetchAIAnalysis(text, isReport = true) {
+            const mode = document.getElementById('select-api-mode').value;
+            const apiKey = localStorage.getItem('credit_repair_direct_key');
+
+            const reportPrompt = `Eres un experto legal en reparación de crédito en EE. UU., especializado en la ley Fair Credit Reporting Act (FCRA).
+Analiza el siguiente texto de reporte de crédito y extrae de forma estructurada todas las cuentas negativas, colecciones o errores.
+
+Texto del reporte:
+"""
+${text}
+"""
+
+Devuelve un JSON estrictamente estructurado:
+{
+  "summary": "Resumen profesional de la salud crediticia y el puntaje estimado encontrado (en español si la interfaz es español).",
+  "baseScore": 550,
+  "accounts": [
+    {
+      "creditor": "Nombre del acreedor",
+      "accountNumber": "Número de cuenta",
+      "balance": "$Monto",
+      "status": "Colección, Pago Atrasado, Charge-off",
+      "disputeReason": "The legal reason under the FCRA to dispute this account (e.g., 'Account does not contain original physical contract signature under Sec 609' or 'Inaccurate balance reported' or 'Duplicate account reported'). MUST be written in English so it fits in the letter template.",
+      "recommendedLetter": "round1"
+    }
+  ],
+  "inconsistencies": [
+    "Lista de errores de formato o discrepancias encontradas en el reporte."
+  ],
+  "strategies": [
+    "Step-by-step credit building strategy tailored to this profile (e.g., 'Apply the AZEO method to optimize card utilization to under 6%' or 'Send a Pay for Delete agreement to creditor X' or 'Open a secured credit card to establish positive payment history'). MUST be written in English."
+  ]
+}`;
+
+            const replyPrompt = `Analiza el siguiente texto de respuesta de un buró de crédito en EE. UU. e identifica qué cuentas en disputa fueron "borradas / eliminadas" (deleted) y cuáles fueron "verificadas" (verified/updated).
+                
+Texto de la respuesta:
+"""
+${text}
+"""
+
+Devuelve un JSON:
+{
+  "summary": "Resumen claro de lo que dictaminó el buró (en español).",
+  "deletedAccounts": ["Acreedor Eliminado 1"],
+  "verifiedAccounts": [{"creditor": "Acreedor Verificado", "account": "Cuenta", "reason": "Razón"}],
+  "nextStepAction": "Siguiente paso sugerido (ej: 'El buró no eliminó X cuenta, por lo que procede enviar carta de Round 2 exigiendo firmas físicas')."
+}`;
+
+            const promptText = isReport ? reportPrompt : replyPrompt;
+            const systemPrompt = "Eres un analista de crédito experto que devuelve respuestas únicamente en formato JSON estructurado válido.";
+
+            if (mode === 'local-server') {
+                try {
+                    const apiEndpoint = window.location.protocol.startsWith('http')
+                        ? `${window.location.origin}/api/credit-repair/analyze`
+                        : 'http://localhost:3000/api/credit-repair/analyze';
+                    const response = await fetch(apiEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: isReport ? text : promptText })
+                    });
+                    if (!response.ok) throw new Error("Error en el servidor local");
+                    return await response.json();
+                } catch (localErr) {
+                    console.warn("Servidor local inaccesible. Intentando llamada directa a OpenAI...");
+                    if (!apiKey) {
+                        throw new Error(currentLang === 'es' ? 
+                            "El servidor local está desconectado. Para usar la app offline, ve a Configuración (arriba) e ingresa tu OpenAI API Key." :
+                            "Local server is offline. To use the app offline, expand settings and enter your OpenAI API Key.");
+                    }
+                }
+            }
+
+            if (!apiKey) {
+                throw new Error(currentLang === 'es' ?
+                    "No has configurado tu OpenAI API Key. Ve a Configuración de Analizador (arriba) y agrégala." :
+                    "OpenAI API Key is missing. Expand Settings at the top and enter your API Key.");
+            }
+
+            const directResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o-mini",
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: promptText }
+                    ],
+                    response_format: { type: "json_object" }
+                })
+            });
+
+            if (!directResponse.ok) {
+                const errData = await directResponse.json();
+                throw new Error(errData.error?.message || "Error en la llamada directa a la API de OpenAI");
+            }
+
+            const data = await directResponse.json();
+            return JSON.parse(data.choices[0].message.content.trim());
+        }
+
+        // --- GESTIÓN DE SUBIDAS ---
+        const fileReportInput = document.getElementById('file-report');
+        const dropZoneReport = document.getElementById('drop-zone-report');
+        const loadingReport = document.getElementById('loading-report');
+        const loadingReportText = document.getElementById('loading-report-text');
+        const auditResults = document.getElementById('audit-results');
+
+        dropZoneReport.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZoneReport.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) handleReportUpload(files[0]);
+        });
+        dropZoneReport.addEventListener('dragover', e => { e.preventDefault(); dropZoneReport.classList.add('dragover'); });
+        dropZoneReport.addEventListener('dragleave', () => dropZoneReport.classList.remove('dragover'));
+        fileReportInput.addEventListener('change', e => { if (e.target.files.length) handleReportUpload(e.target.files[0]); });
+
+        async function handleReportUpload(file) {
+            dropZoneReport.style.display = 'none';
+            loadingReport.style.display = 'flex';
+            loadingReportText.textContent = currentLang === 'es' ? "Extrayendo texto de tu PDF/TXT..." : "Extracting PDF text...";
+            
+            try {
+                const text = await extractTextFromFile(file);
+                loadingReportText.textContent = currentLang === 'es' ? "Auditando reporte con Inteligencia Artificial..." : "Auditing report with AI...";
+                
+                const data = await fetchAIAnalysis(text, true);
+                
+                // Mostrar reporte
+                displayAuditResults(data);
+                
+                // Configurar simulador
+                if (data.baseScore) {
+                    slideBase.value = data.baseScore;
+                    slideBase.setAttribute('data-initial-value', data.baseScore);
+                }
+                if (data.accounts) {
+                    slideCollections.value = data.accounts.filter(a => a.status.toLowerCase().includes('colec') || a.status.toLowerCase().includes('perd') || a.status.toLowerCase().includes('collect') || a.status.toLowerCase().includes('charge')).length;
+                    slideLates.value = data.accounts.filter(a => a.status.toLowerCase().includes('tard') || a.status.toLowerCase().includes('atras') || a.status.toLowerCase().includes('late')).length;
+                }
+                calculateScore();
+
+                // Checklists
+                document.getElementById('chk-1').checked = true;
+                document.getElementById('chk-2').checked = true;
+                saveProgress();
+
+                showToast(currentLang === 'es' ? "¡Reporte auditado exitosamente!" : "Report audited successfully!");
+                
+            } catch (err) {
+                console.error(err);
+                alert("Error: " + err.message);
+                dropZoneReport.style.display = 'flex';
+            } finally {
+                loadingReport.style.display = 'none';
+            }
+        }
+
+        function displayAuditResults(data) {
+            auditResults.style.display = 'block';
+            document.getElementById('audit-score-badge').textContent = `Score Base: ${data.baseScore || '520'}`;
+            document.getElementById('audit-summary-text').textContent = data.summary || 'Análisis exitoso.';
+
+            // RENDERIZAR ESTRATEGIAS DE IA (NUEVO)
+            const strSection = document.getElementById('audit-strategies-section');
+            const strList = document.getElementById('audit-strategies-list');
+            if (data.strategies && data.strategies.length > 0) {
+                strSection.style.display = 'block';
+                strList.innerHTML = '';
+                data.strategies.forEach(str => {
+                    const item = document.createElement('li');
+                    item.style.marginBottom = '6px';
+                    item.textContent = str;
+                    strList.appendChild(item);
+                });
+            } else {
+                strSection.style.display = 'none';
+            }
+
+            const listContainer = document.getElementById('audit-accounts-list');
+            listContainer.innerHTML = '';
+            
+            detectedAccounts = data.accounts || [];
+
+            const selectAI = document.getElementById('select-ai-account');
+            selectAI.innerHTML = currentLang === 'es' ? 
+                '<option value="">-- Selecciona una cuenta detectada por IA --</option>' :
+                '<option value="">-- Select an account detected by AI --</option>';
+
+            if (detectedAccounts.length === 0) {
+                listContainer.innerHTML = `<div style="color: var(--success-color); font-weight: 600; font-size: 0.9rem;">${currentLang === 'es' ? 'No se encontraron cuentas negativas obvias.' : 'No negative accounts found.'}</div>`;
+                document.getElementById('ai-accounts-selection-box').style.display = 'none';
+            } else {
+                document.getElementById('ai-accounts-selection-box').style.display = 'flex';
+                
+                detectedAccounts.forEach((acc, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'audit-item';
+                    item.innerHTML = `
+                        <div class="audit-item-info">
+                            <span class="audit-item-name">${acc.creditor} (${acc.accountNumber})</span>
+                            <span class="audit-item-status">${acc.status} - Balance: ${acc.balance || 'N/A'}</span>
+                            <span class="audit-item-reason">Recomendado / Reason: ${acc.disputeReason}</span>
+                        </div>
+                        <button class="audit-item-btn" onclick="selectAccountForDispute(${idx})">${currentLang === 'es' ? 'Disputar' : 'Dispute'}</button>
+                    `;
+                    listContainer.appendChild(item);
+
+                    const option = document.createElement('option');
+                    option.value = idx;
+                    option.textContent = `${acc.creditor} (${acc.status})`;
+                    selectAI.appendChild(option);
+                });
+            }
+
+            const incList = document.getElementById('audit-inconsistencies-list');
+            const incSection = document.getElementById('audit-inconsistencies-section');
+            if (data.inconsistencies && data.inconsistencies.length > 0) {
+                incSection.style.display = 'block';
+                incList.innerHTML = '';
+                data.inconsistencies.forEach(inc => {
+                    const item = document.createElement('div');
+                    item.className = 'inconsistency-item';
+                    item.innerHTML = `⚠️ <span>${inc}</span>`;
+                    incList.appendChild(item);
+                });
+            } else {
+                incSection.style.display = 'none';
+            }
+        }
+
+        function selectAccountForDispute(idx) {
+            const acc = detectedAccounts[idx];
+            if (!acc) return;
+
+            inputCreditor.value = acc.creditor;
+            inputAccount.value = acc.accountNumber;
+            inputDetails.value = acc.disputeReason; // La IA devuelve esto en inglés automáticamente
+            selectType.value = acc.recommendedLetter || 'round1';
+
+            updateLetterTemplate();
+            switchTab('tab-generator');
+            showToast(currentLang === 'es' ? `Cargada la cuenta ${acc.creditor}` : `Loaded account ${acc.creditor}`);
+        }
+
+        document.getElementById('select-ai-account').addEventListener('change', e => {
+            const idx = e.target.value;
+            if (idx !== "") selectAccountForDispute(idx);
+        });
+
+        // --- SUBIR RESPUESTA DE BURÓ ---
+        const fileReplyInput = document.getElementById('file-reply');
+        const dropZoneReply = document.getElementById('drop-zone-reply');
+        const loadingReply = document.getElementById('loading-reply');
+        const replyResultsCard = document.getElementById('reply-results-card');
+        const replyResultsSummary = document.getElementById('reply-results-summary');
+        const replyResultsActions = document.getElementById('reply-results-actions');
+
+        dropZoneReply.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZoneReply.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) handleReplyUpload(files[0]);
+        });
+        dropZoneReply.addEventListener('dragover', e => { e.preventDefault(); dropZoneReply.classList.add('dragover'); });
+        dropZoneReply.addEventListener('dragleave', () => dropZoneReply.classList.remove('dragover'));
+        fileReplyInput.addEventListener('change', e => { if (e.target.files.length) handleReplyUpload(e.target.files[0]); });
+
+        async function handleReplyUpload(file) {
+            dropZoneReply.style.display = 'none';
+            loadingReply.style.display = 'flex';
+            
+            try {
+                const text = await extractTextFromFile(file);
+                const result = await fetchAIAnalysis(text, false);
+                
+                displayReplyResults(result);
+                
+            } catch (err) {
+                console.error(err);
+                alert("Error: " + err.message);
+                dropZoneReply.style.display = 'flex';
+            } finally {
+                loadingReply.style.display = 'none';
+            }
+        }
+
+        function displayReplyResults(data) {
+            replyResultsCard.style.display = 'block';
+            replyResultsSummary.innerHTML = `
+                <p><strong>Resumen del Buró:</strong> ${data.summary || 'Análisis completado'}</p>
+                <p style="margin-top: 8px; color: var(--success-color);">
+                    ✅ <strong>Cuentas Eliminadas:</strong> ${data.deletedAccounts && data.deletedAccounts.length > 0 ? data.deletedAccounts.join(', ') : 'Ninguna'}
+                </p>
+                <p style="margin-top: 8px; color: var(--warning-color);">
+                    ⚠️ <strong>Cuentas Mantenidas:</strong> ${data.verifiedAccounts && data.verifiedAccounts.length > 0 ? data.verifiedAccounts.map(a => a.creditor).join(', ') : 'Ninguna'}
+                </p>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
+                    🎯 <strong>Recomendación FICO:</strong> ${data.nextStepAction || ''}
+                </p>
+            `;
+
+            const actionsContainer = document.getElementById('reply-results-actions');
+            actionsContainer.innerHTML = '';
+
+            if (data.verifiedAccounts && data.verifiedAccounts.length > 0) {
+                const btnRound2 = document.createElement('button');
+                btnRound2.className = 'btn-action btn-action-primary';
+                btnRound2.style.padding = '8px 16px';
+                btnRound2.style.fontSize = '0.8rem';
+                btnRound2.textContent = currentLang === 'es' ? '⚡ Preparar Carta Round 2 (Sec 609)' : '⚡ Prepare Round 2 Letter (Sec 609)';
+                btnRound2.onclick = () => {
+                    const firstVerified = data.verifiedAccounts[0];
+                    inputCreditor.value = firstVerified.creditor;
+                    inputAccount.value = firstVerified.account || '';
+                    inputDetails.value = `I am formally disputing this verified account. I demand to see the original contract bearing my handwritten signature under Sec 609.`;
+                    selectType.value = '609';
+                    
+                    updateLetterTemplate();
+                    switchTab('tab-generator');
+                    showToast('Campos preparados para carta de Round 2');
+                };
+                actionsContainer.appendChild(btnRound2);
+            }
+
+            document.getElementById('chk-4').checked = true;
+            saveProgress();
+        }
+
+        // --- GENERADOR DE CARTAS (OBLIGATORIAMENTE EN INGLÉS) ---
+        const inputName = document.getElementById('input-name');
+        const inputDate = document.getElementById('input-date');
+        const inputAddress = document.getElementById('input-address');
+        const inputSsn = document.getElementById('input-ssn');
+        const inputDob = document.getElementById('input-dob');
+        const selectType = document.getElementById('select-type');
+        const inputCreditor = document.getElementById('input-creditor');
+        const inputAccount = document.getElementById('input-account');
+        const inputDetails = document.getElementById('input-details');
+        const labelDetails = document.getElementById('label-details');
+        const letterPreview = document.getElementById('letter-preview');
+
+        inputDate.value = new Date().toISOString().split('T')[0];
+
+        function updateLetterTemplate() {
+            const name = inputName.value || '[YOUR FULL NAME]';
+            const rawDate = inputDate.value;
+            let formattedDate = '[DATE]';
+            if (rawDate) {
+                const dateParts = rawDate.split('-');
+                // Fecha formateada en inglés
+                formattedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]).toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            }
+
+            const address = inputAddress.value || '[YOUR FULL ADDRESS: STREET, CITY, STATE, ZIP]';
+            const ssn = inputSsn.value ? 'XXX-XX-' + inputSsn.value : '[SSN]';
+            
+            let dob = '[DOB]';
+            if (inputDob.value) {
+                const dobParts = inputDob.value.split('-');
+                dob = new Date(dobParts[0], dobParts[1]-1, dobParts[2]).toLocaleDateString('en-US');
+            }
+            
+            const type = selectType.value;
+
+            // Dynamic labels for public records / bankruptcy
+            const labelCreditor = document.getElementById('lbl-form-creditor');
+            const labelAccount = document.getElementById('lbl-form-account');
+            
+            if (type === 'bankruptcy') {
+                if (labelCreditor) labelCreditor.textContent = currentLang === 'es' ? 'Tribunal de Bancarrota' : 'Bankruptcy Court / District';
+                if (labelAccount) labelAccount.textContent = currentLang === 'es' ? 'Número de Caso' : 'Case Number';
+            } else {
+                if (labelCreditor) labelCreditor.textContent = currentLang === 'es' ? 'Acreedor / Agencia' : 'Creditor / Agency';
+                if (labelAccount) labelAccount.textContent = currentLang === 'es' ? 'Número de Cuenta' : 'Account Number';
+            }
+
+            const creditor = inputCreditor.value || (type === 'bankruptcy' ? '[BANKRUPTCY COURT NAME/DISTRICT]' : '[CREDITOR OR COLLECTION AGENCY]');
+            const account = inputAccount.value || (type === 'bankruptcy' ? '[CASE NUMBER]' : '[ACCOUNT NUMBER]');
+            const details = inputDetails.value || '[SPECIFIC DISPUTE REASON / DETAILS]';
+
+            if (type === 'goodwill') {
+                labelDetails.textContent = currentLang === 'es' ? 'Razón del retraso (Inglés)' : 'Reason for delay (English)';
+            } else if (type === 'paydelete') {
+                labelDetails.textContent = currentLang === 'es' ? 'Monto propuesto de liquidación ($)' : 'Proposed settlement amount ($)';
+            } else if (type === 'bankruptcy') {
+                labelDetails.textContent = currentLang === 'es' ? 'Detalles de la Bancarrota (Inglés, ej: Chapter 7, Discharged 10/12/2019)' : 'Bankruptcy Details (English, e.g. Chapter 7, Discharged 10/12/2019)';
+            } else {
+                labelDetails.textContent = currentLang === 'es' ? 'Detalles específicos del error (Inglés)' : 'Specific error details (English)';
+            }
+
+            let letterContent = '';
+
+            switch(type) {
+                case 'bankruptcy':
+                    letterContent = 
+name + "\n" +
+address + "\n" +
+"SSN (Last 4): " + ssn + "\n" +
+"DOB: " + dob + "\n\n" +
+"Date: " + formattedDate + "\n\n" +
+"To: Credit Bureau Public Records Dispute Department\n\n" +
+"RE: Dispute of Inaccurate Public Record - Bankruptcy Case No: " + account + "\n\n" +
+"To Whom It May Concern,\n\n" +
+"I am writing to formally dispute the public record item (bankruptcy) appearing on my credit report under Case Number: " + account + " (reported under " + creditor + "). Pursuant to the Fair Credit Reporting Act (FCRA), 15 U.S.C. \u00a7 1681i, I request an immediate investigation regarding this item on the following grounds:\n\n" +
+"1. Original Source Verification Failure (15 U.S.C. \u00a7 1681i):\n" +
+"Under federal law, you must verify disputed public records directly with the original source of the information (the U.S. Bankruptcy Court). However, bankruptcy court clerks do not verify case records or sign-offs for credit bureaus. Therefore, you are incapable of verifying this public record with the original source. Any claim that this record was \"verified\" directly with the court is fraudulent. If you are verifying this through a third-party vendor (such as LexisNexis, LCI, or Innovis), please disclose their full name, address, and verification procedures under 15 U.S.C. \u00a7 1681g.\n\n" +
+"2. Factual Inaccuracies in Reporting:\n" +
+"The public record contains factual inaccuracies. Specifically:\n" +
+(details || "The filing date, discharge date, liabilities, assets, or case status are reported incorrectly, causing severe damage to my credit profile.") + "\n\n" +
+"3. Reporting of Discharged Accounts:\n" +
+"Furthermore, if any associated debts are still being reported with active balances, collection statuses, or charge-off marks instead of \"$0 balance - discharged in bankruptcy\", please delete or update those accounts immediately.\n\n" +
+"Please contact the original court to verify this information. Under federal law, if you cannot verify this public record directly with the court within 30 days, it must be completely and permanently removed from my credit file.\n\n" +
+"Sincerely,\n\n" +
+"_______________________________\n" +
+name;
+                    break;
+                case 'round1':
+                    letterContent = 
+`${name}
+${address}
+SSN (Last 4): ${ssn}
+DOB: ${dob}
+
+Date: ${formattedDate}
+
+To: Credit Bureau Dispute Department
+
+RE: Formal Dispute of Inaccurate Credit Information
+
+To Whom It May Concern,
+
+I am writing to formally dispute the following inaccurate information appearing on my credit report. Pursuant to the Fair Credit Reporting Act (FCRA), 15 U.S.C. § 1681i, I request an immediate investigation regarding the item listed below:
+
+Disputed Account:
+Creditor/Company: ${creditor}
+Account Number: ${account}
+
+Reason for Dispute:
+${details}
+
+Please verify the accuracy of this item with the original source. Under federal law, if you cannot verify this information within 30 days, it must be completely and permanently removed from my credit file. 
+
+Please send me a copy of the updated credit report showing the corrections made.
+
+Sincerely,
+
+_______________________________
+${name}`;
+                    break;
+
+                case '609':
+                    letterContent = 
+`${name}
+${address}
+SSN (Last 4): ${ssn}
+DOB: ${dob}
+
+Date: ${formattedDate}
+
+To: Credit Bureau Verification Department
+
+RE: Request for Account Verification under Section 609 (15 U.S.C. § 1681g)
+
+To Whom It May Concern,
+
+I am writing to request physical verification of the contract or agreement associated with the account listed below under the provisions of Section 609 of the Fair Credit Reporting Act (15 U.S.C. § 1681g). 
+
+Disputed Account:
+Creditor/Company: ${creditor}
+Account Number: ${account}
+
+Specific Request:
+I demand to inspect the original physical contract bearing my handwritten signature that demonstrates my consent to this debt. A computer-generated printout is not sufficient proof under federal law.
+
+If you are unable to provide a copy of the original signed contract within 30 days, this item must be deemed unverifiable and must be deleted from my credit report immediately.
+
+I have enclosed copies of my identification and proof of address to verify my identity.
+
+Sincerely,
+
+_______________________________
+${name}`;
+                    break;
+
+                case 'paydelete':
+                    letterContent = 
+`${name}
+${address}
+SSN (Last 4): ${ssn}
+
+Date: ${formattedDate}
+
+To:
+${creditor}
+[COLLECTION AGENCY ADDRESS]
+
+RE: Settlement Offer and Deletion of Negative Account ${account}
+
+Dear Collection Representative,
+
+I am writing regarding the collection account referenced above. I wish to settle this matter completely and amicably.
+
+I am prepared to offer a one-time settlement payment of: ${details}.
+
+This offer is strictly conditioned upon your written agreement to perform the following:
+1. Accept this amount as full and final payment of the debt.
+2. Completely and permanently delete this account and any associated negative history from my credit files at Experian, Equifax, and TransUnion.
+3. You will not report this account as "settled for less than full balance", but will remove it entirely.
+
+If you agree to these terms, please send a formal acceptance letter signed by an authorized representative on your company letterhead. Upon receipt of this agreement, I will send the payment via certified cashier's check within 5 business days.
+
+Please note this offer is for settlement purposes only and does not constitute an admission of liability.
+
+Sincerely,
+
+_______________________________
+${name}`;
+                    break;
+
+                case 'goodwill':
+                    letterContent = 
+`${name}
+${address}
+SSN (Last 4): ${ssn}
+
+Date: ${formattedDate}
+
+To:
+${creditor}
+[CREDITOR ADDRESS]
+
+RE: Goodwill Request to Remove Late Payment on Account ${account}
+
+To Whom It May Concern,
+
+I am writing to request a goodwill adjustment regarding the late payment reported on my account dated [LATE DATE].
+
+I have been a loyal customer of your institution for several years. Unfortunately, I experienced a temporary setback due to the following circumstances:
+${details}
+
+This situation was temporary and completely out of character. As you can see from my overall payment history, I have always paid my bills on time before and after this event. 
+
+I am currently applying for a critical loan, and this late payment mark severely impacts my credit score. Given my positive long-term track record, I respectfully request that you remove this late payment record from the credit bureaus as a gesture of goodwill.
+
+Thank you for your time and understanding.
+
+Sincerely,
+
+_______________________________
+${name}`;
+                    break;
+            }
+
+            letterPreview.textContent = letterContent;
+        }
+
+                function setBkStrategy(type) {
+            const detailsTextarea = document.getElementById('bk-details');
+            if (type === 'source') {
+                detailsTextarea.value = "The bankruptcy public record cannot be verified directly with the original court archives. Bankruptcy court clerks do not verify public record cases for commercial consumer reporting agencies. Please delete this unverified public record immediately.";
+            } else if (type === 'dates') {
+                detailsTextarea.value = "The filing date and discharge date for this public record are inaccurate. Under FCRA 15 U.S.C. Section 607(b), you are required to maintain maximum possible accuracy. Delete this inaccurate record.";
+            } else if (type === 'balances') {
+                detailsTextarea.value = "Multiple accounts included in this bankruptcy are currently being reported with active balances and past due status. Under bankruptcy guidelines and FCRA standards, all debts discharged in bankruptcy must report a $0 balance. Please correct or delete these files.";
+            } else if (type === 'lexis') {
+                detailsTextarea.value = "I have disputed and frozen my consumer data with LexisNexis, LCI, and Innovis. Since you obtain public records from these third-party intermediaries and they are currently unavailable/restricted, you cannot verify this public record. Under FCRA Section 611, it must be permanently removed.";
+            }
+        }
+
+        function generateBkLetter() {
+            const court = document.getElementById('bk-court').value.trim();
+            const caseNo = document.getElementById('bk-case').value.trim();
+            const details = document.getElementById('bk-details').value.trim();
+
+            if (!court || !caseNo) {
+                alert(currentLang === 'es' ? 'Por favor ingresa el Tribunal y el Número de Caso.' : 'Please enter the Bankruptcy Court and Case Number.');
+                return;
+            }
+
+            // Sync with main form inputs
+            document.getElementById('select-type').value = 'bankruptcy';
+            document.getElementById('input-creditor').value = court;
+            document.getElementById('input-account').value = caseNo;
+            document.getElementById('input-details').value = details;
+
+            // Trigger generation
+            updateLetterTemplate();
+
+            // Switch tab to the Generator
+            switchTab('tab-generator');
+
+            // Scroll to letter preview area
+            document.getElementById('letter-preview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+async function copyLetterText() {
+            const text = letterPreview.innerText || letterPreview.textContent;
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const range = document.createRange();
+                    range.selectNode(letterPreview);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    document.execCommand('copy');
+                    window.getSelection().removeAllRanges();
+                }
+                showToast(currentLang === 'es' ? '¡Texto copiado al portapapeles!' : 'Text copied to clipboard!');
+            } catch (err) {
+                showToast('Error');
+            }
+        }
+
+        function printLetter() {
+            let printDiv = document.getElementById('print-container-clean');
+            if (!printDiv) {
+                printDiv = document.createElement('div');
+                printDiv.id = 'print-container-clean';
+                printDiv.className = 'print-container-clean';
+                document.body.appendChild(printDiv);
+            }
+            printDiv.textContent = letterPreview.innerText || letterPreview.textContent;
+            window.print();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function resetSimulator() {
+            if (detectedAccounts.length > 0) {
+                const savedScore = slideBase.getAttribute('data-initial-value') || 550;
+                slideBase.value = savedScore;
+                slideUtilization.value = 30; // valor objetivo recomendado
+                slideCollections.value = 0; // simular que limpiamos todas
+                slideLates.value = 0; // simular que limpiamos todos
+                slideAge.value = 5; // simular más años de historial
+            } else {
+                slideBase.value = 550;
+                slideUtilization.value = 75;
+                slideCollections.value = 3;
+                slideLates.value = 2;
+                slideAge.value = 3;
+            }
+            calculateScore();
+            showToast(currentLang === 'es' ? 'Simulador restablecido' : 'Simulator reset');
+        }
+
+        // LISTENERS
+        [slideBase, slideUtilization, slideCollections, slideLates, slideAge].forEach(slider => {
+            slider.addEventListener('input', calculateScore);
+        });
+
+        [inputName, inputDate, inputAddress, inputSsn, inputDob, selectType, inputCreditor, inputAccount, inputDetails].forEach(input => {
+            input.addEventListener('input', updateLetterTemplate);
+        });
+
+        // INIT
+        loadAPISettings();
+        loadProgress();
+        loadSavedLanguage();
+        updateLetterTemplate();
+
+    </script>
+</body>
+</html>
