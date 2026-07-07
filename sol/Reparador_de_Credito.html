@@ -1075,6 +1075,12 @@
                     <span class="upload-subtext" id="subtext-upload">Soporta PDFs descargados de Experian, Equifax o TransUnion.</span>
                     <input type="file" id="file-report" class="file-input" accept=".pdf,.txt">
                 </div>
+                <!-- AYUDA DE DESCARGA DE REPORTES -->
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="javascript:void(0)" onclick="openReportGuideModal()" style="color: #06b6d4; font-size: 0.85rem; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;" id="lnk-report-guide">
+                        ❓ ¿Cómo descargar mi reporte de crédito en PDF? (Instrucciones)
+                    </a>
+                </div>
 
                 <div class="loading-overlay" id="loading-report">
                     <div class="spinner"></div>
@@ -1612,6 +1618,10 @@
                 "opt-bankruptcy": "Eliminación de Bancarrota (FCRA Sec. 611/Public Records)",
                 "opt-validation": "Validación de Deuda (FDCPA Sec. 809 - Agencias de Cobro)",
                 "btn-open-guide": "📖 Guía de Uso",
+                "lnk-report-guide": "❓ ¿Cómo descargar mi reporte de crédito en PDF? (Instrucciones)",
+                "lbl-report-guide-title": "📋 Guía de Descarga de Reportes (PDF)",
+                "lbl-report-guide-subtitle": "Cómo exportar tu reporte en PDF para subirlo al analizador",
+                "btn-report-guide-close": "Entendido",
                 "lbl-modal-title": "📖 Guía de Funcionamiento",
                 "lbl-modal-subtitle": "Domina el proceso de reparación en 6 sencillos pasos",
                 "lbl-step1-title": "1. Configuración de Inteligencia Artificial",
@@ -1731,6 +1741,10 @@
                 "opt-bankruptcy": "Bankruptcy Deletion (FCRA Sec. 611/Public Records)",
                 "opt-validation": "Debt Validation (FDCPA Sec. 809 - Collection Agencies)",
                 "btn-open-guide": "📖 User Guide",
+                "lnk-report-guide": "❓ How to download my credit report as PDF? (Instructions)",
+                "lbl-report-guide-title": "📋 Report Download Guide (PDF)",
+                "lbl-report-guide-subtitle": "How to export your report as PDF to upload to the analyzer",
+                "btn-report-guide-close": "Understood",
                 "lbl-modal-title": "📖 Operation Guide",
                 "lbl-modal-subtitle": "Master the credit repair process in 6 simple steps",
                 "lbl-step1-title": "1. Artificial Intelligence Configuration",
@@ -2671,6 +2685,14 @@ ${name}`;
             document.getElementById('letter-preview').scrollIntoView({ behavior: 'smooth' });
         }
 
+        function openReportGuideModal() {
+            document.getElementById('report-guide-modal').style.display = 'flex';
+        }
+
+        function closeReportGuideModal() {
+            document.getElementById('report-guide-modal').style.display = 'none';
+        }
+
         function openGuideModal() {
             document.getElementById('guide-modal').style.display = 'flex';
         }
@@ -2754,6 +2776,49 @@ async function copyLetterText() {
         updateLetterTemplate();
 
     </script>
+    <!-- MODAL DE GUÍA DE DESCARGA DE REPORTES -->
+    <div id="report-guide-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px); z-index: 10001; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #151c2c; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); padding: 30px; font-family: 'Outfit', sans-serif; color: #f8fafc; position: relative;">
+            <button onclick="closeReportGuideModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; transition: color 0.2s ease;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#94a3b8'">×</button>
+            <div style="text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                <h2 style="color: #06b6d4; font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px;" id="lbl-report-guide-title">📋 Guía de Descarga de Reportes (PDF)</h2>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin: 5px 0 0 0;" id="lbl-report-guide-subtitle">Cómo exportar tu reporte en PDF para subirlo al analizador</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #3b82f6; font-size: 1rem; display: flex; align-items: center; gap: 8px;">Experian (Portal Oficial)</h4>
+                    <ol style="margin: 0; padding-left: 20px; font-size: 0.82rem; color: #cbd5e1; line-height: 1.6;">
+                        <li>Inicia sesión en tu cuenta de <strong>Experian.com</strong>.</li>
+                        <li>Ve a la pestaña de <strong>"Credit"</strong> (Crédito) y selecciona <strong>"Credit Report"</strong>.</li>
+                        <li>En la esquina superior derecha del reporte, haz clic en el botón de <strong>"Print"</strong> (Imprimir).</li>
+                        <li>En el menú de destino de impresión, selecciona <strong>"Guardar como PDF"</strong> (Save as PDF) y descárgalo.</li>
+                    </ol>
+                </div>
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-size: 1rem; display: flex; align-items: center; gap: 8px;">Credit Karma (TU / Equifax)</h4>
+                    <ol style="margin: 0; padding-left: 20px; font-size: 0.82rem; color: #cbd5e1; line-height: 1.6;">
+                        <li>Inicia sesión en tu cuenta de <strong>CreditKarma.com</strong>.</li>
+                        <li>Haz clic en tu puntuación de <strong>TransUnion</strong> o de <strong>Equifax</strong>.</li>
+                        <li>Desplázate hasta el final de la página y haz clic en el enlace <strong>"Print your credit report"</strong>.</li>
+                        <li>En la vista previa, selecciona <strong>"Guardar como PDF"</strong> en la opción de impresora y descárgalo.</li>
+                    </ol>
+                </div>
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #fb8500; font-size: 1rem; display: flex; align-items: center; gap: 8px;">AnnualCreditReport.com (Gratuito)</h4>
+                    <ol style="margin: 0; padding-left: 20px; font-size: 0.82rem; color: #cbd5e1; line-height: 1.6;">
+                        <li>Visita el portal oficial de la ley federal: <strong>AnnualCreditReport.com</strong>.</li>
+                        <li>Completa el formulario de identidad para solicitar tus reportes anuales gratuitos.</li>
+                        <li>Cuando veas cada reporte en pantalla, haz clic en <strong>"Print"</strong> o presiona <strong>Ctrl + P</strong>.</li>
+                        <li>Guarda el archivo seleccionando <strong>"Save as PDF"</strong> para subirlo al analizador.</li>
+                    </ol>
+                </div>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+                <button onclick="closeReportGuideModal()" style="background: rgba(255,255,255,0.05); color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); padding: 10px 24px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" id="btn-report-guide-close">Entendido</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL DE GUÍA DE USO PREMIUM -->
     <div id="guide-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
         <div style="background: #151c2c; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); padding: 30px; font-family: 'Outfit', sans-serif; color: #f8fafc; position: relative;">
