@@ -1017,7 +1017,8 @@
             <div class="header-controls">
                 <div class="app-badge" data-i18n="badge_text">Multiplataforma</div>
                 <!-- BOTÓN LLAMATIVO DE IDIOMAS -->
-                <div class="lang-toggle-container">
+                <div class="lang-toggle-container" style="display: flex; align-items: center;">
+                    <button id="btn-open-guide" onclick="openGuideModal()" style="background: linear-gradient(135deg, #fb8500 0%, #ffb703 100%); color: #0b0f19; border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; margin-right: 15px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(251, 133, 0, 0.2); transition: transform 0.2s ease;">📖 Guía de Uso</button>
                     <button class="lang-btn active" id="btn-lang-es" onclick="switchLanguage('es')">🇪🇸 ES</button>
                     <button class="lang-btn" id="btn-lang-en" onclick="switchLanguage('en')">🇺🇸 EN</button>
                 </div>
@@ -1610,6 +1611,22 @@
                 "opt-goodwill": "Carta de Buena Voluntad: Remover pago tardío",
                 "opt-bankruptcy": "Eliminación de Bancarrota (FCRA Sec. 611/Public Records)",
                 "opt-validation": "Validación de Deuda (FDCPA Sec. 809 - Agencias de Cobro)",
+                "btn-open-guide": "📖 Guía de Uso",
+                "lbl-modal-title": "📖 Guía de Funcionamiento",
+                "lbl-modal-subtitle": "Domina el proceso de reparación en 6 sencillos pasos",
+                "lbl-step1-title": "1. Configuración de Inteligencia Artificial",
+                "lbl-step1-desc": "Por defecto, la app usa la conexión directa a nuestro servidor. Si ejecutas la app de forma completamente offline (local) en tu celular o tablet, introduce tu API Key personal de OpenAI en la barra superior expandible de Ajustes.",
+                "lbl-step2-title": "2. Análisis Automatizado por IA",
+                "lbl-step2-desc": "Copia todo el texto de tu reporte de crédito oficial (de portales como Credit Karma o AnnualCreditReport) y pégalo en el cuadro del Analizador de Reporte. Haz clic en 'Analizar Reporte' para que la IA extraiga de forma instantánea las cuentas negativas y calcule tu puntuación FICO estimada.",
+                "lbl-step3-title": "3. Selección de Estrategia de Disputa",
+                "lbl-step3-desc": "Elige la plantilla de disputa ideal según el caso: Round 1 para disputas generales, Sección 609 para exigir contratos firmados, o el módulo de Bancarrota para utilizar vacíos legales (FCRA Sec. 611). Introduce el nombre de la cuenta, número de caso/cuenta y los detalles del error.",
+                "lbl-step4-title": "4. Generación, Copiado e Impresión",
+                "lbl-step4-desc": "Ingresa tu información de contacto (Nombre, Dirección, SSN y Fecha de Nacimiento). Las cartas de disputa se generarán automáticamente en inglés formal y legal. Haz clic en Copiar Texto o haz clic en Imprimir/PDF para guardarlo como documento digital listo para imprimir.",
+                "lbl-step5-title": "5. Adjuntar Documentación de Identidad",
+                "lbl-step5-desc": "MUY IMPORTANTE: Adjunta siempre una copia de tu ID con foto, una prueba de dirección recente (recibo de servicios públicos) y tu tarjeta de Seguro Social (SSN). Sin esto, los burós descartarán tu carta como fraudulenta.",
+                "lbl-step6-title": "6. Envío por Correo Certificado",
+                "lbl-step6-desc": "Envía las cartas impresas junto con tus identificaciones por correo postal oficial (USPS). Utiliza la modalidad de Correo Certificado con Acuse de Recibo (Certified Mail with Return Receipt) para tener prueba legal de la fecha de entrega y forzar los 30 días límite de respuesta.",
+                "btn-guide-close": "Entendido",
                 "lbl-checklist-title": "⚠️ Documentos Obligatorios a Adjuntar",
                 "lbl-checklist-desc": "Para evitar que los burós o acreedores clasifiquen tu carta como fraudulenta o la descarten, debes adjuntar siempre copias de:",
                 "lbl-checklist-item1": "Identificación Oficial: Licencia de conducir o ID estatal con foto (vigente).",
@@ -1713,6 +1730,22 @@
                 "opt-goodwill": "Goodwill Letter: Remove Late Payment",
                 "opt-bankruptcy": "Bankruptcy Deletion (FCRA Sec. 611/Public Records)",
                 "opt-validation": "Debt Validation (FDCPA Sec. 809 - Collection Agencies)",
+                "btn-open-guide": "📖 User Guide",
+                "lbl-modal-title": "📖 Operation Guide",
+                "lbl-modal-subtitle": "Master the credit repair process in 6 simple steps",
+                "lbl-step1-title": "1. Artificial Intelligence Configuration",
+                "lbl-step1-desc": "By default, the app uses direct connection to our server. If you run the app completely offline (locally) on your phone or tablet, enter your personal OpenAI API Key in the expandable settings bar above.",
+                "lbl-step2-title": "2. Automated AI Report Analysis",
+                "lbl-step2-desc": "Copy all text from your official credit report (from portals like Credit Karma or AnnualCreditReport) and paste it into the Report Analyzer box. Click 'Analyze Report' for the AI to instantly extract negative accounts and calculate your FICO score estimate.",
+                "lbl-step3-title": "3. Select Dispute Strategy",
+                "lbl-step3-desc": "Choose the ideal dispute template: Round 1 for general disputes, Section 609 to demand physical contracts, or the Bankruptcy module to utilize legal loopholes (FCRA Sec. 611). Enter the court/creditor name, case/account number, and dispute details.",
+                "lbl-step4-title": "4. Generate, Copy & Print",
+                "lbl-step4-desc": "Enter your contact details (Name, Address, SSN, and DOB). The letters will be automatically generated in official legal English. Click Copy Text or Print/PDF to save a document ready for mailing.",
+                "lbl-step5-title": "5. Attach Identification Documents",
+                "lbl-step5-desc": "CRITICAL: Always attach copies of your photo ID, recent proof of address (utility bill), and Social Security Card (SSN). Without these, the bureaus will reject your letter as suspicious.",
+                "lbl-step6-title": "6. Send via Certified Mail",
+                "lbl-step6-desc": "Send printed letters and documents via the official postal service (USPS). Use Certified Mail with Return Receipt to obtain legal proof of the delivery date, triggering the 30-day response deadline.",
+                "btn-guide-close": "Understood",
                 "lbl-checklist-title": "⚠️ Mandatory Documents to Attach",
                 "lbl-checklist-desc": "To prevent credit bureaus or creditors from rejecting your dispute as suspicious or spam, you must attach copies of:",
                 "lbl-checklist-item1": "Official Photo ID: Driver's license or state-issued photo ID (valid).",
@@ -2638,6 +2671,14 @@ ${name}`;
             document.getElementById('letter-preview').scrollIntoView({ behavior: 'smooth' });
         }
 
+        function openGuideModal() {
+            document.getElementById('guide-modal').style.display = 'flex';
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guide-modal').style.display = 'none';
+        }
+
 async function copyLetterText() {
             const text = letterPreview.innerText || letterPreview.textContent;
             try {
@@ -2713,5 +2754,62 @@ async function copyLetterText() {
         updateLetterTemplate();
 
     </script>
+    <!-- MODAL DE GUÍA DE USO PREMIUM -->
+    <div id="guide-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #151c2c; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); padding: 30px; font-family: 'Outfit', sans-serif; color: #f8fafc; position: relative;">
+            <button onclick="closeGuideModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; transition: color 0.2s ease;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#94a3b8'">×</button>
+            <div style="text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                <h2 style="color: #fb8500; font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px;" id="lbl-modal-title">📖 Guía de Funcionamiento</h2>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin: 5px 0 0 0;" id="lbl-modal-subtitle">Domina el proceso de reparación en 6 sencillos pasos</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <div style="background: rgba(251, 133, 0, 0.1); color: #fb8500; border: 1px solid rgba(251, 133, 0, 0.3); border-radius: 50%; width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem;">1</div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #f8fafc;" id="lbl-step1-title">1. Configuración de Inteligencia Artificial</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;" id="lbl-step1-desc">Por defecto, la app usa la conexión directa a nuestro servidor. Si ejecutas la app de forma completamente offline (local) en tu celular o tablet, introduce tu API Key personal de OpenAI en la barra superior expandible de Ajustes.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <div style="background: rgba(251, 133, 0, 0.1); color: #fb8500; border: 1px solid rgba(251, 133, 0, 0.3); border-radius: 50%; width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem;">2</div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #f8fafc;" id="lbl-step2-title">2. Análisis Automatizado por IA</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;" id="lbl-step2-desc">Copia todo el texto de tu reporte de crédito oficial (de portales como Credit Karma o AnnualCreditReport) y pégalo en el cuadro del Analizador de Reporte. Haz clic en 'Analizar Reporte' para que la IA extraiga de forma instantánea las cuentas negativas y calcule tu puntuación FICO estimada.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <div style="background: rgba(251, 133, 0, 0.1); color: #fb8500; border: 1px solid rgba(251, 133, 0, 0.3); border-radius: 50%; width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem;">3</div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #f8fafc;" id="lbl-step3-title">3. Selección de Estrategia de Disputa</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;" id="lbl-step3-desc">Elige la plantilla de disputa ideal según el caso: Round 1 para disputas generales, Sección 609 para exigir contratos firmados, o el módulo de Bancarrota para utilizar vacíos legales (FCRA Sec. 611). Introduce el nombre de la cuenta, número de caso/cuenta y los detalles del error.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <div style="background: rgba(251, 133, 0, 0.1); color: #fb8500; border: 1px solid rgba(251, 133, 0, 0.3); border-radius: 50%; width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem;">4</div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #f8fafc;" id="lbl-step4-title">4. Generación, Copiado e Impresión</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;" id="lbl-step4-desc">Ingresa tu información de contacto (Nombre, Dirección, SSN y Fecha de Nacimiento). Las cartas de disputa se generarán automáticamente en inglés formal y legal. Haz clic en Copiar Texto o haz clic en Imprimir/PDF para guardarlo como documento digital listo para imprimir.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <div style="background: rgba(251, 133, 0, 0.1); color: #fb8500; border: 1px solid rgba(251, 133, 0, 0.3); border-radius: 50%; width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem;">5</div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #f8fafc;" id="lbl-step5-title">5. Adjuntar Documentación de Identidad</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;" id="lbl-step5-desc">MUY IMPORTANTE: Adjunta siempre una copia de tu ID con foto, una prueba de dirección recente (recibo de servicios públicos) y tu tarjeta de Seguro Social (SSN). Sin esto, los burós descartarán tu carta como fraudulenta.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <div style="background: rgba(251, 133, 0, 0.1); color: #fb8500; border: 1px solid rgba(251, 133, 0, 0.3); border-radius: 50%; width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem;">6</div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #f8fafc;" id="lbl-step6-title">6. Envío por Correo Certificado</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;" id="lbl-step6-desc">Envía las cartas impresas junto con tus identificaciones por correo postal oficial (USPS). Utiliza la modalidad de Correo Certificado con Acuse de Recibo (Certified Mail with Return Receipt) para tener prueba legal de la fecha de entrega y forzar los 30 días límite de respuesta.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+                <button onclick="closeGuideModal()" style="background: rgba(255,255,255,0.05); color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); padding: 10px 24px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" id="btn-guide-close">Entendido</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
