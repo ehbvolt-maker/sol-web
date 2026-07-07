@@ -1372,6 +1372,7 @@
                                 <option value="paydelete" id="opt-paydelete">Pay for Delete: Liquidación en Cobros</option>
                                 <option value="goodwill" id="opt-goodwill">Carta de Buena Voluntad: Remover pago tardío</option>
                                 <option value="bankruptcy" id="opt-bankruptcy">Eliminación de Bancarrota (FCRA Sec. 611/Public Records)</option>
+                                <option value="validation" id="opt-validation">Validación de Deuda (FDCPA Sec. 809 - Agencias de Cobro)</option>
                             </select>
                         </div>
                         <div class="input-group">
@@ -1395,6 +1396,21 @@
                         <div class="action-buttons">
                             <button class="btn-action btn-action-secondary" onclick="copyLetterText()" id="btn-copy-letter">📋 Copiar Texto</button>
                             <button class="btn-action btn-action-primary" onclick="printLetter()" id="btn-print-letter">🖨️ Imprimir / PDF</button>
+                        </div>
+                        
+                        <!-- CHECKLIST DE DOCUMENTOS OBLIGATORIOS -->
+                        <div id="required-docs-checklist" style="background: rgba(251, 133, 0, 0.06); border: 1px solid rgba(251, 133, 0, 0.25); border-radius: 12px; padding: 16px; margin-top: 15px;">
+                            <h4 style="color: #fb8500; font-size: 0.95rem; font-weight: bold; margin-top: 0; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;" id="lbl-checklist-title">
+                                ⚠️ Documentos Obligatorios a Adjuntar
+                            </h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0; margin-bottom: 12px; line-height: 1.4;" id="lbl-checklist-desc">
+                                Para evitar que los burós descarten tu disputa como sospechosa, debes incluir copias impresas de:
+                            </p>
+                            <ul style="font-size: 0.8rem; color: var(--text-light); margin: 0; padding-left: 20px; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
+                                <li id="lbl-checklist-item1"><strong>Identificación Oficial:</strong> Licencia de conducir o ID estatal con foto (vigente).</li>
+                                <li id="lbl-checklist-item2"><strong>Prueba de Dirección:</strong> Factura de servicios (agua, luz, gas) o extracto bancario de los últimos 30 días.</li>
+                                <li id="lbl-checklist-item3"><strong>Prueba de Seguro Social:</strong> Tarjeta de SSN o documento W-2 donde se vea el número completo.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -1593,6 +1609,12 @@
                 "opt-paydelete": "Pay for Delete: Liquidación en Cobros",
                 "opt-goodwill": "Carta de Buena Voluntad: Remover pago tardío",
                 "opt-bankruptcy": "Eliminación de Bancarrota (FCRA Sec. 611/Public Records)",
+                "opt-validation": "Validación de Deuda (FDCPA Sec. 809 - Agencias de Cobro)",
+                "lbl-checklist-title": "⚠️ Documentos Obligatorios a Adjuntar",
+                "lbl-checklist-desc": "Para evitar que los burós o acreedores clasifiquen tu carta como fraudulenta o la descarten, debes adjuntar siempre copias de:",
+                "lbl-checklist-item1": "Identificación Oficial: Licencia de conducir o ID estatal con foto (vigente).",
+                "lbl-checklist-item2": "Prueba de Dirección: Recibo de servicios (agua, luz, gas) o extracto de cuenta bancaria recente.",
+                "lbl-checklist-item3": "Prueba de SSN: Copia de tu tarjeta de seguro social o formulario fiscal W-2.",
                 "lbl_form-creditor": "Acreedor / Agencia",
                 "lbl_form-account": "Número de Cuenta",
                 "lbl_preview-title": "Vista Previa de la Carta (En Inglés oficial)",
@@ -1690,6 +1712,12 @@
                 "opt-paydelete": "Pay for Delete: Collection Settlement Offer",
                 "opt-goodwill": "Goodwill Letter: Remove Late Payment",
                 "opt-bankruptcy": "Bankruptcy Deletion (FCRA Sec. 611/Public Records)",
+                "opt-validation": "Debt Validation (FDCPA Sec. 809 - Collection Agencies)",
+                "lbl-checklist-title": "⚠️ Mandatory Documents to Attach",
+                "lbl-checklist-desc": "To prevent credit bureaus or creditors from rejecting your dispute as suspicious or spam, you must attach copies of:",
+                "lbl-checklist-item1": "Official Photo ID: Driver's license or state-issued photo ID (valid).",
+                "lbl-checklist-item2": "Proof of Address: Recent utility bill (electricity, water, gas) or bank statement.",
+                "lbl-checklist-item3": "Proof of SSN: Copy of your Social Security card or tax document (W-2).",
                 "lbl_form-creditor": "Creditor / Agency",
                 "lbl_form-account": "Account Number",
                 "lbl_preview-title": "Letter Preview (In official English)",
@@ -2378,6 +2406,8 @@ Devuelve un JSON:
                 labelDetails.textContent = currentLang === 'es' ? 'Monto propuesto de liquidación ($)' : 'Proposed settlement amount ($)';
             } else if (type === 'bankruptcy') {
                 labelDetails.textContent = currentLang === 'es' ? 'Detalles de la Bancarrota (Inglés, ej: Chapter 7, Discharged 10/12/2019)' : 'Bankruptcy Details (English, e.g. Chapter 7, Discharged 10/12/2019)';
+            } else if (type === 'validation') {
+                labelDetails.textContent = currentLang === 'es' ? 'Razón por la que disputas la deuda (Inglés)' : 'Reason for disputing the debt (English)';
             } else {
                 labelDetails.textContent = currentLang === 'es' ? 'Detalles específicos del error (Inglés)' : 'Specific error details (English)';
             }
@@ -2385,6 +2415,27 @@ Devuelve un JSON:
             let letterContent = '';
 
             switch(type) {
+                case 'validation':
+                    letterContent = 
+name + "\n" +
+address + "\n" +
+"SSN (Last 4): " + ssn + "\n" +
+"DOB: " + dob + "\n\n" +
+"Date: " + formattedDate + "\n\n" +
+"To: Debt Collector Disputes Department\n\n" +
+"RE: Formal Debt Validation Request under FDCPA (15 U.S.C. \u00a7 1692g) for Account: " + account + "\n\n" +
+"To Whom It May Concern,\n\n" +
+"I am writing in response to your communication regarding the alleged debt associated with Account Number: " + account + " (reported under " + creditor + "). Pursuant to the Fair Debt Collection Practices Act (FDCPA), 15 U.S.C. \u00a7 1692g, I hereby formally request full validation of this debt before I take any further action.\n\n" +
+"Please provide the following information and documentation:\n" +
+"1. Proof that you are legally authorized to collect this debt and copy of your active debt collection license in my state.\n" +
+"2. Complete transaction history and audit trail showing the original balance, payments made, and all added interest, fees, or charges.\n" +
+"3. A copy of the agreement or contract bearing my signature, showing that I consented to this debt with the original creditor.\n" +
+"4. Proof that the statute of limitations for collecting this debt in my state has not expired.\n\n" +
+"Please note that reporting unverified information to any credit bureau is a violation of the FCRA. If you fail to validate this debt within 30 days of receiving this notice, you must immediately cease all collection activities and instruct Experian, Equifax, and TransUnion to delete this account from my credit reports.\n\n" +
+"Sincerely,\n\n" +
+"_______________________________\n" +
+name;
+                    break;
                 case 'bankruptcy':
                     letterContent = 
 name + "\n" +
