@@ -3,202 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago Confirmado - Descargar Reparador de Crédito</title>
+    <title>Puronics® Water Systems | 12 Beneficios & Oferta 20 Años Gratis</title>
+    <meta name="description" content="Descubre el agua pura e inteligente con tecnología licenciada de la NASA. ¡Recibe 20 AÑOS de productos de aseo gratis y precios regulados por financieras federales!">
+    <meta name="keywords" content="Puronics, Purificador de Agua, Suavizador de Agua, NASA SilverShield, iGen, Agua Pura, Miami, Florida">
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="puronics_comercial.html">
+    <meta property="og:title" content="💧 Puronics® Water Systems | 12 Beneficios & Oferta 20 Años Gratis">
+    <meta property="og:description" content="🚀 Tecnología Espacial NASA Licenciada. ¡Consigue 20 AÑOS de productos de aseo personal y limpieza del hogar INCLUIDOS y Precios Regulados por Financieras Federales!">
+    <meta property="og:image" content="assets/puronics_official_lineup.png">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="💧 Puronics® Water Systems | Agua Pura e Inteligente">
+    <meta name="twitter:description" content="🚀 Tecnología Espacial NASA. Recibe 20 AÑOS de productos de aseo gratis con tu suavizador Puronics®.">
+    <meta name="twitter:image" content="assets/puronics_official_lineup.png">
+    
+    <!-- Preconnect Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #070a13;
-            --bg-card: rgba(17, 24, 39, 0.7);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --primary-color: #ffb703;
-            --primary-gradient: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
-            --text-color: #f3f4f6;
-            --text-muted: #9ca3af;
-            --success-color: #10b981;
-            --font-main: 'Outfit', sans-serif;
-            --font-mono: 'Space Grotesk', sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-color);
-            font-family: var(--font-main);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(255, 183, 3, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.03) 0%, transparent 40%);
-            padding: 20px;
-        }
-
-        .download-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 30px 20px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        @media (min-width: 768px) {
-            .download-container {
-                padding: 40px;
-            }
-        }
-
-        .success-icon {
-            font-size: 3.5rem;
-            color: var(--success-color);
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .title {
-            font-family: var(--font-mono);
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-color);
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        /* DOWNLOAD BUTTON */
-        .btn-download {
-            background: var(--primary-gradient);
-            color: #070a13;
-            border: none;
-            padding: 16px 30px;
-            border-radius: 12px;
-            font-family: var(--font-main);
-            font-size: 1.05rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
-            margin-bottom: 25px;
-        }
-
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.35);
-            background: #fff;
-            color: #070a13;
-        }
-
-        /* INSTRUCTIONS CARD */
-        .instructions-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: left;
-        }
-
-        .instructions-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 12px;
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .instruction-step {
-            display: flex;
-            gap: 10px;
-            font-size: 0.88rem;
-            margin-bottom: 10px;
-            color: #cbd5e1;
-            line-height: 1.4;
-        }
-
-        .step-num {
-            background: rgba(255, 183, 3, 0.1);
-            color: var(--primary-color);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.75rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="puronics_styles.css">
 </head>
-<body>
+<body class="puronics-page">
 
-    <div class="download-container">
-        <span class="success-icon">🏆</span>
-        <h1 class="title">¡Pago Confirmado!</h1>
-        <p class="subtitle">Tu transacción se completó con éxito. Haz clic en el botón de abajo para descargar tu copia personal en un archivo <strong>ZIP comprimido</strong> (para evitar bloqueos de seguridad del navegador).</p>
+    <!-- Background Water Bubbles Animation -->
+    <div class="bg-water-bubbles" id="bgWaterBubbles"></div>
 
-        <a href="#" class="btn-download" id="download-link">
-            <span>📥</span> Descargar Reparador de Crédito (ZIP)
+    <!-- Top Exclusive Offer Ticker Bar -->
+    <div class="offer-ticker-bar" id="offerTickerBar">
+        🎁 <strong>¡OFERTA EXCLUSIVA POR TIEMPO LIMITADO!</strong> Recibe durante <strong>20 AÑOS</strong> todos los productos de aseo personal y limpieza del hogar INCLUIDOS con tu sistema suavizador Puronics®.
+    </div>
+
+    <!-- Header / Nav -->
+    <header class="puronics-header">
+        <a href="index.html" class="brand-logo">
+            <div class="brand-badge">💧</div>
+            <div class="brand-text-container">
+                <span class="brand-title">PURONICS®</span>
+                <span class="brand-subtitle">NASA Space Technology</span>
+            </div>
         </a>
 
-        <div class="instructions-card">
-            <h3 class="instructions-title">🔑 ¿Cómo abrir la aplicación?</h3>
-            <div class="instruction-step">
-                <span class="step-num">1</span>
-                <span><strong>Descomprime el archivo</strong>: Localiza el archivo descargado <strong>Reparador_de_Credito.zip</strong> en tu carpeta de descargas, hazle doble clic (o clic derecho -> Extraer) para obtener el archivo <strong>Reparador_de_Credito.html</strong>.</span>
+        <div class="header-actions">
+            
+            <button class="btn-lang" id="btnLang" onclick="toggleLanguage()">🌐 English</button>
+            <button class="btn-quote-header" id="btnQuoteHeader" onclick="openCalcModal()">💬 Cotizar Sistema</button>
+        </div>
+    </header>
+
+    <!-- Main Wrapper -->
+    <main class="comercial-wrapper">
+        
+        <!-- Header Banner Intro -->
+        <section class="page-intro">
+            <div class="nasa-pill" id="nasaPill">🚀 Tecnología Licenciada de la NASA</div>
+            <h1 class="page-title" id="pageTitle">Descubre el Agua Pura e Inteligente para Tu Hogar</h1>
+            <p class="page-subtitle" id="pageSubtitle">Explora los 12 beneficios extraordinarios de la purificación y suavización con sistemas <strong>Puronics® Hydronex® iGen®</strong>.</p>
+            
+            <!-- Federal Financial Pricing Protection Trust Badge -->
+            <div class="federal-pricing-shield">
+                <div class="shield-icon">⚖️</div>
+                <div class="shield-text">
+                    <strong id="fedShieldTitle">GARANTÍA DE PRECIO REGULADO Y PROTEGIDO:</strong>
+                    <span id="fedShieldDesc">Todos nuestros precios y condiciones de financiamiento están grabados y respaldados por entidades financieras federales, impidiendo ser alterados o modificados por vendedores.</span>
+                </div>
             </div>
-            <div class="instruction-step">
-                <span class="step-num">2</span>
-                <span><strong>En Computadora (PC/Mac)</strong>: Guarda el archivo extraído en tu Escritorio y hazle doble clic. Se abrirá en tu navegador web como una aplicación local 100% interactiva.</span>
+
+            <!-- Exclusive 20-Year Offer Pill Banner -->
+            
+
+        <!-- Main Interactive Screen -->
+        <section class="commercial-screen" id="commercialScreen">
+            
+            <!-- SLIDES MOTION GRAPHICS MODE -->
+            <div class="slides-mode-content active" id="slidesModeContent">
+                
+                <!-- Active Slide Content Area with Right Lineup Photo -->
+                <div class="slide-content-area">
+                    <!-- Graphic / Animated Icon -->
+                    <div class="slide-graphic">
+                        <div class="graphic-circle" id="slideGraphic">🚀</div>
+                    </div>
+
+                    <!-- Slide Info & Narrative -->
+                    <div class="slide-text-info" id="slideTextInfo">
+                        <div class="slide-badge-row">
+                            <span class="slide-badge" id="slideBadge">Innovación Científica</span>
+                            <span class="slide-tech-tag" id="slideTechTag">SilverShield® HYgiene</span>
+                        </div>
+
+                        <h2 class="slide-title" id="slideTitle">Tecnología de Grado Espacial NASA (SilverShield®)</h2>
+                        <p class="slide-description" id="slideDescription">
+                            Desarrollada con tecnología licenciada de la NASA, la capa microbiostática con plata inhibe la acumulación de bacterias dentro del lecho del filtro.
+                        </p>
+
+                        <div class="slide-highlight-box" id="slideHighlight">
+                            Patente de la NASA aplicada a la salud de tu hogar para un agua libre de bacterias residuales.
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Official Puronics Video Player with Auto Language Sync -->
+                    <div class="right-lineup-banner video-cover-box">
+                        <video id="heroCoverVideo" autoplay loop muted playsinline poster="assets/puronics_official_lineup.png">
+                            <source src="assets/puronics_hero_video.mp4" type="video/mp4">
+                            Tu navegador no soporta video HTML5.
+                        </video>
+                        <div class="video-cover-controls">
+                            <button class="btn-vid-cover-toggle" id="btnCoverVidAudio" onclick="toggleCoverVideoAudio()" title="Activar/Silenciar Audio">🔊 Audio / Voice</button>
+                        </div>
+                        <div class="lineup-badge-tag" id="coverVideoTag">⭐ Guaranteed Best Price • Video Oficial Puronics®</div>
+                    </div>
+                </div>
+
+                <!-- Controls Bar -->
+                <div class="slides-controls-bar">
+                    <!-- Playback controls -->
+                    <div class="playback-buttons">
+                        <button class="playback-btn" onclick="prevSlide()" title="Anterior">⏮️</button>
+                        <button class="playback-btn play-pause-btn" id="btnPlayPause" onclick="toggleAutoPlay()" title="Reproducir / Pausar">▶️</button>
+                        <button class="playback-btn" onclick="nextSlide()" title="Siguiente">⏭️</button>
+                    </div>
+
+                    <!-- Progress bar & Counter -->
+                    <div class="progress-indicator">
+                        <div class="progress-text">
+                            <span id="slideCounterText">Diapositiva 1 de 12</span>
+                            <span>Auto-Play 8s</span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progressBarFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Features -->
+                    <div class="audio-settings">
+                        <button class="settings-btn" id="btnVoiceover" onclick="toggleVoiceover()" title="Activar locución IA">
+                            🎙️ Locución IA
+                        </button>
+                        <button class="settings-btn" id="btnMusic" onclick="toggleMusic()" title="Música de relajación ambiental">
+                            🎵 Música Ambiental
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="instruction-step">
-                <span class="step-num">3</span>
-                <span><strong>En Celular (iOS/Android)</strong>: Guarda el archivo extraído en la app "Archivos" de tu teléfono. Selecciónalo para ejecutar el analizador de reportes.</span>
+
+            <!-- DYNAMIC HD WATER PURIFICATION COMMERCIAL VIDEO PLAYER -->
+            <div class="video-mode-content" id="videoModeContent">
+                <div class="video-container" id="videoContainer">
+                    <canvas id="commercialCanvas" width="960" height="540"></canvas>
+
+                    <!-- Custom Video Controls Overlay -->
+                    <div class="video-overlay-controls">
+                        <button class="vid-btn" id="vidPlayBtn" onclick="toggleCommercialVideo()" title="Reproducir / Pausar Video">▶</button>
+                        
+                        <div class="vid-progress-track" onclick="seekCommercialVideo(event)">
+                            <div class="vid-progress-fill" id="vidProgressFill"></div>
+                        </div>
+
+                        <span class="vid-time" id="vidTimeDisplay">0:00 / 1:15</span>
+
+                        <button class="vid-btn" id="vidMuteBtn" onclick="toggleCommercialMute()" title="Silenciar / Activar Audio">🔊</button>
+                        <button class="vid-btn" onclick="toggleCommercialFullscreen()" title="Pantalla Completa">⛶</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        
+
+        <!-- Action Cards Banner -->
+        <section class="action-banner-row">
+            <div class="action-card">
+                <div class="action-card-icon">📋</div>
+                <div class="action-card-info">
+                    <h3 class="action-card-title" id="actionTitle1">Fichas Técnicas de Equipos</h3>
+                    <p class="action-card-desc" id="actionDesc1">Especificaciones del sistema Hydronex® iGen®, Ósmosis Inversa Micromax® y Defender®.</p>
+                    <button class="btn-action-card" id="actionBtn1" onclick="openSpecsModal()">📄 Ver Fichas Técnicas</button>
+                </div>
+            </div>
+
+            <div class="action-card" style="border-color: var(--nasa-gold);">
+                <div class="action-card-icon gold">🎁</div>
+                <div class="action-card-info">
+                    <h3 class="action-card-title" id="actionTitle2">Oferta 20 Años de Productos Gratis</h3>
+                    <p class="action-card-desc" id="actionDesc2">Recibe durante 20 AÑOS todos tus productos de aseo personal y hogar INCLUIDOS con tu suavizador. Precios regulados por financieras federales (305-813-6159).</p>
+                    <button class="btn-action-card gold" id="actionBtn2" onclick="openCalcModal()">📲 Reclamar Oferta 20 Años</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Summary Grid -->
+        <section class="benefits-grid-section">
+            <div class="section-header">
+                <h2 class="section-title" id="sectionTitle">Explora los 12 Beneficios Directos</h2>
+                <p class="section-sub" id="sectionSub">Haz clic en cualquiera de las tarjetas para saltar instantáneamente a la diapositiva explicativa.</p>
+            </div>
+
+            <div class="benefits-grid" id="benefitsGrid">
+                <!-- Dynamically Populated by puronics_app.js -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SPECS MODAL -->
+    <div class="modal-overlay" id="specsModal">
+        <div class="modal-container" style="max-width: 950px;">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <span class="modal-icon">📋</span>
+                    <h3 class="modal-title" id="modalSpecsTitle">Fichas Técnicas Oficiales PURONICS®</h3>
+                </div>
+                <button class="btn-close-modal" onclick="closeSpecsModal()">✕</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Tabs -->
+                <div class="specs-tabs">
+                    <button class="spec-tab-btn active" id="tab_hydronex" onclick="switchSpecTab('hydronex')">Hydronex® iGen®</button>
+                    <button class="spec-tab-btn" id="tab_micromax" onclick="switchSpecTab('micromax')">Micromax® RO</button>
+                    <button class="spec-tab-btn" id="tab_defender" onclick="switchSpecTab('defender')">Puronics® Defender</button>
+                    <button class="spec-tab-btn" id="tab_nasa" onclick="switchSpecTab('nasa')">SilverShield® NASA</button>
+                </div>
+
+                <!-- Tab 1: Hydronex -->
+                <div class="spec-tab-content" id="specContent_hydronex" style="display: block;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_hydronex_cutaway.png" alt="Diagrama Oficial Puronics Hydronex iGen" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">Diagrama Oficial Hydronex® iGen®</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Puronics® Hydronex® iGen® (Sistema Toda la Casa)</h4>
+                            <p class="spec-card-desc">El acondicionador de agua residencial número uno con válvula digital iGen® de microprocesador inteligente y lecho de filtración bacteriostático.</p>
+                            <ul class="spec-list">
+                                <li>Válvula Inteligente iGen® con monitor SilverShield® HYgiene®.</li>
+                                <li>Tanque de 3 capas: Polietileno interno, Fibra de vidrio y Cubierta exterior de Acero Inoxidable.</li>
+                                <li>Tecnología MicroSilver Bacteriostasis™ licenciada por la NASA.</li>
+                                <li>Resina monoesférica S-759 de alta capacidad y clarificador de grava de sílice.</li>
+                                <li><strong>Precios Regulados:</strong> Tarifas grabadas por financieras federales.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Micromax -->
+                <div class="spec-tab-content" id="specContent_micromax" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_official_lineup.png" alt="Gama Oficial Puronics Micromax RO" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">Modelo Oficial Micromax® RO</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Puronics® Micromax® iGen® (Ósmosis Inversa Bebible)</h4>
+                            <p class="spec-card-desc">Sistema de purificación microscópica de 4 etapas para beber y cocinar directamente en el grifo de tu cocina.</p>
+                            <ul class="spec-list">
+                                <li>Filtro de sedimentos de 5 micrones para atrapar partículas y tierra.</li>
+                                <li>Membrana de Ósmosis Inversa de alta densidad (elimina PFAS, Plomo y Nitratos).</li>
+                                <li>Post-filtro de carbón activado en bloque para un sabor gourmet insuperable.</li>
+                                <li>Grifo de acero inoxidable de diseño exclusivo incluido.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Defender -->
+                <div class="spec-tab-content" id="specContent_defender" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_official_lineup.png" alt="Gama Oficial Puronics Defender" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">Modelo Oficial Puronics® Defender®</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Puronics® Defender® Whole-House System</h4>
+                            <p class="spec-card-desc">Sistema avanzado de supresión de cloraminas y minerales duros diseñado para zonas con alta concentración de sulfatos y dureza extrema.</p>
+                            <ul class="spec-list">
+                                <li>Medios filtrantes de doble acción Chlorostatic®.</li>
+                                <li>Operación silenciosa con mantenimiento automatizado.</li>
+                                <li>Protección continua contra la corrosión de tuberías de cobre y PEX.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: SilverShield NASA -->
+                <div class="spec-tab-content" id="specContent_nasa" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_hydronex_cutaway.png" alt="Tecnologia NASA SilverShield Cutaway" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">🚀 Plataforma NASA SilverShield®</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Tecnología SilverShield® Protection (Patente NASA)</h4>
+                            <p class="spec-card-desc">Tecnología microbiostática exclusiva licenciada de la NASA que utiliza la plata iónica para inhibir bacterias en el lecho del filtro.</p>
+                            <ul class="spec-list">
+                                <li>Certificado por la Water Quality Association (WQA) con Sello de Oro.</li>
+                                <li>Partículas microscópicas de plata incrustadas en el lecho filtrante.</li>
+                                <li>Prevención activa de moho, hongos y biopelículas en el filtro.</li>
+                                <li>Aprobado para máxima seguridad en la salud de toda la familia.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Obtener el token de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+    <!-- WHATSAPP QUOTE & CALCULATOR MODAL -->
+    <div class="modal-overlay" id="calcModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <span class="modal-icon">💧</span>
+                    <h3 class="modal-title" id="modalCalcTitle">Cotizar Sistema Puronics® por WhatsApp</h3>
+                </div>
+                <button class="btn-close-modal" onclick="closeCalcModal()">✕</button>
+            </div>
 
-        if (!token) {
-            alert('Acceso no autorizado: no se encontró ningún token de compra.');
-            window.location.href = '/comprar.html';
-        } else {
-            const downloadLink = document.getElementById('download-link');
-            downloadLink.href = `/api/payments/download?token=${token}`;
-            
-            // Iniciar la descarga automáticamente tras 1.5 segundos por conveniencia
-            setTimeout(() => {
-                window.location.href = downloadLink.href;
-            }, 1500);
-        }
-    </script>
+            <div class="modal-body">
+                <div class="quote-intro-banner">
+                    <h4 id="quoteBannerTitle">🎁 ¡OFERTA EXCLUSIVA 20 AÑOS DE PRODUCTOS INCLUIDOS!</h4>
+                    <p id="quoteBannerDesc">Completa tus datos para recibir tu cotización y reclamar 20 AÑOS de productos de aseo personal y del hogar totalmente INCLUIDOS con tu suavizador Puronics®.</p>
+                </div>
+
+                <div class="federal-pricing-note" id="fedPricingNote">
+                    ⚖️ <strong>Precios Blindados:</strong> Todos los valores están grabados por financieras federales para garantizar que ningún vendedor altere el precio oficial.
+                </div>
+
+                <form id="whatsappQuoteForm" onsubmit="sendWhatsAppQuote(event)">
+                    <div class="calc-grid">
+                        <!-- Required Lead Inputs -->
+                        <div class="calc-inputs">
+                            <div class="form-group">
+                                <label for="leadName" id="calcLabelName">👤 Nombre Completo:*</label>
+                                <input type="text" id="leadName" class="form-control" placeholder="Ej: Maria Gonzalez" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leadEmail" id="calcLabelEmail">📧 Correo Electrónico:*</label>
+                                <input type="email" id="leadEmail" class="form-control" placeholder="ejemplo@correo.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leadPhone" id="calcLabelPhone">📞 Teléfono / WhatsApp:*</label>
+                                <input type="tel" id="leadPhone" class="form-control" placeholder="(305) 813-6159" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leadAddress" id="calcLabelAddress">🏠 Dirección del Hogar:*</label>
+                                <input type="text" id="leadAddress" class="form-control" placeholder="Ej: 1234 SW 8th St, Miami, FL 33135" required>
+                            </div>
+                        </div>
+
+                        <!-- Household Savings Calculations & Action Box -->
+                        <div class="calc-results-box">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="inputFamilySize" id="calcLabelFamily" style="color:#fff;">Integrantes en tu Hogar:</label>
+                                <input type="number" id="inputFamilySize" class="form-control" value="4" min="1" max="12" oninput="calculateSavings()">
+                            </div>
+
+                            <div class="form-group" style="width: 100%;">
+                                <label for="inputBottledSpend" id="calcLabelSpend" style="color:#fff;">Gasto Mensual en Agua ($):</label>
+                                <input type="number" id="inputBottledSpend" class="form-control" value="80" min="0" step="5" oninput="calculateSavings()">
+                            </div>
+
+                            <span class="calc-badge" id="calcBadgeResult">Ahorro Estimado al Año</span>
+                            <div class="calc-result-number" id="calcAnnualSavings">$1,340</div>
+                            <p class="calc-result-label" id="calcBottlesEliminated">4,200 botellas de plástico eliminadas/año</p>
+                            
+                            <button type="submit" class="btn-whatsapp-submit" id="calcBtnSubmit">
+                                💬 Reclamar Oferta de 20 Años por WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification for Copy Link -->
+    <div class="toast-notification" id="toastNotification">
+        ✅ ¡Enlace copiado al portapapeles!
+    </div>
+
+    <!-- Footer -->
+
+            <!-- Executive Consultant Profile Card -->
+        <section class="consultant-footer-card">
+            <div class="consultant-avatar">👔</div>
+            <div class="consultant-info">
+                <span class="consultant-badge" id="consultantBadge">CONSULTOR AUTORIZADO PURONICS®</span>
+                <h3 class="consultant-name">MBA Eliecer Hernandez</h3>
+                <p class="consultant-title" id="consultantTitle">Asesor Senior en Purificación de Agua & Tratamiento Residencial</p>
+                <div class="consultant-contacts">
+                    <a href="tel:13058136159" class="consultant-link">📞 (305) 813-6159</a>
+                    <a href="tel:13057846363" class="consultant-link">📱 (305) 784-6363</a>
+                    <a href="mailto:ehbvolt@gmail.com" class="consultant-link">📧 ehbvolt@gmail.com</a>
+                </div>
+            </div>
+            <a href="https://wa.me/13058136159?text=Hola%20MBA%20Eliecer%20Hernandez,%20quisiera%20asesor%C3%ADa%20personalizada%20para%20un%20sistema%20Puronics" target="_blank" class="btn-consultant-wa" id="btnConsultantWa">
+                💬 Contactar al Asesor
+            </a>
+        </section>
+
+    <footer class="puronics-footer">
+        <p id="footerCopy">© 2026 PURONICS® Water Purification Systems. Tecnología Espacial NASA Licenciada.</p>
+        <p id="footerSub" style="margin-top: 5px; color: #64748b;">Certificaciones WQA Gold Seal, NSF International & Precios Regulados por Financieras Federales.</p>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="puronics_app.js"></script>
 </body>
 </html>

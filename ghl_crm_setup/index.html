@@ -3,445 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoHighLevel CRM Setup | Configuraci�n en 24 Horas</title>
+    <title>Puronics® Water Systems | 12 Beneficios & Oferta 20 Años Gratis</title>
+    <meta name="description" content="Descubre el agua pura e inteligente con tecnología licenciada de la NASA. ¡Recibe 20 AÑOS de productos de aseo gratis y precios regulados por financieras federales!">
+    <meta name="keywords" content="Puronics, Purificador de Agua, Suavizador de Agua, NASA SilverShield, iGen, Agua Pura, Miami, Florida">
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="puronics_comercial.html">
+    <meta property="og:title" content="💧 Puronics® Water Systems | 12 Beneficios & Oferta 20 Años Gratis">
+    <meta property="og:description" content="🚀 Tecnología Espacial NASA Licenciada. ¡Consigue 20 AÑOS de productos de aseo personal y limpieza del hogar INCLUIDOS y Precios Regulados por Financieras Federales!">
+    <meta property="og:image" content="assets/puronics_official_lineup.png">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="💧 Puronics® Water Systems | Agua Pura e Inteligente">
+    <meta name="twitter:description" content="🚀 Tecnología Espacial NASA. Recibe 20 AÑOS de productos de aseo gratis con tu suavizador Puronics®.">
+    <meta name="twitter:image" content="assets/puronics_official_lineup.png">
     
-    <!-- Google Fonts -->
+    <!-- Preconnect Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="puronics_styles.css">
 </head>
-<body>
+<body class="puronics-page">
 
-    <!-- Navegaci�n -->
-    <nav class="navbar glass">
-        <div class="logo">
-            <div class="ghl-arrows">
-                <span class="arrow-yellow">?</span>
-                <span class="arrow-blue">?</span>
-                <span class="arrow-green">?</span>
+    <!-- Background Water Bubbles Animation -->
+    <div class="bg-water-bubbles" id="bgWaterBubbles"></div>
+
+    <!-- Top Exclusive Offer Ticker Bar -->
+    <div class="offer-ticker-bar" id="offerTickerBar">
+        🎁 <strong>¡OFERTA EXCLUSIVA POR TIEMPO LIMITADO!</strong> Recibe durante <strong>20 AÑOS</strong> todos los productos de aseo personal y limpieza del hogar INCLUIDOS con tu sistema suavizador Puronics®.
+    </div>
+
+    <!-- Header / Nav -->
+    <header class="puronics-header">
+        <a href="index.html" class="brand-logo">
+            <div class="brand-badge">💧</div>
+            <div class="brand-text-container">
+                <span class="brand-title">PURONICS®</span>
+                <span class="brand-subtitle">NASA Space Technology</span>
             </div>
-            <span class="logo-text">GHL Setup <span>Pro</span></span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#hero">Inicio</a></li>
-            <li><a href="#features">Caracter�sticas</a></li>
-            <li><a href="#roi-calculator">Calculadora ROI</a></li>
-            <li><a href="#faq">Preguntas</a></li>
-            <li><a href="dashboard.html" class="nav-dashboard-link">?? Dashboard</a></li>
-        </ul>
-        <button class="btn-primary desktop-only" id="navRequestBtn">Solicitar Ahora</button>
-    </nav>
+        </a>
 
-    <!-- Secci�n Hero -->
-    <section id="hero" class="hero">
-        <div class="hero-grid">
+        <div class="header-actions">
             
-            <!-- Contenido Izquierdo (Textos y Oferta) -->
-            <div class="hero-text-content">
-                <div class="brand-badge animate-fade">
-                    <span class="badge-icon">??</span> Servicio Exclusivo de Automatizaci�n
-                </div>
-                <h1 class="animate-up">Tu CRM configurado <br><span class="text-gradient">en 24 horas</span></h1>
-                
-                <div class="ghl-included-badge">
-                    <span class="checkmark-icon">?</span> Cuenta GoHighLevel incluida en el servicio
-                </div>
-                
-                <!-- Lista de Caracter�sticas (Foto) -->
-                <ul class="hero-feature-list">
-                    <li class="animate-up delay-1">
-                        <div class="feature-bullet-icon">??</div>
-                        <div class="feature-bullet-text">
-                            <strong>Agente AI</strong>
-                            <span>Atiende, responde y convierte 24/7 en piloto autom�tico.</span>
-                        </div>
-                        <span class="check-badge">?</span>
-                    </li>
-                    <li class="animate-up delay-1">
-                        <div class="feature-bullet-icon">??</div>
-                        <div class="feature-bullet-text">
-                            <strong>Embudos</strong>
-                            <span>Dise�ados profesionalmente para atraer tr�fico y convertir visitas.</span>
-                        </div>
-                        <span class="check-badge">?</span>
-                    </li>
-                    <li class="animate-up delay-2">
-                        <div class="feature-bullet-icon">??</div>
-                        <div class="feature-bullet-text">
-                            <strong>Website y Funnels</strong>
-                            <span>Sitios y embudos listos para vender tu oferta principal.</span>
-                        </div>
-                        <span class="check-badge">?</span>
-                    </li>
-                    <li class="animate-up delay-2">
-                        <div class="feature-bullet-icon">??</div>
-                        <div class="feature-bullet-text">
-                            <strong>Automatizaciones</strong>
-                            <span>Ahorra tiempo valioso, elimina tareas manuales y escala tu negocio.</span>
-                        </div>
-                        <span class="check-badge">?</span>
-                    </li>
-                </ul>
-
-                <!-- Tarjeta de Oferta �nica -->
-                <div class="pricing-card glass animate-up delay-3">
-                    <div class="price-value">$450</div>
-                    <div class="price-details">
-                        <span class="price-type">UN SOLO PAGO</span>
-                        <span class="price-subtitle">Sin mensualidades por configuraci�n</span>
-                    </div>
-                </div>
-
-                <!-- Bot�n de Acci�n y Entrega -->
-                <div class="cta-container animate-up delay-3">
-                    <button class="btn-primary btn-cta" id="heroRequestBtn">
-                        ?? SOLICITA EL TUYO
-                    </button>
-                    <div class="delivery-time">
-                        <span class="clock-icon">??</span> ENTREGA Y CONFIGURACI�N LISTA EN 24 HORAS
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contenido Derecho (Clon del Mockup Laptop & M�vil de la Foto) -->
-            <div class="hero-mockup-content">
-                <div class="mockup-container">
-                    
-                    <!-- Laptop Mockup -->
-                    <div class="laptop-shell">
-                        <div class="laptop-screen glass">
-                            <!-- Dashboard Header -->
-                            <div class="dash-header">
-                                <div class="dash-logo">
-                                    <span class="arrow-yellow">?</span>
-                                    <span class="arrow-blue">?</span>
-                                    <span class="logo-txt">GoHighLevel</span>
-                                </div>
-                                <div class="dash-user">?? Administrador</div>
-                            </div>
-                            <!-- Dashboard Body -->
-                            <div class="dash-body">
-                                <div class="dash-stats">
-                                    <div class="stat-box">
-                                        <span class="stat-label">Contactos</span>
-                                        <span class="stat-number">2,568</span>
-                                        <span class="stat-trend text-green">? 12.5%</span>
-                                    </div>
-                                    <div class="stat-box">
-                                        <span class="stat-label">Oportunidades</span>
-                                        <span class="stat-number">$125,430</span>
-                                        <span class="stat-trend text-green">? 18.6%</span>
-                                    </div>
-                                </div>
-                                <div class="dash-visuals">
-                                    <!-- Funnels Chart -->
-                                    <div class="dash-funnel-card">
-                                        <h4>Funnels</h4>
-                                        <div class="funnel-chart-svg">
-                                            <div class="funnel-tier tier-1"></div>
-                                            <div class="funnel-tier tier-2"></div>
-                                            <div class="funnel-tier tier-3"></div>
-                                        </div>
-                                    </div>
-                                    <!-- Automations Status -->
-                                    <div class="dash-auto-card">
-                                        <h4>Automatizaciones</h4>
-                                        <div class="circular-progress">
-                                            <div class="progress-value">287</div>
-                                            <div class="progress-label">Activas</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="laptop-keyboard"></div>
-                    </div>
-
-                    <!-- Smartphone Mockup (Floating Overlap) -->
-                    <div class="phone-shell glass-border">
-                        <div class="phone-screen">
-                            <div class="phone-header">
-                                <span class="back-arrow">?</span>
-                                <span class="phone-title">Contacto</span>
-                                <span class="phone-menu">?</span>
-                            </div>
-                            
-                            <!-- Contact Profile -->
-                            <div class="phone-profile">
-                                <div class="profile-avatar">JP</div>
-                                <h3 class="profile-name">Juan P�rez</h3>
-                                <span class="profile-status">Cliente potencial</span>
-                                
-                                <div class="profile-actions">
-                                    <button class="action-btn" title="Llamar">??</button>
-                                    <button class="action-btn" title="Mensaje">??</button>
-                                    <button class="action-btn" title="Email">?</button>
-                                </div>
-                            </div>
-
-                            <!-- Recent Activity -->
-                            <div class="phone-activity">
-                                <h4>Actividad reciente</h4>
-                                <ul class="activity-log">
-                                    <li>
-                                        <span class="log-icon icon-form">??</span>
-                                        <div class="log-details">
-                                            <span class="log-title">Formulario enviado</span>
-                                            <span class="log-time">Hace 5 min</span>
-                                        </div>
-                                        <span class="log-status">?</span>
-                                    </li>
-                                    <li>
-                                        <span class="log-icon icon-wa">??</span>
-                                        <div class="log-details">
-                                            <span class="log-title">Mensaje de WhatsApp</span>
-                                            <span class="log-time">Hace 4 min</span>
-                                        </div>
-                                        <span class="log-status">?</span>
-                                    </li>
-                                    <li>
-                                        <span class="log-icon icon-mail">?</span>
-                                        <div class="log-details">
-                                            <span class="log-title">Correo abierto</span>
-                                            <span class="log-time">Hace 2 min</span>
-                                        </div>
-                                        <span class="log-status">?</span>
-                                    </li>
-                                    <li>
-                                        <span class="log-icon icon-calendar">??</span>
-                                        <div class="log-details">
-                                            <span class="log-title">Cita agendada</span>
-                                            <span class="log-time">Hace 1 min</span>
-                                        </div>
-                                        <span class="log-status">?</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <button class="btn-lang" id="btnLang" onclick="toggleLanguage()">🌐 English</button>
+            <button class="btn-quote-header" id="btnQuoteHeader" onclick="openCalcModal()">💬 Cotizar Sistema</button>
         </div>
-    </section>
+    </header>
 
-    <!-- Caracter�sticas Detalladas -->
-    <section id="features" class="features-section">
-        <div class="section-header">
-            <h2>Soluciones de Automatizaci�n Incluidas</h2>
-            <p>Cada elemento est� sincronizado para trabajar en armon�a y maximizar tus conversiones.</p>
-        </div>
+    <!-- Main Wrapper -->
+    <main class="comercial-wrapper">
         
-        <div class="features-grid">
-            <div class="feature-card glass">
-                <div class="card-icon">??</div>
-                <h3>Agente Conversacional AI</h3>
-                <p>Configuramos un bot de Inteligencia Artificial que chatea en lenguaje natural para calificar prospectos y agendar citas autom�ticamente en tu calendario.</p>
-            </div>
-            <div class="feature-card glass">
-                <div class="card-icon">??</div>
-                <h3>Embudos Altamente Persuasivos</h3>
-                <p>P�ginas de captura y landing pages con copys optimizados psicol�gicamente para guiar a los prospectos hacia la conversi�n sin fricciones.</p>
-            </div>
-            <div class="feature-card glass">
-                <div class="card-icon">??</div>
-                <h3>Automatizaciones Workflow</h3>
-                <p>Secuencias automatizadas por correo y SMS. Si un lead llena un formulario, recibe un WhatsApp instant�neo y un recordatorio de llamada automatizada.</p>
-            </div>
-            <div class="feature-card glass">
-                <div class="card-icon">??</div>
-                <h3>Cuenta Oficial Listada</h3>
-                <p>Te guiamos y dejamos activa tu propia cuenta oficial de GoHighLevel, conectando tu dominio propio, SMTP para emails y pasarelas de pago (Stripe/PayPal).</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Calculadora ROI de Automatizaci�n -->
-    <section id="roi-calculator" class="calculator-section">
-        <div class="section-header">
-            <h2>Simulador de Ahorro y ROI</h2>
-            <p>Calcula el impacto inmediato que tiene automatizar tu seguimiento de prospectos en tu negocio.</p>
-        </div>
-
-        <div class="calculator-container glass">
-            <div class="calc-input-block">
-                <label for="hoursSlider">Horas semanales dedicadas a tareas manuales (seguimientos, agendamiento, chats):</label>
-                <div class="range-slider">
-                    <input type="range" id="hoursSlider" min="2" max="60" value="15" step="1">
-                    <span id="hoursValue" class="value-display">15 horas</span>
+        <!-- Header Banner Intro -->
+        <section class="page-intro">
+            <div class="nasa-pill" id="nasaPill">🚀 Tecnología Licenciada de la NASA</div>
+            <h1 class="page-title" id="pageTitle">Descubre el Agua Pura e Inteligente para Tu Hogar</h1>
+            <p class="page-subtitle" id="pageSubtitle">Explora los 12 beneficios extraordinarios de la purificación y suavización con sistemas <strong>Puronics® Hydronex® iGen®</strong>.</p>
+            
+            <!-- Federal Financial Pricing Protection Trust Badge -->
+            <div class="federal-pricing-shield">
+                <div class="shield-icon">⚖️</div>
+                <div class="shield-text">
+                    <strong id="fedShieldTitle">GARANTÍA DE PRECIO REGULADO Y PROTEGIDO:</strong>
+                    <span id="fedShieldDesc">Todos nuestros precios y condiciones de financiamiento están grabados y respaldados por entidades financieras federales, impidiendo ser alterados o modificados por vendedores.</span>
                 </div>
+            </div>
+
+            <!-- Exclusive 20-Year Offer Pill Banner -->
+            
+
+        <!-- Main Interactive Screen -->
+        <section class="commercial-screen" id="commercialScreen">
+            
+            <!-- SLIDES MOTION GRAPHICS MODE -->
+            <div class="slides-mode-content active" id="slidesModeContent">
                 
-                <label for="leadValue" style="margin-top: 25px; display: block;">Valor estimado de un solo cliente cerrado (USD):</label>
-                <div class="range-slider">
-                    <input type="range" id="leadValueSlider" min="50" max="5000" value="500" step="50">
-                    <span id="leadValueDisplay" class="value-display">$500</span>
+                <!-- Active Slide Content Area with Right Lineup Photo -->
+                <div class="slide-content-area">
+                    <!-- Graphic / Animated Icon -->
+                    <div class="slide-graphic">
+                        <div class="graphic-circle" id="slideGraphic">🚀</div>
+                    </div>
+
+                    <!-- Slide Info & Narrative -->
+                    <div class="slide-text-info" id="slideTextInfo">
+                        <div class="slide-badge-row">
+                            <span class="slide-badge" id="slideBadge">Innovación Científica</span>
+                            <span class="slide-tech-tag" id="slideTechTag">SilverShield® HYgiene</span>
+                        </div>
+
+                        <h2 class="slide-title" id="slideTitle">Tecnología de Grado Espacial NASA (SilverShield®)</h2>
+                        <p class="slide-description" id="slideDescription">
+                            Desarrollada con tecnología licenciada de la NASA, la capa microbiostática con plata inhibe la acumulación de bacterias dentro del lecho del filtro.
+                        </p>
+
+                        <div class="slide-highlight-box" id="slideHighlight">
+                            Patente de la NASA aplicada a la salud de tu hogar para un agua libre de bacterias residuales.
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Official Puronics Video Player with Auto Language Sync -->
+                    <div class="right-lineup-banner video-cover-box">
+                        <video id="heroCoverVideo" autoplay loop muted playsinline poster="assets/puronics_official_lineup.png">
+                            <source src="assets/puronics_hero_video.mp4" type="video/mp4">
+                            Tu navegador no soporta video HTML5.
+                        </video>
+                        <div class="video-cover-controls">
+                            <button class="btn-vid-cover-toggle" id="btnCoverVidAudio" onclick="toggleCoverVideoAudio()" title="Activar/Silenciar Audio">🔊 Audio / Voice</button>
+                        </div>
+                        <div class="lineup-badge-tag" id="coverVideoTag">⭐ Guaranteed Best Price • Video Oficial Puronics®</div>
+                    </div>
+                </div>
+
+                <!-- Controls Bar -->
+                <div class="slides-controls-bar">
+                    <!-- Playback controls -->
+                    <div class="playback-buttons">
+                        <button class="playback-btn" onclick="prevSlide()" title="Anterior">⏮️</button>
+                        <button class="playback-btn play-pause-btn" id="btnPlayPause" onclick="toggleAutoPlay()" title="Reproducir / Pausar">▶️</button>
+                        <button class="playback-btn" onclick="nextSlide()" title="Siguiente">⏭️</button>
+                    </div>
+
+                    <!-- Progress bar & Counter -->
+                    <div class="progress-indicator">
+                        <div class="progress-text">
+                            <span id="slideCounterText">Diapositiva 1 de 12</span>
+                            <span>Auto-Play 8s</span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progressBarFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Features -->
+                    <div class="audio-settings">
+                        <button class="settings-btn" id="btnVoiceover" onclick="toggleVoiceover()" title="Activar locución IA">
+                            🎙️ Locución IA
+                        </button>
+                        <button class="settings-btn" id="btnMusic" onclick="toggleMusic()" title="Música de relajación ambiental">
+                            🎵 Música Ambiental
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="calc-results-block">
-                <div class="result-box">
-                    <h3>Tiempo Recuperado</h3>
-                    <div class="number text-gradient" id="timeSavedVal">60 horas/mes</div>
-                </div>
-                <div class="result-box">
-                    <h3>Dinero de Labor Ahorrado</h3>
-                    <div class="number text-gradient" id="laborSavedVal">$1,500/mes</div>
-                </div>
-                <div class="result-box">
-                    <h3>Leads Recuperados Estimados</h3>
-                    <div class="number text-green" id="leadsRecoveredVal">+$1,000/mes</div>
-                </div>
-            </div>
-            <button class="btn-primary full-width" id="calcCtaBtn">Obtener Mi CRM Automatizado</button>
-        </div>
-    </section>
+            <!-- DYNAMIC HD WATER PURIFICATION COMMERCIAL VIDEO PLAYER -->
+            <div class="video-mode-content" id="videoModeContent">
+                <div class="video-container" id="videoContainer">
+                    <canvas id="commercialCanvas" width="960" height="540"></canvas>
 
-    <!-- Preguntas Frecuentes -->
-    <section id="faq" class="faq-section">
-        <div class="section-header">
-            <h2>Preguntas Frecuentes</h2>
-            <p>Aclara tus dudas sobre el servicio de configuraci�n de GoHighLevel.</p>
+                    <!-- Custom Video Controls Overlay -->
+                    <div class="video-overlay-controls">
+                        <button class="vid-btn" id="vidPlayBtn" onclick="toggleCommercialVideo()" title="Reproducir / Pausar Video">▶</button>
+                        
+                        <div class="vid-progress-track" onclick="seekCommercialVideo(event)">
+                            <div class="vid-progress-fill" id="vidProgressFill"></div>
+                        </div>
+
+                        <span class="vid-time" id="vidTimeDisplay">0:00 / 1:15</span>
+
+                        <button class="vid-btn" id="vidMuteBtn" onclick="toggleCommercialMute()" title="Silenciar / Activar Audio">🔊</button>
+                        <button class="vid-btn" onclick="toggleCommercialFullscreen()" title="Pantalla Completa">⛶</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        
+
+        <!-- Action Cards Banner -->
+        <section class="action-banner-row">
+            <div class="action-card">
+                <div class="action-card-icon">📋</div>
+                <div class="action-card-info">
+                    <h3 class="action-card-title" id="actionTitle1">Fichas Técnicas de Equipos</h3>
+                    <p class="action-card-desc" id="actionDesc1">Especificaciones del sistema Hydronex® iGen®, Ósmosis Inversa Micromax® y Defender®.</p>
+                    <button class="btn-action-card" id="actionBtn1" onclick="openSpecsModal()">📄 Ver Fichas Técnicas</button>
+                </div>
+            </div>
+
+            <div class="action-card" style="border-color: var(--nasa-gold);">
+                <div class="action-card-icon gold">🎁</div>
+                <div class="action-card-info">
+                    <h3 class="action-card-title" id="actionTitle2">Oferta 20 Años de Productos Gratis</h3>
+                    <p class="action-card-desc" id="actionDesc2">Recibe durante 20 AÑOS todos tus productos de aseo personal y hogar INCLUIDOS con tu suavizador. Precios regulados por financieras federales (305-813-6159).</p>
+                    <button class="btn-action-card gold" id="actionBtn2" onclick="openCalcModal()">📲 Reclamar Oferta 20 Años</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Summary Grid -->
+        <section class="benefits-grid-section">
+            <div class="section-header">
+                <h2 class="section-title" id="sectionTitle">Explora los 12 Beneficios Directos</h2>
+                <p class="section-sub" id="sectionSub">Haz clic en cualquiera de las tarjetas para saltar instantáneamente a la diapositiva explicativa.</p>
+            </div>
+
+            <div class="benefits-grid" id="benefitsGrid">
+                <!-- Dynamically Populated by puronics_app.js -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SPECS MODAL -->
+    <div class="modal-overlay" id="specsModal">
+        <div class="modal-container" style="max-width: 950px;">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <span class="modal-icon">📋</span>
+                    <h3 class="modal-title" id="modalSpecsTitle">Fichas Técnicas Oficiales PURONICS®</h3>
+                </div>
+                <button class="btn-close-modal" onclick="closeSpecsModal()">✕</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Tabs -->
+                <div class="specs-tabs">
+                    <button class="spec-tab-btn active" id="tab_hydronex" onclick="switchSpecTab('hydronex')">Hydronex® iGen®</button>
+                    <button class="spec-tab-btn" id="tab_micromax" onclick="switchSpecTab('micromax')">Micromax® RO</button>
+                    <button class="spec-tab-btn" id="tab_defender" onclick="switchSpecTab('defender')">Puronics® Defender</button>
+                    <button class="spec-tab-btn" id="tab_nasa" onclick="switchSpecTab('nasa')">SilverShield® NASA</button>
+                </div>
+
+                <!-- Tab 1: Hydronex -->
+                <div class="spec-tab-content" id="specContent_hydronex" style="display: block;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_hydronex_cutaway.png" alt="Diagrama Oficial Puronics Hydronex iGen" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">Diagrama Oficial Hydronex® iGen®</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Puronics® Hydronex® iGen® (Sistema Toda la Casa)</h4>
+                            <p class="spec-card-desc">El acondicionador de agua residencial número uno con válvula digital iGen® de microprocesador inteligente y lecho de filtración bacteriostático.</p>
+                            <ul class="spec-list">
+                                <li>Válvula Inteligente iGen® con monitor SilverShield® HYgiene®.</li>
+                                <li>Tanque de 3 capas: Polietileno interno, Fibra de vidrio y Cubierta exterior de Acero Inoxidable.</li>
+                                <li>Tecnología MicroSilver Bacteriostasis™ licenciada por la NASA.</li>
+                                <li>Resina monoesférica S-759 de alta capacidad y clarificador de grava de sílice.</li>
+                                <li><strong>Precios Regulados:</strong> Tarifas grabadas por financieras federales.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Micromax -->
+                <div class="spec-tab-content" id="specContent_micromax" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_official_lineup.png" alt="Gama Oficial Puronics Micromax RO" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">Modelo Oficial Micromax® RO</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Puronics® Micromax® iGen® (Ósmosis Inversa Bebible)</h4>
+                            <p class="spec-card-desc">Sistema de purificación microscópica de 4 etapas para beber y cocinar directamente en el grifo de tu cocina.</p>
+                            <ul class="spec-list">
+                                <li>Filtro de sedimentos de 5 micrones para atrapar partículas y tierra.</li>
+                                <li>Membrana de Ósmosis Inversa de alta densidad (elimina PFAS, Plomo y Nitratos).</li>
+                                <li>Post-filtro de carbón activado en bloque para un sabor gourmet insuperable.</li>
+                                <li>Grifo de acero inoxidable de diseño exclusivo incluido.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Defender -->
+                <div class="spec-tab-content" id="specContent_defender" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_official_lineup.png" alt="Gama Oficial Puronics Defender" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">Modelo Oficial Puronics® Defender®</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Puronics® Defender® Whole-House System</h4>
+                            <p class="spec-card-desc">Sistema avanzado de supresión de cloraminas y minerales duros diseñado para zonas con alta concentración de sulfatos y dureza extrema.</p>
+                            <ul class="spec-list">
+                                <li>Medios filtrantes de doble acción Chlorostatic®.</li>
+                                <li>Operación silenciosa con mantenimiento automatizado.</li>
+                                <li>Protección continua contra la corrosión de tuberías de cobre y PEX.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: SilverShield NASA -->
+                <div class="spec-tab-content" id="specContent_nasa" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/puronics_hydronex_cutaway.png" alt="Tecnologia NASA SilverShield Cutaway" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">🚀 Plataforma NASA SilverShield®</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Tecnología SilverShield® Protection (Patente NASA)</h4>
+                            <p class="spec-card-desc">Tecnología microbiostática exclusiva licenciada de la NASA que utiliza la plata iónica para inhibir bacterias en el lecho del filtro.</p>
+                            <ul class="spec-list">
+                                <li>Certificado por la Water Quality Association (WQA) con Sello de Oro.</li>
+                                <li>Partículas microscópicas de plata incrustadas en el lecho filtrante.</li>
+                                <li>Prevención activa de moho, hongos y biopelículas en el filtro.</li>
+                                <li>Aprobado para máxima seguridad en la salud de toda la familia.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="faq-container">
-            <div class="faq-item">
-                <button class="faq-question">�Realmente se configura todo en 24 horas? <span class="faq-icon">+</span></button>
-                <div class="faq-answer">
-                    <p>S�, una vez que realizas el pago y nos completas el formulario con los accesos b�sicos y la informaci�n de tu oferta, nuestro equipo de ingenieros monta la infraestructura, embudos y automatizaciones en menos de 24 horas h�biles.</p>
+    </div>
+
+    <!-- WHATSAPP QUOTE & CALCULATOR MODAL -->
+    <div class="modal-overlay" id="calcModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <span class="modal-icon">💧</span>
+                    <h3 class="modal-title" id="modalCalcTitle">Cotizar Sistema Puronics® por WhatsApp</h3>
                 </div>
+                <button class="btn-close-modal" onclick="closeCalcModal()">✕</button>
             </div>
-            <div class="faq-item">
-                <button class="faq-question">�Qu� costos adicionales tiene la plataforma? <span class="faq-icon">+</span></button>
-                <div class="faq-answer">
-                    <p>El pago de $450 es por nuestra configuraci�n profesional completa y de por vida. Para mantener funcionando el sistema, necesitas tener tu suscripci�n activa de GoHighLevel (que inicia en $97/mes). Nosotros te ayudamos a abrirla con un periodo de prueba gratis.</p>
+
+            <div class="modal-body">
+                <div class="quote-intro-banner">
+                    <h4 id="quoteBannerTitle">🎁 ¡OFERTA EXCLUSIVA 20 AÑOS DE PRODUCTOS INCLUIDOS!</h4>
+                    <p id="quoteBannerDesc">Completa tus datos para recibir tu cotización y reclamar 20 AÑOS de productos de aseo personal y del hogar totalmente INCLUIDOS con tu suavizador Puronics®.</p>
                 </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">�C�mo funciona el Agente de IA para responder chats? <span class="faq-icon">+</span></button>
-                <div class="faq-answer">
-                    <p>Conectamos la API de OpenAI (GPT) dentro de tus flujos de conversaci�n del CRM. Entrenamos a la IA con las preguntas frecuentes y las objeciones de tu negocio para que pueda conversar con los clientes y agendar citas en tu calendario de Google o GoHighLevel.</p>
+
+                <div class="federal-pricing-note" id="fedPricingNote">
+                    ⚖️ <strong>Precios Blindados:</strong> Todos los valores están grabados por financieras federales para garantizar que ningún vendedor altere el precio oficial.
                 </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">�Se requiere experiencia t�cnica previa? <span class="faq-icon">+</span></button>
-                <div class="faq-answer">
-                    <p>Ninguna. Nosotros nos encargamos de toda la parte t�cnica (DNS, automatizaciones, APIs, webhook de WhatsApp). Te entregamos un video de entrenamiento de 10 minutos explic�ndote c�mo usar tu nuevo dashboard y c�mo responder a los leads calificados.</p>
-                </div>
+
+                <form id="whatsappQuoteForm" onsubmit="sendWhatsAppQuote(event)">
+                    <div class="calc-grid">
+                        <!-- Required Lead Inputs -->
+                        <div class="calc-inputs">
+                            <div class="form-group">
+                                <label for="leadName" id="calcLabelName">👤 Nombre Completo:*</label>
+                                <input type="text" id="leadName" class="form-control" placeholder="Ej: Maria Gonzalez" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leadEmail" id="calcLabelEmail">📧 Correo Electrónico:*</label>
+                                <input type="email" id="leadEmail" class="form-control" placeholder="ejemplo@correo.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leadPhone" id="calcLabelPhone">📞 Teléfono / WhatsApp:*</label>
+                                <input type="tel" id="leadPhone" class="form-control" placeholder="(305) 813-6159" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leadAddress" id="calcLabelAddress">🏠 Dirección del Hogar:*</label>
+                                <input type="text" id="leadAddress" class="form-control" placeholder="Ej: 1234 SW 8th St, Miami, FL 33135" required>
+                            </div>
+                        </div>
+
+                        <!-- Household Savings Calculations & Action Box -->
+                        <div class="calc-results-box">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="inputFamilySize" id="calcLabelFamily" style="color:#fff;">Integrantes en tu Hogar:</label>
+                                <input type="number" id="inputFamilySize" class="form-control" value="4" min="1" max="12" oninput="calculateSavings()">
+                            </div>
+
+                            <div class="form-group" style="width: 100%;">
+                                <label for="inputBottledSpend" id="calcLabelSpend" style="color:#fff;">Gasto Mensual en Agua ($):</label>
+                                <input type="number" id="inputBottledSpend" class="form-control" value="80" min="0" step="5" oninput="calculateSavings()">
+                            </div>
+
+                            <span class="calc-badge" id="calcBadgeResult">Ahorro Estimado al Año</span>
+                            <div class="calc-result-number" id="calcAnnualSavings">$1,340</div>
+                            <p class="calc-result-label" id="calcBottlesEliminated">4,200 botellas de plástico eliminadas/año</p>
+                            
+                            <button type="submit" class="btn-whatsapp-submit" id="calcBtnSubmit">
+                                💬 Reclamar Oferta de 20 Años por WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+
+    <!-- Toast Notification for Copy Link -->
+    <div class="toast-notification" id="toastNotification">
+        ✅ ¡Enlace copiado al portapapeles!
+    </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2026 GHL Setup Pro. Todos los derechos reservados. Este servicio no est� afiliado directamente con GoHighLevel Inc.</p>
+
+            <!-- Executive Consultant Profile Card -->
+        <section class="consultant-footer-card">
+            <div class="consultant-avatar">👔</div>
+            <div class="consultant-info">
+                <span class="consultant-badge" id="consultantBadge">CONSULTOR AUTORIZADO PURONICS®</span>
+                <h3 class="consultant-name">MBA Eliecer Hernandez</h3>
+                <p class="consultant-title" id="consultantTitle">Asesor Senior en Purificación de Agua & Tratamiento Residencial</p>
+                <div class="consultant-contacts">
+                    <a href="tel:13058136159" class="consultant-link">📞 (305) 813-6159</a>
+                    <a href="tel:13057846363" class="consultant-link">📱 (305) 784-6363</a>
+                    <a href="mailto:ehbvolt@gmail.com" class="consultant-link">📧 ehbvolt@gmail.com</a>
+                </div>
+            </div>
+            <a href="https://wa.me/13058136159?text=Hola%20MBA%20Eliecer%20Hernandez,%20quisiera%20asesor%C3%ADa%20personalizada%20para%20un%20sistema%20Puronics" target="_blank" class="btn-consultant-wa" id="btnConsultantWa">
+                💬 Contactar al Asesor
+            </a>
+        </section>
+
+    <footer class="puronics-footer">
+        <p id="footerCopy">© 2026 PURONICS® Water Purification Systems. Tecnología Espacial NASA Licenciada.</p>
+        <p id="footerSub" style="margin-top: 5px; color: #64748b;">Certificaciones WQA Gold Seal, NSF International & Precios Regulados por Financieras Federales.</p>
     </footer>
 
-    <!-- Quiz Modal de Calificaci�n -->
-    <div class="modal-overlay" id="quizModal">
-        <div class="modal-content glass">
-            <button class="close-modal" id="closeQuiz">�</button>
-            
-            <!-- Step 1: Decision Maker -->
-            <div class="quiz-step active" id="step1">
-                <h3>Paso 1: Tu Rol</h3>
-                <p>�Eres el due�o del negocio, director o tomador de decisiones clave?</p>
-                <div class="quiz-options">
-                    <button class="btn-secondary quiz-btn" data-val="Si" data-next="step2">S�</button>
-                    <button class="btn-secondary quiz-btn" data-val="No" data-next="step2">No</button>
-                </div>
-            </div>
-
-            <!-- Step 2: Niche -->
-            <div class="quiz-step" id="step2">
-                <h3>Paso 2: Industria / Nicho</h3>
-                <p>�A qu� sector pertenece principalmente tu negocio?</p>
-                <div class="quiz-options">
-                    <button class="btn-secondary quiz-btn" data-val="Real Estate" data-next="step3">Bienes Ra�ces</button>
-                    <button class="btn-secondary quiz-btn" data-val="Agencia / Consulting" data-next="step3">Agencias y Consultor�a</button>
-                    <button class="btn-secondary quiz-btn" data-val="Servicios Locales" data-next="step3">Servicios Locales / Home Services</button>
-                    <button class="btn-secondary quiz-btn" data-val="E-commerce / Retail" data-next="step3">E-commerce y Comercio</button>
-                </div>
-            </div>
-
-            <!-- Step 3: Current Software -->
-            <div class="quiz-step" id="step3">
-                <h3>Paso 3: Software Actual</h3>
-                <p>�Pagas actualmente por herramientas de software para tu negocio (CRM, Email Marketing, Calendarios, Hosting)?</p>
-                <div class="quiz-options">
-                    <button class="btn-secondary quiz-btn" data-val="Si" data-next="step4">S�, gasto m�s de $100/mes</button>
-                    <button class="btn-secondary quiz-btn" data-val="No" data-next="step4">No, uso herramientas gratuitas</button>
-                </div>
-            </div>
-
-            <!-- Step 4: Core Needs -->
-            <div class="quiz-step" id="step4">
-                <h3>Paso 4: Automatizaci�n Deseada</h3>
-                <p>�Cu�l es la funci�n m�s urgente que deseas resolver?</p>
-                <div class="quiz-options">
-                    <button class="btn-secondary quiz-btn" data-val="Agente AI 24/7" data-next="step5">Agente de IA para responder chats</button>
-                    <button class="btn-secondary quiz-btn" data-val="Embudos de Venta" data-next="step5">Embudos y Landing Pages</button>
-                    <button class="btn-secondary quiz-btn" data-val="Funnels + IA" data-next="step5">Todo en Uno (Embudo + IA + CRM)</button>
-                </div>
-            </div>
-
-            <!-- Step 5: Lead Info -->
-            <div class="quiz-step" id="step5">
-                <h3 class="text-gradient">?? �Perfil Calificado!</h3>
-                <p>Cumples con los requisitos para la configuraci�n expr�s de tu CRM en 24 horas.</p>
-                <p>Por favor ingresa los datos de contacto para registrar tu orden e iniciar el proceso:</p>
-                <div class="quiz-input-group">
-                    <input type="text" id="leadName" placeholder="Nombre completo" class="glass-input" required>
-                    <input type="text" id="leadBusiness" placeholder="Nombre de tu negocio" class="glass-input" required>
-                    <input type="email" id="leadEmail" placeholder="Correo electr�nico corporativo" class="glass-input" required>
-                    <input type="tel" id="leadPhone" placeholder="N�mero de celular (WhatsApp)" class="glass-input" required>
-                    <button class="btn-primary" id="submitLead" style="margin-top: 15px;">Enviar y Reservar</button>
-                </div>
-                <div id="successMsg" style="display: none; color: #2ecc71; margin-top: 15px; text-align: center; font-weight: 500;">
-                    �Enviado! Revisa tu correo en unos minutos.
-                </div>
-                <div id="whatsappContactBlock" style="display: none; margin-top: 15px; text-align: center;">
-                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Para acelerar el inicio del proyecto, escr�bele a tu especialista asignado:</p>
-                    <a id="waContactBtn" href="#" target="_blank" class="btn-primary" style="background: #25D366; border-color: #25D366; text-decoration: none;">?? Hablar con Asesor por WhatsApp</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Chat Widget Eva (AI Agent) -->
-    <div class="chat-widget">
-        <button class="chat-toggle" id="chatToggle">
-            <span class="widget-avatar">??</span>
-            <span class="notification-badge">1</span>
-        </button>
-        <div class="chat-window glass" id="chatWindow">
-            <div class="chat-header">
-                <div class="chat-avatar">
-                    ??
-                    <span class="status-dot"></span>
-                </div>
-                <div class="chat-header-info">
-                    <h4>Eva</h4>
-                    <p class="status-text">Asesora de Automatizaci�n IA</p>
-                </div>
-                <button class="close-chat" id="closeChat">�</button>
-            </div>
-            
-            <div class="chat-body" id="chatBody">
-                <div class="message bot-msg">
-                    <p>�Hola! Soy Eva, tu especialista en IA ??. Estoy aqu� para resolver tus dudas sobre nuestra configuraci�n expr�s de GoHighLevel por $450 USD. �Qu� nicho tiene tu negocio?</p>
-                </div>
-            </div>
-
-            <div class="chat-input-area">
-                <input type="text" id="chatInput" placeholder="Preg�ntame sobre la oferta de CRM...">
-                <button id="sendChatBtn">?</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script JavaScript -->
-    <script src="script.js"></script>
+    <!-- App Logic -->
+    <script src="puronics_app.js"></script>
 </body>
 </html>
