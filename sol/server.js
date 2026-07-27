@@ -2154,3 +2154,17 @@ app.listen(PORT, () => {
 });
 
 
+
+
+// EXPLICIT PURONICS WATER SYSTEMS ROUTES
+app.get('/puronics', (req, res) => {
+    res.sendFile(path.join(__dirname, 'puronics_comercial.html'));
+});
+
+app.get('/puronics-water', (req, res) => {
+    res.sendFile(path.join(__dirname, 'puronics_comercial.html'));
+});
+
+app.get('/agua-es-vida', (req, res) => {
+    res.sendFile(path.join(__dirname, 'puronics_comercial.html'));
+});
