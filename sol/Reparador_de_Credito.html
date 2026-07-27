@@ -1037,7 +1037,7 @@
                 <div class="input-group">
                     <label for="select-api-mode" id="label-api-mode">Modo de Conexión IA:</label>
                     <select id="select-api-mode" onchange="changeAPIMode()">
-                        <option value="local-server" id="opt-local-server">Servidor Local de Equity Solar (Puerto 3000)</option>
+                        <option value="local-server" id="opt-local-server">Servidor Local de Equity Puronics (Puerto 3000)</option>
                         <option value="direct-api" id="opt-direct-api">Conexión Directa a OpenAI (iOS, Android, Offline)</option>
                     </select>
                 </div>
@@ -1812,7 +1812,7 @@
             // Traducir dinámicos específicos
             document.getElementById('label-settings-toggle').textContent = lang === 'es' ? '⚙️ Configuración del Analizador IA (Clic para expandir)' : '⚙️ AI Analyzer Settings (Click to expand)';
             document.getElementById('label-api-mode').textContent = lang === 'es' ? 'Modo de Conexión IA:' : 'AI Connection Mode:';
-            document.getElementById('opt-local-server').textContent = lang === 'es' ? 'Servidor Local de Equity Solar (Puerto 3000)' : 'Equity Solar Local Server (Port 3000)';
+            document.getElementById('opt-local-server').textContent = lang === 'es' ? 'Servidor Local de Equity Puronics (Puerto 3000)' : 'Equity Puronics Local Server (Port 3000)';
             document.getElementById('opt-direct-api').textContent = lang === 'es' ? 'Conexión Directa a OpenAI (iOS, Android, Offline)' : 'Direct Connection to OpenAI (iOS, Android, Offline)';
             document.getElementById('label-api-key').textContent = lang === 'es' ? 'OpenAI API Key (se guarda localmente):' : 'OpenAI API Key (saved locally):';
             
@@ -2013,11 +2013,11 @@
             }
 
             if (score >= 650) {
-                targetFeedback.innerHTML = currentLang === 'es' ? `🎉 <strong>¡Cumples la Meta!</strong> Tu puntaje supera el mínimo de 650 para financiamiento a tasa cero.` : `🎉 <strong>Goal Achieved!</strong> Your score exceeds the 650 minimum for zero-rate solar financing.`;
+                targetFeedback.innerHTML = currentLang === 'es' ? `🎉 <strong>¡Cumples la Meta!</strong> Tu puntaje supera el mínimo de 650 para financiamiento a tasa cero.` : `🎉 <strong>Goal Achieved!</strong> Your score exceeds the 650 minimum for zero-rate puronics financing.`;
                 targetFeedback.style.color = 'var(--success-color)';
             } else {
                 const diff = 650 - score;
-                targetFeedback.innerHTML = currentLang === 'es' ? `Te faltan <strong>${diff} puntos</strong> para calificar a financiamiento solar a tasa cero.` : `You need <strong>${diff} more points</strong> to qualify for zero-interest solar financing.`;
+                targetFeedback.innerHTML = currentLang === 'es' ? `Te faltan <strong>${diff} puntos</strong> para calificar a financiamiento puronics a tasa cero.` : `You need <strong>${diff} more points</strong> to qualify for zero-interest puronics financing.`;
                 targetFeedback.style.color = 'var(--text-muted)';
             }
         }

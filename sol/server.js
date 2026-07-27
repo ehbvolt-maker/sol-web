@@ -119,7 +119,7 @@ const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/p73ls3ukkbtd6szgpznx7hu96ax1
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+        user: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
         pass: process.env.GMAIL_APP_PASS || 'TU_PASSWORD_DE_APLICACION_AQUI'
     }
 });
@@ -263,6 +263,9 @@ app.post('/api/leads', (req, res) => {
         // Enviar evento Lead a Meta Conversions API
         sendMetaConversionsAPI(leadObj, 'Lead');
 
+        // Enviar Seguimiento Masivo en Tiempo Real
+        sendRealTimeFollowUp(leadObj);
+
         // Si califica, enviar evento QualifiedLead
         const isQualified = (is_owner === 'yes' || is_owner === 'Sí' || is_owner === 'si') && 
                             (bill_over_100 === 'yes' || bill_over_100 === 'Sí' || bill_over_100 === 'si') && 
@@ -273,10 +276,10 @@ app.post('/api/leads', (req, res) => {
 
         // Enviar Correo Electrónico Automático al Administrador (HTML Premium)
         const mailOptions = {
-            from: `Equity Solar <${process.env.GMAIL_USER || 'ehbequitysolar@gmail.com'}>`,
-            to: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+            from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
+            to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
             subject: `☀️ NUEVO LEAD SOLAR: ${name}`,
-            text: `Felicidades! Tienes un nuevo prospecto solar.\n\nNombre: ${name}\nTeléfono: ${phone}\nEmail: ${email}`,
+            text: `Felicidades! Tienes un nuevo prospecto puronics.\n\nNombre: ${name}\nTeléfono: ${phone}\nEmail: ${email}`,
             html: generateAdminEmailHTML({ name, phone, address, email, zipcode, is_owner, bill_over_100, credit_score, roof_type })
         };
 
@@ -291,10 +294,10 @@ app.post('/api/leads', (req, res) => {
         // Enviar Correo de Bienvenida al Cliente (HTML Premium)
         if (email && email.trim() !== '') {
             const clientMailOptions = {
-                from: `Equity Solar <${process.env.GMAIL_USER || 'ehbequitysolar@gmail.com'}>`,
+                from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
                 to: email,
-                subject: `☀️ ¡Bienvenido a Equity Solar! Tu precalificación solar está en proceso`,
-                text: `¡Hola ${name}! Gracias por tu interés en los programas de renta solar de Equity Solar. Sol, nuestra asesora inteligente, está trabajando en tu cotización.`,
+                subject: `☀️ ¡Bienvenido a Equity Puronics! Tu precalificación puronics está en proceso`,
+                text: `¡Hola ${name}! Gracias por tu interés en los programas de renta puronics de Equity Puronics. Sol, nuestra asesora inteligente, está trabajando en tu cotización.`,
                 html: generateClientEmailHTML({ name })
             };
             
@@ -345,6 +348,76 @@ app.get('/api/leads', (req, res) => {
         res.json({ leads: rows });
     });
 });
+
+app.post('/api/leads/send-followup', async (req, res) => {
+    const { channels, message } = req.body;
+    if (!channels || !Array.isArray(channels) || channels.length === 0) {
+        return res.status(400).json({ error: 'Debe seleccionar al menos un canal de comunicación' });
+    }
+    if (!message) {
+        return res.status(400).json({ error: 'El mensaje no puede estar vacío' });
+    }
+
+    try {
+        db.all('SELECT * FROM leads', [], async (err, leads) => {
+            if (err) {
+                console.error('Error al consultar leads para seguimiento:', err.message);
+                return res.status(500).json({ error: 'Error al consultar leads de la base de datos' });
+            }
+
+            if (!leads || leads.length === 0) {
+                return res.json({ success: true, count: 0, details: [] });
+            }
+
+            const results = [];
+            for (const lead of leads) {
+                const leadResult = { name: lead.name, email: lead.email, phone: lead.phone, sent: {} };
+                const cleanPhone = normalizePhone(lead.phone);
+
+                if (channels.includes('whatsapp') && cleanPhone) {
+                    try {
+                        await sendWhatsAppMessage(cleanPhone, message);
+                        leadResult.sent.whatsapp = true;
+                    } catch (e) {
+                        leadResult.sent.whatsapp = false;
+                        leadResult.sent.whatsapp_error = e.message;
+                    }
+                }
+
+                if (channels.includes('sms') && cleanPhone) {
+                    try {
+                        await sendSMSMessage(cleanPhone, message);
+                        leadResult.sent.sms = true;
+                    } catch (e) {
+                        leadResult.sent.sms = false;
+                        leadResult.sent.sms_error = e.message;
+                    }
+                }
+
+                if (channels.includes('email') && lead.email && lead.email.trim() !== '') {
+                    try {
+                        const emailRes = await sendFollowUpEmail(lead.email, 'Información Importante - Programas de Energía Limpia', message);
+                        leadResult.sent.email = emailRes.success;
+                        if (!emailRes.success) {
+                            leadResult.sent.email_error = emailRes.error;
+                        }
+                    } catch (e) {
+                        leadResult.sent.email = false;
+                        leadResult.sent.email_error = e.message;
+                    }
+                }
+
+                results.push(leadResult);
+            }
+
+            res.json({ success: true, count: leads.length, results });
+        });
+    } catch (error) {
+        console.error('Error en /api/leads/send-followup:', error.message);
+        res.status(500).json({ error: 'Error al procesar el envío de seguimiento masivo' });
+    }
+});
+
 
 // 2. Save Chat Logs (POST)
 app.post('/api/chat', (req, res) => {
@@ -398,16 +471,16 @@ app.post('/api/chat-ai', async (req, res) => {
             messages: [
                 {
                     role: "system",
-                    content: `Eres Sol, una asesora virtual e influencer experta en energía solar de la empresa EQUITY SOLAR. Responde de manera amigable, profesional y persuasiva.
+                    content: `Eres Sol, una asesora virtual e influencer experta en energía puronics de la empresa EQUITY SOLAR. Responde de manera amigable, profesional y persuasiva.
 Aquí tienes una lista de respuestas rápidas frecuentes:
 •	"¿Cuánto cuesta?": "Justamente para eso es la consulta. El costo depende de su consumo actual, pero recuerde que el objetivo es que pague menos de lo que paga hoy de luz y sin inversión inicial, eliminando completamente su factura actual con la compañía eléctrica."
 
 Información de la Empresa (Referencia)
 •	Empresa: EQUITY SOLAR
-•	Ubicación: Miami, FL (Equity solar) y Orlando. Trabajamos en toda Florida.
-•	Servicios: Paneles solares (residencial/comercial), baterías, techos, eficiencia energética, cargadores EV, aire acondicionad, tratamiento de agua, remodelación de interiores y driveway, además puertas y ventanas contra impacto.
+•	Ubicación: Miami, FL (Equity puronics) y Orlando. Trabajamos en toda Florida.
+•	Servicios: Paneles puronicses (residencial/comercial), baterías, techos, eficiencia energética, cargadores EV, aire acondicionad, tratamiento de agua, remodelación de interiores y driveway, además puertas y ventanas contra impacto.
 •	Reputación: 4.9 estrellas en satisfacción al cliente.
-•	Contacto: (305) 813-6159 | ehbequitysolar.com`
+•	Contacto: (305) 813-6159 | ehbequitypuronics.com`
                 },
                 { role: "user", content: message }
             ]
@@ -480,7 +553,7 @@ app.post('/api/generate-marketing-video', async (req, res) => {
         const promptCompletions = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [
-                { role: "system", content: "Eres el Director de Marketing de Equity Solar en Florida. Escribe un guion para un video corto de TikTok/Reels de máximo 30 segundos (unas 60-70 palabras). El tono debe ser entusiasta, directo y vender el programa de renta solar donde se elimina la factura de luz a 0 costo inicial. Menciona el número 305-813-6159 al final. Devuelve SOLO el texto que el presentador dirá, sin acotaciones escénicas ni hashtags." },
+                { role: "system", content: "Eres el Director de Marketing de Equity Puronics en Florida. Escribe un guion para un video corto de TikTok/Reels de máximo 30 segundos (unas 60-70 palabras). El tono debe ser entusiasta, directo y vender el programa de renta puronics donde se elimina la factura de luz a 0 costo inicial. Menciona el número 305-813-6159 al final. Devuelve SOLO el texto que el presentador dirá, sin acotaciones escénicas ni hashtags." },
                 { role: "user", content: "Genera un nuevo guion educativo persuasivo para atraer nuevos dueños de casa a nuestro programa." }
             ]
         });
@@ -584,6 +657,114 @@ async function sendWhatsAppMessage(phone, text) {
     }
 }
 
+async function sendSMSMessage(phone, text) {
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const fromPhone = process.env.TWILIO_PHONE_NUMBER;
+
+    if (!accountSid || !authToken || !fromPhone) {
+        console.log(`[SMS API Simulado] Enviando a ${phone}: "${text}"`);
+        return;
+    }
+
+    try {
+        const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+        const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
+        const params = new URLSearchParams();
+        params.append('To', phone);
+        params.append('From', fromPhone);
+        params.append('Body', text);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${auth}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log('[SMS API Response]:', data.sid);
+        } else {
+            console.error('[SMS API Send Error]:', data.message);
+        }
+    } catch (err) {
+        console.error('[SMS API Exception]:', err.message);
+    }
+}
+
+async function sendFollowUpEmail(email, subject, text) {
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASS) {
+        console.log(`[Email API Simulado] Enviando a ${email}: "${text}"`);
+        return { success: true };
+    }
+    const mailOptions = {
+        from: `Equity Puronics <${process.env.GMAIL_USER}>`,
+        to: email,
+        subject: subject,
+        text: text,
+        html: `
+            <div style="background-color: #0b0f19; padding: 30px; font-family: sans-serif; color: #e2e8f0; max-width: 600px; margin: auto; border-radius: 12px; border: 1px solid #1e293b;">
+                <h2 style="color: #ffb703; text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 15px; margin-top: 0;">📣 Seguimiento de Solicitud</h2>
+                <p style="color: #e2e8f0; font-size: 1.1rem; line-height: 1.6; white-space: pre-line;">${text}</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="tel:3058136159" style="background-color: #ffb703; color: #0b0f19; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; display: inline-block; margin-right: 10px;">Llamar Asesor 1</a>
+                    <a href="tel:3057846363" style="background-color: #219ebc; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; display: inline-block;">Llamar Asesor 2</a>
+                </div>
+                <p style="font-size: 0.9rem; text-align: center; color: #64748b; margin-top: 30px; border-top: 1px solid #1e293b; padding-top: 15px;">Gracias por confiar en nosotros.<br>Departamento de Asesoría - Equity Puronics</p>
+            </div>
+        `
+    };
+    return new Promise((resolve) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(`[Email Send Error] a ${email}:`, error.message);
+                resolve({ success: false, error: error.message });
+            } else {
+                console.log(`[Email Sent] a ${email}:`, info.response);
+                resolve({ success: true, response: info.response });
+            }
+        });
+    });
+}
+
+async function sendRealTimeFollowUp(lead) {
+    const followUpText = "Saludos. Recibimos su solicitud de informacion sobre los programas de energia limpia renobable patrocinados por el gobierno federal Usted completo el formulario en uno de nuestros videos informativos. Hemos tratado de comunicarnos con usted sin exito. Permitanos informale detalladamente sobre los programasa. Coordinemos una llamada. Confirmanos su disponibilidad de tiempo para llamarte o sientace libre de comunicarse con nuestro departamento de asesoria al (305)8136159 o (305)7846363. Gracias";
+    
+    const cleanPhone = normalizePhone(lead.phone);
+    console.log(`[Seguimiento Real-Time] Iniciando envíos para ${lead.name} (${lead.phone})...`);
+
+    // 1. WhatsApp
+    if (cleanPhone) {
+        try {
+            await sendWhatsAppMessage(cleanPhone, followUpText);
+        } catch (e) {
+            console.error('[Seguimiento Real-Time WhatsApp Error]:', e.message);
+        }
+    }
+
+    // 2. SMS
+    if (cleanPhone) {
+        try {
+            await sendSMSMessage(cleanPhone, followUpText);
+        } catch (e) {
+            console.error('[Seguimiento Real-Time SMS Error]:', e.message);
+        }
+    }
+
+    // 3. Email
+    if (lead.email && lead.email.trim() !== '') {
+        try {
+            await sendFollowUpEmail(lead.email, 'Información Importante - Programas de Energía Limpia', followUpText);
+        } catch (e) {
+            console.error('[Seguimiento Real-Time Email Error]:', e.message);
+        }
+    }
+}
+
+
+
 async function processWhatsAppAI(phone, userMessage) {
     // 1. Save user message
     await new Promise((resolve, reject) => {
@@ -607,7 +788,7 @@ async function processWhatsAppAI(phone, userMessage) {
     const openaiMessages = [
         {
             role: "system",
-            content: `Eres Sol, una carismática asesora experta en energía solar de la empresa EQUITY SOLAR en Florida ( Miami, Orlando, etc.).
+            content: `Eres Sol, una carismática asesora experta en energía puronics de la empresa EQUITY SOLAR en Florida ( Miami, Orlando, etc.).
 Tu objetivo es charlar con el cliente de manera muy amigable y empática para precalificarlo.
 Para precalificar a un cliente, necesitas obtener de forma sutil durante la conversación:
 1. Nombre
@@ -688,7 +869,7 @@ Reglas importantes de conversación:
             response_format: {
                 type: "json_schema",
                 json_schema: {
-                    name: "solar_lead_extraction",
+                    name: "puronics_lead_extraction",
                     schema: extractSchema,
                     strict: true
                 }
@@ -1082,8 +1263,8 @@ app.post('/api/webhook/vapi', async (req, res) => {
                 sendMetaConversionsAPI({ id: leadId, name, phone, email }, 'QualifiedLead');
                 // Enviar Correo al Administrador
                 const mailOptions = {
-                    from: `Equity Solar <${process.env.GMAIL_USER || 'ehbequitysolar@gmail.com'}>`,
-                    to: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+                    from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
+                    to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
                     subject: `☀️ NUEVO LEAD SOLAR POR TELÉFONO: ${name}`,
                     text: `Felicidades! Tienes un nuevo lead calificado por llamada de voz.\n\nNombre: ${name}\nTeléfono: ${phone}\nEmail: ${email}`,
                     html: generateAdminEmailHTML({ name, phone, address, email, zipcode, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore, roof_type: roofType })
@@ -1095,10 +1276,10 @@ app.post('/api/webhook/vapi', async (req, res) => {
                 // Enviar correo de bienvenida al cliente
                 if (email && email.trim() !== '') {
                     const clientMailOptions = {
-                        from: `Equity Solar <${process.env.GMAIL_USER || 'ehbequitysolar@gmail.com'}>`,
+                        from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
                         to: email,
-                        subject: `☀️ ¡Bienvenido a Equity Solar! Tu llamada con Sol ha sido procesada`,
-                        text: `¡Hola ${name}! Gracias por hablar con Sol. Tu cotización de renta solar está en proceso.`,
+                        subject: `☀️ ¡Bienvenido a Equity Puronics! Tu llamada con Sol ha sido procesada`,
+                        text: `¡Hola ${name}! Gracias por hablar con Sol. Tu cotización de renta puronics está en proceso.`,
                         html: generateClientEmailHTML({ name })
                     };
                     transporter.sendMail(clientMailOptions, (error, info) => {
@@ -1312,6 +1493,9 @@ async function fetchAndProcessMetaLead(leadgenId) {
         // Disparar CAPI Lead (es un nuevo lead que capturamos en el CRM)
         sendMetaConversionsAPI(leadObj, 'Lead');
 
+        // Enviar Seguimiento Masivo en Tiempo Real
+        sendRealTimeFollowUp(leadObj);
+
         if (isQualified) {
             // Disparar CAPI QualifiedLead
             sendMetaConversionsAPI(leadObj, 'QualifiedLead');
@@ -1319,8 +1503,8 @@ async function fetchAndProcessMetaLead(leadgenId) {
 
         // Enviar Correo Electrónico al Administrador (HTML Alerta)
         const mailOptions = {
-            from: `Equity Solar <${process.env.GMAIL_USER || 'ehbequitysolar@gmail.com'}>`,
-            to: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+            from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
+            to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
             subject: `☀️ NUEVO LEAD SOLAR META ADS: ${name}`,
             text: `Felicidades! Tienes un nuevo lead registrado por formulario de Meta Ads.\n\nNombre: ${name}\nTeléfono: ${phone}\nEmail: ${email}`,
             html: generateAdminEmailHTML({ name, phone, address, email, zipcode, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore, roof_type: roofType })
@@ -1332,10 +1516,10 @@ async function fetchAndProcessMetaLead(leadgenId) {
         // Enviar Correo de Bienvenida al Cliente
         if (email && email.trim() !== '') {
             const clientMailOptions = {
-                from: `Equity Solar <${process.env.GMAIL_USER || 'ehbequitysolar@gmail.com'}>`,
+                from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
                 to: email,
-                subject: `☀️ ¡Bienvenido a Equity Solar! Tu registro ha sido recibido`,
-                text: `¡Hola ${name}! Gracias por tu interés en los programas de renta solar de Equity Solar.`,
+                subject: `☀️ ¡Bienvenido a Equity Puronics! Tu registro ha sido recibido`,
+                text: `¡Hola ${name}! Gracias por tu interés en los programas de renta puronics de Equity Puronics.`,
                 html: generateClientEmailHTML({ name })
             };
             transporter.sendMail(clientMailOptions, (error, info) => {
@@ -1389,7 +1573,7 @@ function generateAdminEmailHTML(lead) {
     <div style="font-family: 'Outfit', sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 30px; border-radius: 20px; max-width: 600px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.1);">
         <div style="text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
             <h2 style="color: #ffb703; font-family: 'Space Grotesk', sans-serif; font-size: 24px; margin: 0;">☀️ NUEVO LEAD SOLAR REGISTRADO</h2>
-            <p style="color: #94a3b8; font-size: 14px; margin: 5px 0 0 0;">Notificación automática del CRM SolarNext</p>
+            <p style="color: #94a3b8; font-size: 14px; margin: 5px 0 0 0;">Notificación automática del CRM PuronicsNext</p>
         </div>
         
         <div style="background-color: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
@@ -1452,14 +1636,14 @@ function generateClientEmailHTML(lead) {
     <div style="font-family: 'Outfit', sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 30px; border-radius: 20px; max-width: 600px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.1);">
         <div style="text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
             <h2 style="color: #ffb703; font-family: 'Space Grotesk', sans-serif; font-size: 26px; margin: 0;">☀️ ¡BIENVENIDO A EQUITY SOLAR!</h2>
-            <p style="color: #94a3b8; font-size: 14px; margin: 5px 0 0 0;">Tu transición a la energía solar a costo cero</p>
+            <p style="color: #94a3b8; font-size: 14px; margin: 5px 0 0 0;">Tu transición a la energía puronics a costo cero</p>
         </div>
         
         <div style="padding: 10px 0; line-height: 1.6; font-size: 15px; color: #e2e8f0;">
             <p>Hola <strong>\${lead.name}</strong>,</p>
-            <p>Te saluda <strong>Sol</strong>, tu asesora de IA de <strong>Equity Solar</strong>. ¡Gracias por registrar tu interés en nuestro programa solar residencial de renta para el estado de Florida!</p>
+            <p>Te saluda <strong>Sol</strong>, tu asesora de IA de <strong>Equity Puronics</strong>. ¡Gracias por registrar tu interés en nuestro programa puronics residencial de renta para el estado de Florida!</p>
             
-            <p>He recibido tus datos y estoy analizando tu información. El objetivo principal de nuestro programa es <strong>eliminar por completo tu factura de luz actual, cambiándola por una tarifa solar fija que sea menor de lo que pagas hoy</strong>, todo esto <strong>sin inversión inicial ni costos de instalación</strong>.</p>
+            <p>He recibido tus datos y estoy analizando tu información. El objetivo principal de nuestro programa es <strong>eliminar por completo tu factura de luz actual, cambiándola por una tarifa puronics fija que sea menor de lo que pagas hoy</strong>, todo esto <strong>sin inversión inicial ni costos de instalación</strong>.</p>
             
             <p><strong>¿Cuáles son los siguientes pasos?</strong></p>
             <ol style="margin-left: 20px; padding-left: 0; color: #e2e8f0;">
@@ -1468,17 +1652,14 @@ function generateClientEmailHTML(lead) {
             </ol>
 
             <p style="margin-top: 25px; text-align: center;">
-                <a href="https://wa.me/13058136159?text=Hola,%20registre%20mis%20datos%20con%20Sol%20y%20me%20gustaria%20coordinar%20mi%20diseno%20solar." 
-                   style="background: linear-gradient(135deg, #fb8500 0%, #ffb703 100%); color: #0b0f19; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 15px; box-shadow: 0 4px 15px rgba(251, 133, 0, 0.3);">
-                   💬 Hablar con un Asesor por WhatsApp
-                </a>
+                
             </p>
         </div>
 
         <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; line-height: 1.4;">
-            <strong>Equity Solar Florida</strong><br>
+            <strong>Equity Puronics Florida</strong><br>
             Contacto: (305) 813-6159 | Miami - Orlando<br>
-            <a href="https://ehbequitysolar.com" style="color: #219ebc; text-decoration: none;">ehbequitysolar.com</a><br><br>
+            <br><br>
             <span style="color: #64748b; font-size: 11px;">Este es un correo automático. Si no solicitaste información, puedes ignorar este mensaje.</span>
         </div>
     </div>
@@ -1546,7 +1727,7 @@ Devuelve un JSON estrictamente estructurado con las siguientes propiedades:
 async function sendDownloadEmail(toEmail, downloadLink) {
     if (!toEmail) return;
     const mailOptions = {
-        from: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+        from: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
         to: toEmail,
         subject: '📥 Tu Aplicación del Reparador de Crédito por IA está lista',
         html: `
@@ -1584,7 +1765,7 @@ async function sendDownloadEmail(toEmail, downloadLink) {
                 </div>
 
                 <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; line-height: 1.4;">
-                    <strong>Equity Solar Florida</strong><br>
+                    <strong>Equity Puronics Florida</strong><br>
                     Contacto: (305) 813-6159 | Miami - Orlando
                 </div>
             </div>
@@ -1717,8 +1898,8 @@ app.post('/api/payments/zelle-notify', async (req, res) => {
 
             // Notificar al administrador sobre el pago por Zelle
             const adminMailOptions = {
-                from: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
-                to: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+                from: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
+                to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
                 subject: '🔔 Nuevo Pago por Zelle a Verificar - Reparador de Crédito',
                 html: `
                     <div style="font-family: sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
@@ -1762,8 +1943,8 @@ app.post('/api/payments/paypal-success', async (req, res) => {
 
             // Notificar al administrador
             const adminMailOptions = {
-                from: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
-                to: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+                from: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
+                to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
                 subject: '🔔 Nuevo Pago por PayPal Recibido - Reparador de Crédito',
                 html: `
                     <div style="font-family: sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
@@ -1808,8 +1989,8 @@ app.post('/api/payments/card-success', async (req, res) => {
 
             // Notificar al administrador
             const adminMailOptions = {
-                from: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
-                to: process.env.GMAIL_USER || 'ehbequitysolar@gmail.com',
+                from: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
+                to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
                 subject: '💳 Nuevo Pago con Tarjeta Recibido - Reparador de Crédito',
                 html: `
                     <div style="font-family: sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
@@ -1966,7 +2147,7 @@ app.get('/presentacion-standalone', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
     console.log("=================================");
-    console.log("🚀 SolarNext Backend API Started");
+    console.log("🚀 PuronicsNext Backend API Started");
     console.log("=================================");
     console.log('Server running on: http://localhost:' + PORT);
     console.log('Frontend accessible at: http://localhost:' + PORT + '/index.html');

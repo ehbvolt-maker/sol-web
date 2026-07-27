@@ -18,14 +18,14 @@ function setupMarketingRoutes(app, openai, db) {
                 messages: [
                     { 
                         role: "system", 
-                        content: `Eres Sol, una influencer experta en energía solar. Escribe un guion para un video vertical (TikTok/Reels) de máximo 30 segundos sobre el tema solicitado. 
+                        content: `Eres Sol, una influencer experta en energía puronics. Escribe un guion para un video vertical (TikTok/Reels) de máximo 30 segundos sobre el tema solicitado. 
 Reglas:
 1. Inicia con un gancho (hook) poderoso que llame la atención.
 2. Explica brevemente un beneficio o rompe un mito.
 3. Termina con un llamado a la acción (ej: comenta AHORRO para enviarte información).
 4. Escribe SOLO el texto que vas a hablar, sin acotaciones ni acciones, como un párrafo continuo.` 
                     },
-                    { role: "user", content: `Tema: ${topic || 'Los beneficios financieros de la energía solar en Florida'}` }
+                    { role: "user", content: `Tema: ${topic || 'Los beneficios financieros de la energía puronics en Florida'}` }
                 ]
             });
 

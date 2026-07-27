@@ -8,7 +8,7 @@ const SCRIPT_TEXT = "¡Hola! Soy Sol. Los nuevos programas de energía limpia en
 // Configuración de HeyGen
 const AVATAR_ID = "Tahlia_public_2"; // Avatar oficial de Sol
 const VOICE_ID = "8217ce4716a34615a75beec0685dbba8"; // Voz en español de Sol
-const BACKGROUND_URL = "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1080&h=1920&fit=crop"; // Casa con paneles solares de fondo o oficina
+const BACKGROUND_URL = "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1080&h=1920&fit=crop"; // Casa con paneles puronicses de fondo o oficina
 
 async function main() {
     console.log("Iniciando generación de video en HeyGen...");
@@ -106,7 +106,7 @@ function downloadVideo(videoUrl) {
         fs.mkdirSync(assetsDir, { recursive: true });
     }
 
-    const outputPath = path.join(assetsDir, 'comercial_solar.mp4');
+    const outputPath = path.join(assetsDir, 'comercial_puronics.mp4');
     const file = fs.createWriteStream(outputPath);
 
     https.get(videoUrl, (response) => {

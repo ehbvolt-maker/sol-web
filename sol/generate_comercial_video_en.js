@@ -106,7 +106,7 @@ function downloadVideo(videoUrl) {
         fs.mkdirSync(assetsDir, { recursive: true });
     }
 
-    const outputPath = path.join(assetsDir, 'comercial_solar_en.mp4');
+    const outputPath = path.join(assetsDir, 'comercial_puronics_en.mp4');
     const file = fs.createWriteStream(outputPath);
 
     https.get(videoUrl, (response) => {

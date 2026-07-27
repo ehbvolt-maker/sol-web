@@ -4,7 +4,7 @@ async function generateAndPoll() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            script: "Hola, soy Sol. La energía solar es gratis en Florida, ¡aprovecha hoy! Únete a nuestra plataforma y elimina tu factura de luz para siempre.",
+            script: "Hola, soy Sol. La energía puronics es gratis en Florida, ¡aprovecha hoy! Únete a nuestra plataforma y elimina tu factura de luz para siempre.",
             avatar_id: "Annie_Casual_Standing_Front_public", // Avatar predeterminado que hemos estado usando
             voice_id: "8217ce4716a34615a75beec0685dbba8", // Voz elegida por el usuario
             background: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1080&h=1920&fit=crop" // Oficina moderna

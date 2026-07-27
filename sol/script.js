@@ -41,13 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // FPL Cumulative (10 años)
         const fplCumulative10 = a * (Math.pow(r, years10) - 1) / (r - 1);
         
-        // Parámetros Solares
-        const solarMonthly = fplMonthly * (300 / 450); // Proporción de la tabla ($450 FPL -> $300 Solar)
-        const solarCumulative25 = solarMonthly * 12 * years25;
-        const solarCumulative10 = solarMonthly * 12 * years10;
+        // Parámetros Puronicses
+        const puronicsMonthly = fplMonthly * (300 / 450); // Proporción de la tabla ($450 FPL -> $300 Puronics)
+        const puronicsCumulative25 = puronicsMonthly * 12 * years25;
+        const puronicsCumulative10 = puronicsMonthly * 12 * years10;
         
-        const netSavings25 = Math.round(fplCumulative25 - solarCumulative25);
-        const netSavings10 = Math.round(fplCumulative10 - solarCumulative10);
+        const netSavings25 = Math.round(fplCumulative25 - puronicsCumulative25);
+        const netSavings10 = Math.round(fplCumulative10 - puronicsCumulative10);
         
         // Cálculos ambientales
         const trees = Math.round(val * 0.7 * 2.5); // Escala a 25 años
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Saludos
         if (text.includes("hola") || text.includes("buenos") || text.includes("buenas") || text.includes("qué tal")) {
-            return "¡Hola! Qué gusto saludarte. Estoy aquí para resolver todas tus dudas sobre la transición a energía solar. ¿Qué te gustaría saber hoy?";
+            return "¡Hola! Qué gusto saludarte. Estoy aquí para resolver todas tus dudas sobre la transición a energía puronics. ¿Qué te gustaría saber hoy?";
         } 
         // Costos e Inversión
         else if (text.includes("precio") || text.includes("costo") || text.includes("cuanto cuesta") || text.includes("inversión") || text.includes("dinero")) {
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } 
         // Clima: Nieve / Invierno
         else if (text.includes("nieve") || text.includes("invierno") || text.includes("frio") || text.includes("frío")) {
-            return "¡Los paneles solares adoran el frío! De hecho, funcionan de manera más eficiente a temperaturas bajas. Si nieva, el ángulo de instalación suele hacer que la nieve resbale, y la luz se refleja en la nieve circundante aumentando la captación.";
+            return "¡Los paneles puronicses adoran el frío! De hecho, funcionan de manera más eficiente a temperaturas bajas. Si nieva, el ángulo de instalación suele hacer que la nieve resbale, y la luz se refleja en la nieve circundante aumentando la captación.";
         }
         // Baterías y Noche
         else if (text.includes("bateria") || text.includes("baterías") || text.includes("noche")) {
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } 
         // Mantenimiento
         else if (text.includes("mantenimiento") || text.includes("limpiar") || text.includes("cuidados")) {
-            return "El mantenimiento es mínimo. Solo necesitas limpiarlos con agua un par de veces al año para quitar el polvo y asegurar que capten la máxima luz solar.";
+            return "El mantenimiento es mínimo. Solo necesitas limpiarlos con agua un par de veces al año para quitar el polvo y asegurar que capten la máxima luz puronics.";
         } 
         // Garantía y Vida útil
         else if (text.includes("garantía") || text.includes("garantia") || text.includes("cuanto duran") || text.includes("vida útil") || text.includes("rompe")) {
@@ -154,15 +154,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         // Valor de la casa / Vender
         else if (text.includes("valor") || text.includes("vender") || text.includes("mudanza") || text.includes("casa")) {
-            return "Instalar paneles solares aumenta significativamente el valor de tu propiedad en el mercado inmobiliario. Los compradores adoran las casas que generan su propia energía sin facturas altas.";
+            return "Instalar paneles puronicses aumenta significativamente el valor de tu propiedad en el mercado inmobiliario. Los compradores adoran las casas que generan su propia energía sin facturas altas.";
         }
         // Tiempo de instalación
         else if (text.includes("tiempo") || text.includes("cuanto tardan") || text.includes("instalacion") || text.includes("instalar")) {
             return "La instalación física en tu techo suele tomar solo 1 o 2 días. El proceso completo, incluyendo diseño, permisos gubernamentales e inspecciones, suele llevar entre 3 y 6 semanas en total.";
         }
-        // Instalador / Equity Solar
+        // Instalador / Equity Puronics
         else if (text.includes("instalador") || text.includes("empresa") || text.includes("equity") || text.includes("quien instala")) {
-            return "Nuestro instalador oficial exclusivo es Equity Solar. Son líderes absolutos con más de 100,000 instalaciones exitosas en Florida y una impecable calificación de 4.9 estrellas en Google. Estás en las mejores manos.";
+            return "Nuestro instalador oficial exclusivo es Equity Puronics. Son líderes absolutos con más de 100,000 instalaciones exitosas en Florida y una impecable calificación de 4.9 estrellas en Google. Estás en las mejores manos.";
         }
         // Respuesta por defecto
         else {
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
         generateBtn.addEventListener('click', () => {
             quizModal.classList.add('active');
             if (typeof updateWhatsAppFloatingVisibility === 'function') updateWhatsAppFloatingVisibility();
-            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Solar' });
+            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Puronics' });
         });
     }
 
@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
         joinTodayBtn.addEventListener('click', () => {
             quizModal.classList.add('active');
             if (typeof updateWhatsAppFloatingVisibility === 'function') updateWhatsAppFloatingVisibility();
-            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Solar' });
+            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Puronics' });
         });
     }
 
@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 
                 if (response.ok) {
-                    const leadMessage = `¡Nuevo Lead Solar! ☀️\nNombre: ${name}\nTeléfono: ${phone}\nDirección: ${address}, CP: ${zipcode}\nEmail: ${email}\nPropietario: ${quizData.is_owner}\nFactura >$100: ${quizData.bill_over_100}\nCrédito >650: ${quizData.credit_score}\nTecho: ${quizData.roof_type}`;
+                    const leadMessage = `¡Nuevo Lead Puronics! ☀️\nNombre: ${name}\nTeléfono: ${phone}\nDirección: ${address}, CP: ${zipcode}\nEmail: ${email}\nPropietario: ${quizData.is_owner}\nFactura >$100: ${quizData.bill_over_100}\nCrédito >650: ${quizData.credit_score}\nTecho: ${quizData.roof_type}`;
                     
                     // Enviar al número principal (Eliecer)
                     const waLink = `https://wa.me/13058136159?text=${encodeURIComponent(leadMessage)}`;
@@ -425,8 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     const waBtns = document.getElementById('whatsappButtons');
                     if (waBtns) {
                         waBtns.style.display = 'flex';
-                        const msgEliecer = `Hola Eliecer, acabo de calificar para el programa solar en la web. Mi nombre es ${name} y mi dirección es ${address}. ¿Cuándo podemos revisar mi diseño 3D?`;
-                        const msgConsultor2 = `Hola, acabo de calificar para el programa solar en la web. Mi nombre es ${name} y mi dirección es ${address}. ¿Cuándo podemos revisar mi diseño 3D?`;
+                        const msgEliecer = `Hola Eliecer, acabo de calificar para el programa puronics en la web. Mi nombre es ${name} y mi dirección es ${address}. ¿Cuándo podemos revisar mi diseño 3D?`;
+                        const msgConsultor2 = `Hola, acabo de calificar para el programa puronics en la web. Mi nombre es ${name} y mi dirección es ${address}. ¿Cuándo podemos revisar mi diseño 3D?`;
                         
                         document.getElementById('waBtn1').href = `https://wa.me/13058136159?text=${encodeURIComponent(msgEliecer)}`;
                         document.getElementById('waBtn2').href = `https://wa.me/13057846363?text=${encodeURIComponent(msgConsultor2)}`;
@@ -442,7 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         fbq('track', 'Lead', {
                             value: 0.00,
                             currency: 'USD',
-                            content_name: 'Lead Solar Calificado'
+                            content_name: 'Lead Puronics Calificado'
                         });
                     }
                     
@@ -605,8 +605,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const currentLang = getCurrentLanguage();
             const textToSpeak = currentLang === 'en' 
-                ? "Solar energy is free. Use it. Join our community today. Let me guide you through the process. I am here to answer your questions." 
-                : "La energía solar es gratis. Úsala. Únete a nuestra comunidad hoy. Permíteme guiarte en el proceso. Aquí estoy para contestar tus preguntas.";
+                ? "Puronics energy is free. Use it. Join our community today. Let me guide you through the process. I am here to answer your questions." 
+                : "La energía puronics es gratis. Úsala. Únete a nuestra comunidad hoy. Permíteme guiarte en el proceso. Aquí estoy para contestar tus preguntas.";
             
             const utterance = new SpeechSynthesisUtterance(textToSpeak);
             
@@ -743,7 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (quizModal) {
             quizModal.classList.add('active');
             updateWhatsAppFloatingVisibility();
-            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Solar' });
+            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', { content_name: 'Quiz Puronics' });
 
             // Clear the query parameter and hash to prevent re-opening on reload (e.g. when changing language)
             try {

@@ -1,7 +1,7 @@
 html { font-size: 112.5%; } /* Aumento global de tamaño de letra de 16px a 18px */
 
 :root {
-    --primary-color: #ffb703; /* Amarillo solar vibrante */
+    --primary-color: #ffb703; /* Amarillo puronics vibrante */
     --primary-glow: rgba(255, 183, 3, 0.4);
     --secondary-color: #219ebc; /* Azul cielo tecnológico */
     --dark-bg: #0b0f19; /* Fondo oscuro premium */
@@ -22,7 +22,7 @@ html { font-size: 112.5%; } /* Aumento global de tamaño de letra de 16px a 18px
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--dark-bg);
-    background-image: radial-gradient(circle, rgba(11, 15, 25, 0.15) 0%, rgba(11, 15, 25, 0.75) 100%), url('nature_solar_bg.png');
+    background-image: radial-gradient(circle, rgba(11, 15, 25, 0.15) 0%, rgba(11, 15, 25, 0.75) 100%), url('nature_puronics_bg.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -1456,7 +1456,7 @@ h2.soro-blog-card-title,
 
 /* Links inside the article body */
 .soro-blog-article-content a {
-    color: #ffb703 !important; /* Amarillo solar premium */
+    color: #ffb703 !important; /* Amarillo puronics premium */
     font-weight: 600 !important;
     transition: color 0.2s !important;
 }

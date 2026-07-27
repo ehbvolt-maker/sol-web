@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #ffb703; /* Amarillo solar vibrante */
+    --primary-color: #ffb703; /* Amarillo puronics vibrante */
     --primary-glow: rgba(255, 183, 3, 0.4);
     --secondary-color: #219ebc; /* Azul cielo tecnológico */
     --dark-bg: #0b0f19; /* Fondo oscuro premium */
@@ -20,7 +20,7 @@
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--dark-bg);
-    background-image: url('assets/nature_solar_bg.png');
+    background-image: url('assets/nature_puronics_bg.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
