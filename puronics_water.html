@@ -182,7 +182,7 @@
                 <div class="action-card-icon">📋</div>
                 <div class="action-card-info">
                     <h3 class="action-card-title" id="actionTitle1">Fichas Técnicas de Equipos</h3>
-                    <p class="action-card-desc" id="actionDesc1">Especificaciones del sistema Hydronex® iGen®, Ósmosis Inversa Micromax® y Defender®.</p>
+                    <p class="action-card-desc" id="actionDesc1">Especificaciones de Hydronex® iGen®, Ósmosis Inversa Micromax®, Defender® y Batería Solar Powerwall.</p>
                     <button class="btn-action-card" id="actionBtn1" onclick="openSpecsModal()">📄 Ver Fichas Técnicas</button>
                 </div>
             </div>
@@ -228,6 +228,7 @@
                     <button class="spec-tab-btn active" id="tab_hydronex" onclick="switchSpecTab('hydronex')">Hydronex® iGen®</button>
                     <button class="spec-tab-btn" id="tab_micromax" onclick="switchSpecTab('micromax')">Micromax® RO</button>
                     <button class="spec-tab-btn" id="tab_defender" onclick="switchSpecTab('defender')">Puronics® Defender</button>
+                    <button class="spec-tab-btn" id="tab_bateria" onclick="switchSpecTab('bateria')">🔋 Batería Powerwall</button>
                     <button class="spec-tab-btn" id="tab_nasa" onclick="switchSpecTab('nasa')">SilverShield® NASA</button>
                 </div>
 
@@ -306,6 +307,26 @@
                                 <li>Partículas microscópicas de plata incrustadas en el lecho filtrante.</li>
                                 <li>Prevención activa de moho, hongos y biopelículas en el filtro.</li>
                                 <li>Aprobado para máxima seguridad en la salud de toda la familia.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Batería Powerwall -->
+                <div class="spec-tab-content" id="specContent_bateria" style="display: none;">
+                    <div class="spec-card-grid">
+                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
+                            <img src="assets/tesla_powerwall_system.jpg" alt="Ficha Técnica Sistema de Batería Solar Powerwall" style="object-fit: contain; height: 260px;">
+                            <span class="spec-img-badge">⚡ Diagrama Sistema Batería Powerwall</span>
+                        </div>
+                        <div class="spec-card-item">
+                            <h4 class="spec-card-title">Sistema de Almacenamiento & Batería Solar Powerwall</h4>
+                            <p class="spec-card-desc">Esquema técnico y arquitectura de componentes del sistema de energía solar y almacenamiento de respaldo en batería Tesla Powerwall.</p>
+                            <ul class="spec-list">
+                                <li><strong>Solar Inverter:</strong> Conversión de alta eficiencia de energía fotovoltaica a corriente alterna.</li>
+                                <li><strong>Main Panel:</strong> Panel eléctrico principal para distribución de carga y protección eléctrica.</li>
+                                <li><strong>Gateway:</strong> Control inteligente del flujo de energía, monitoreo 24/7 y respaldo automático en apagones.</li>
+                                <li><strong>Tesla Powerwall:</strong> Almacenamiento en batería de litio de alta capacidad para energía ininterrumpida.</li>
                             </ul>
                         </div>
                     </div>
