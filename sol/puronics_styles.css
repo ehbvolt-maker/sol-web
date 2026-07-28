@@ -1805,3 +1805,38 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(245, 158, 11, 0.5);
 }
+
+
+/* Zero Down Savings Banner Styles */
+.zero-down-banner {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(16, 185, 129, 0.18) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.5);
+    border-radius: 16px;
+    padding: 16px 24px;
+    max-width: 880px;
+    margin: 18px auto 0;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.zero-down-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 6px 18px;
+    border-radius: 25px;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    text-transform: uppercase;
+}
+
+.zero-down-text {
+    color: #f1f5f9;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
