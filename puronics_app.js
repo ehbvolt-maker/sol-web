@@ -151,12 +151,12 @@ const benefitsData = {
         },
         {
             id: 7,
-            title: "Garantía de Precios Regulados por Financieras Federales",
-            badge: "Precios Blindados",
-            techTag: "Federal Price Guarantee",
-            icon: "⚖️",
-            description: "Todos los precios y planes de financiamiento de Puronics® están grabados y respaldados por entidades financieras federales, impidiendo que ningún vendedor los modifique.",
-            highlight: "Transparencia total y cuotas fijas protegidas por normativas financieras federales."
+            title: "Empieza a Ahorrar — $0 Inicial (Cero Inicial)",
+            badge: "$0 Inicial • Programa Energía Neta",
+            techTag: "Programa Energía Neta",
+            icon: "⚡",
+            description: "Este comercial abarca las garantías reales de los programas federales de energía renovable. Opción de renta, compra financiada o en efectivo, con precios de costos respaldados y grabados por el programa ENERGÍA NETA, impidiendo sean modificados por vendedores.",
+            highlight: "Garantías reales respaldadas por el gobierno. ¡Mira si tu propiedad califica!"
         },
         {
             id: 8,
