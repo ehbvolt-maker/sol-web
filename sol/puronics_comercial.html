@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="puronics_styles.css">
+    <link rel="stylesheet" href="puronics_styles.css?v=20260728_v3">
 </head>
 <body class="puronics-page">
 
@@ -73,11 +73,13 @@
                 </div>
             </div>
 
-            <!-- Zero Down Savings Section -->
-            <div class="zero-down-banner" id="zeroDownBanner">
-                <div class="zero-down-badge" id="zeroDownBadge">⚡ Empieza a Ahorrar — $0 Inicial (Cero Inicial)</div>
-                <p class="zero-down-text" id="zeroDownText">
-                    Este comercial abarca las garantías reales de los programas federales de energía renovable. Opción de renta, compra financiada o en efectivo, con precios de costos respaldados y grabados por el programa ENERGÍA NETA, impidiendo sean modificados por vendedores. <button class="btn-check-qualify" onclick="openCalcModal()">🏡 Mira si tu propiedad califica</button>
+                        <!-- Zero Down Savings Section -->
+            <div class="zero-down-banner" id="zeroDownBanner" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%); border: 2px solid #f59e0b; border-radius: 16px; padding: 20px 24px; max-width: 900px; margin: 20px auto; text-align: center; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.35); display: block; position: relative; z-index: 10;">
+                <div class="zero-down-badge" id="zeroDownBadge" style="display: inline-block; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; font-weight: 800; font-size: 1rem; padding: 8px 22px; border-radius: 30px; letter-spacing: 0.5px; margin-bottom: 12px; box-shadow: 0 4px 18px rgba(245, 158, 11, 0.5); text-transform: uppercase;">
+                    ⚡ Empieza a Ahorrar — $0 Inicial (Cero Inicial)
+                </div>
+                <p class="zero-down-text" id="zeroDownText" style="color: #ffffff; font-size: 1.05rem; line-height: 1.6; margin: 0; font-weight: 600;">
+                    Este comercial abarca las garantías reales de los programas federales de energía renovable. Opción de renta, compra financiada o en efectivo, con precios de costos respaldados y grabados por el programa ENERGÍA NETA, impidiendo sean modificados por vendedores. <button class="btn-check-qualify" onclick="openCalcModal()" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; margin-left: 8px; cursor: pointer;">🏡 Mira si tu propiedad califica</button>
                 </p>
             </div>
 
@@ -224,7 +226,7 @@
             </div>
 
             <div class="benefits-grid" id="benefitsGrid">
-                <!-- Dynamically Populated by puronics_app.js -->
+                <!-- Dynamically Populated by puronics_app.js?v=20260728_v3 -->
             </div>
         </section>
 
@@ -469,6 +471,6 @@
     </footer>
 
     <!-- App Logic -->
-    <script src="puronics_app.js"></script>
+    <script src="puronics_app.js?v=20260728_v3"></script>
 </body>
 </html>

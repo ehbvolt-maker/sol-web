@@ -132,7 +132,13 @@ app.use(cors());
 app.use(express.json());
 
 // Serving static frontend files
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), {
+    setHeaders: (res, path) => {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+    }
+}));
 
 // Database setup
 const db = new sqlite3.Database('./leads.db', (err) => {
