@@ -141,8 +141,11 @@
 
                     <!-- Audio Features -->
                     <div class="audio-settings">
-                        <button class="settings-btn" id="btnVoiceover" onclick="toggleVoiceover()" title="Activar locución IA">
-                            🎙️ Locución IA
+                        <button class="settings-btn" id="btnVoiceover" onclick="toggleVoiceover()" title="Activar/Desactivar Voz Virtual Puronics">
+                            🎙️ <span id="lblVoiceover">Locución IA</span>
+                        </button>
+                        <button class="settings-btn btn-quote-slides" id="btnQuoteSlides" onclick="openCalcModal()" title="Cotizar Sistema Puronics" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); font-weight: 700; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">
+                            💬 <span id="lblQuoteSlides">Cotizar Sistema</span>
                         </button>
                         </div>
                 </div>
