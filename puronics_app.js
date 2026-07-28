@@ -154,7 +154,7 @@ const benefitsData = {
             badge: "Filtración Extrema",
             techTag: "Micromax® RO System",
             icon: "🔬",
-            description: "Sistema de 4 etapas con membrana de alta eficiencia que filtra hasta 0.0001 micras, eliminando plomo, arsénico, nitratos, microplásticos y residuos farmacéuticos.",
+            description: "Sistema de 4 etapas con membrana de alta eficiencia que filtra hasta 0.0001 micras, eliminando plomo, arsénico, nitratos, microplásticos y residuos farmacéuticos, alcalinizando el agua.",
             highlight: "Agua de calidad farmacéutica directamente en tu fregadero para beber y cocinar."
         },
         {
