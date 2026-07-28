@@ -6,7 +6,7 @@ const uiTranslations = {
     es: {
         offerTickerBar: "🎁 <strong>¡OFERTA EXCLUSIVA POR TIEMPO LIMITADO!</strong> Recibe durante <strong>20 AÑOS</strong> todos los productos de aseo personal y limpieza del hogar INCLUIDOS con tu sistema suavizador Puronics®.",
         nasaPill: "🚀 Tecnología Licenciada de la NASA",
-        pageTitle: "Descubre el Agua Pura e Inteligente para Tu Hogar",
+        pageTitle: "AGUA PURA PARA TU HOGAR CON PURONICS",
         pageSubtitle: "Explora los 12 beneficios extraordinarios de la purificación y suavización con sistemas <strong>Puronics® Hydronex® iGen®</strong>.",
         fedShieldTitle: "GARANTÍA DE PRECIO REGULADO Y PROTEGIDO:",
         fedShieldDesc: "Todos nuestros precios y condiciones de financiamiento están grabados y respaldados por entidades financieras federales, impidiendo ser alterados o modificados por vendedores.",
