@@ -785,6 +785,58 @@ function setupEventListeners() {
     }
 }
 
+// Función Global para Enviar Cotización e Inscribir Lead en CRM
+window.sendWhatsAppQuote = async function(event) {
+    if (event) event.preventDefault();
+
+    const name = document.getElementById('leadName') ? document.getElementById('leadName').value : '';
+    const email = document.getElementById('leadEmail') ? document.getElementById('leadEmail').value : '';
+    const phone = document.getElementById('leadPhone') ? document.getElementById('leadPhone').value : '';
+    const address = document.getElementById('leadAddress') ? document.getElementById('leadAddress').value : '';
+    const familySize = document.getElementById('inputFamilySize') ? document.getElementById('inputFamilySize').value : '4';
+    const bottledSpend = document.getElementById('inputBottledSpend') ? document.getElementById('inputBottledSpend').value : '80';
+
+    if (!name.trim() || !phone.trim()) {
+        alert('Por favor ingresa tu nombre completo y número de teléfono.');
+        return;
+    }
+
+    const leadPayload = {
+        name: name,
+        email: email || `puronics_${phone.replace(/\D/g, '')}@solpuronics.com`,
+        phone: phone,
+        address: address,
+        notes: `Cotización Puronics - Familia: ${familySize} personas | Gasto Mensual Agua: $${bottledSpend}`,
+        source: 'Formulario Cotizador Puronics'
+    };
+
+    try {
+        const res = await fetch('/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadPayload)
+        });
+        const data = await res.json();
+        console.log('✅ Lead enviado exitosamente al CRM:', data);
+
+        fetch('/api/whatsapp/simulate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                phone: phone,
+                message: `Nueva cotización Puronics enviada por ${name} (${phone}). Email: ${email}, Dirección: ${address}`
+            })
+        }).catch(e => console.error(e));
+
+    } catch (err) {
+        console.error('Error registrando lead en CRM:', err);
+    }
+
+    const messageText = `¡Hola Departamento de Consultoría! Solicito asesoría para el Sistema Puronics® 🚀\n👤 Nombre: ${name}\n📞 Teléfono: ${phone}\n📧 Email: ${email}\n🏠 Dirección: ${address}`;
+    const waUrl = `https://wa.me/13058136159?text=${encodeURIComponent(messageText)}`;
+    window.open(waUrl, '_blank');
+};
+
 // Global Document Load
 document.addEventListener('DOMContentLoaded', () => {
     applyUITranslations();

@@ -3,441 +3,1020 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puronics® Water Systems | 12 Beneficios & Oferta 20 Años Gratis</title>
-    <meta name="description" content="Descubre el agua pura e inteligente con tecnología licenciada de la NASA. ¡Recibe 20 AÑOS de productos de aseo gratis y precios regulados por financieras federales!">
-    <meta name="keywords" content="Puronics, Purificador de Agua, Suavizador de Agua, NASA SilverShield, iGen, Agua Pura, Miami, Florida">
-
-    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="puronics_comercial.html">
-    <meta property="og:title" content="💧 Puronics® Water Systems | 12 Beneficios & Oferta 20 Años Gratis">
-    <meta property="og:description" content="🚀 Tecnología Espacial NASA Licenciada. ¡Consigue 20 AÑOS de productos de aseo personal y limpieza del hogar INCLUIDOS y Precios Regulados por Financieras Federales!">
-    <meta property="og:image" content="assets/puronics_official_lineup.png">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="💧 Puronics® Water Systems | Agua Pura e Inteligente">
-    <meta name="twitter:description" content="🚀 Tecnología Espacial NASA. Recibe 20 AÑOS de productos de aseo gratis con tu suavizador Puronics®.">
-    <meta name="twitter:image" content="assets/puronics_official_lineup.png">
-    
-    <!-- Preconnect Fonts -->
+    <title>Sol Energy Systems | CRM & Call Center Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="puronics_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffb703">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sol CRM">
+    <link rel="apple-touch-icon" href="assets/home.png">
+    <style>
+        :root {
+            --primary: #ffb703;
+            --primary-glow: rgba(255, 183, 3, 0.3);
+            --secondary: #219ebc;
+            --bg-dark: #0b0f19;
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #06d6a0;
+            --danger: #ef476f;
+            --whatsapp: #25d366;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at top right, rgba(255, 183, 3, 0.08), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(33, 158, 188, 0.08), transparent 40%);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-nav {
+            max-width: 1400px;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 15px 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); }
+        .brand-logo .icon { font-size: 1.8rem; color: var(--primary); }
+        .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; }
+        .brand-subtitle { font-size: 0.8rem; color: var(--text-muted); }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        .status-badge-live {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(6, 214, 160, 0.15); border: 1px solid rgba(6, 214, 160, 0.3);
+            color: var(--success); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+        }
+
+        .pulse-dot {
+            width: 8px; height: 8px; background-color: var(--success); border-radius: 50%;
+            animation: pulse-dot-anim 1.5s infinite;
+        }
+        @keyframes pulse-dot-anim {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(6, 214, 160, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border);
+            color: var(--text-main); padding: 8px 16px; border-radius: 10px; text-decoration: none;
+            font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s;
+        }
+        .nav-btn:hover { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        /* Stats Grid */
+        .stats-grid {
+            max-width: 1400px; margin: 0 auto 25px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;
+        }
+        .stat-card {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 16px; padding: 20px; backdrop-filter: blur(10px);
+        }
+        .stat-title { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; }
+        .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-sub { font-size: 0.8rem; color: var(--success); margin-top: 4px; }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        @media (max-width: 1024px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+        .panel-container {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; max-height: 750px;
+        }
+        .panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid var(--card-border);
+        }
+        .panel-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .panel-body { overflow-y: auto; flex: 1; padding-right: 5px; }
+
+        /* Item Cards */
+        .item-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px; padding: 16px; margin-bottom: 14px;
+        }
+        .item-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .item-name { font-size: 1.05rem; font-weight: 600; color: var(--text-main); }
+        .item-detail { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 6px; }
+
+        .badge-status { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; }
+        .status-connected { background: rgba(6, 214, 160, 0.18); color: #06d6a0; border: 1px solid rgba(6, 214, 160, 0.3); }
+        .status-missed { background: rgba(239, 71, 111, 0.18); color: #ef476f; border: 1px solid rgba(239, 71, 111, 0.3); }
+        .status-lead { background: rgba(255, 183, 3, 0.18); color: #ffb703; border: 1px solid rgba(255, 183, 3, 0.3); }
+
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+        .btn-action-sm {
+            background: var(--primary); color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer;
+        }
+        .btn-whatsapp { background: var(--whatsapp); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+        .btn-email { background: var(--secondary); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+
+        /* Alert Box */
+        .alert-box {
+            padding: 14px; border-radius: 10px; font-size: 0.9rem; margin-bottom: 15px; display: none; font-weight: 600;
+        }
+        .alert-success { background: rgba(6, 214, 160, 0.2); border: 1px solid #06d6a0; color: #06d6a0; }
+        .alert-error { background: rgba(239, 71, 111, 0.2); border: 1px solid #ef476f; color: #ef476f; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 999; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #0f172a; border: 1px solid var(--card-border); border-radius: 20px;
+            padding: 30px; width: 90%; max-width: 650px; color: var(--text-main); position: relative; max-height: 90vh; overflow-y: auto;
+        }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .form-row { margin-bottom: 16px; }
+        .form-row label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
+        .form-row input, .form-row select, .form-row textarea {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.05); color: white; box-sizing: border-box; font-family: inherit;
+        }
+    </style>
 </head>
-<body class="puronics-page">
+<body>
 
-    <!-- Background Water Bubbles Animation -->
-    <div class="bg-water-bubbles" id="bgWaterBubbles"></div>
-
-    <!-- Top Exclusive Offer Ticker Bar -->
-    <div class="offer-ticker-bar" id="offerTickerBar">
-        🎁 <strong>¡OFERTA EXCLUSIVA POR TIEMPO LIMITADO!</strong> Recibe durante <strong>20 AÑOS</strong> todos los productos de aseo personal y limpieza del hogar INCLUIDOS con tu sistema suavizador Puronics®.
-    </div>
-
-    <!-- Header / Nav -->
-    <header class="puronics-header">
+    <!-- Header Navigation -->
+    <header class="header-nav">
         <a href="index.html" class="brand-logo">
-            <div class="brand-badge">💧</div>
-            <div class="brand-text-container">
-                <span class="brand-title">PURONICS®</span>
-                <span class="brand-subtitle">NASA Space Technology</span>
+            <span class="icon">☀️</span>
+            <div>
+                <span class="brand-title">SOL ENERGY CRM</span>
+                <span class="brand-subtitle">Centro de Control & Importación de Leads</span>
             </div>
         </a>
 
         <div class="header-actions">
-            
-            <button class="btn-lang" id="btnLang" onclick="toggleLanguage()">🌐 English</button>
-            <button class="btn-quote-header" id="btnQuoteHeader" onclick="openCalcModal()">💬 Cotizar Sistema</button>
+            <div class="status-badge-live">
+                <div class="pulse-dot"></div>
+                SISTEMA EN VIVO
+            </div>
+            <button class="nav-btn" style="background: rgba(6, 214, 160, 0.15); color: #06d6a0; border: 1px solid #06d6a0; font-weight: 600;" onclick="showMobileInstallModal()">📱 Instalar en Celular</button>
+            <button class="nav-btn" style="background: var(--primary); color: #000; font-weight: bold;" onclick="openNewLeadModal()">➕ Lead Individual</button>
+            <a href="blog.html" target="_blank" class="nav-btn" style="background: rgba(255,183,3,0.15); color: var(--primary); border: 1px solid var(--primary);">📰 Blog Educativo</a>
+            <a href="index.html" class="nav-btn">☀️ Sitio Web</a>
         </div>
     </header>
 
-    <!-- Main Wrapper -->
-    <main class="comercial-wrapper">
-        
-        <!-- Header Banner Intro -->
-        <section class="page-intro">
-            <div class="nasa-pill" id="nasaPill">🚀 Tecnología Licenciada de la NASA</div>
-            <h1 class="page-title" id="pageTitle">AGUA PURA PARA TU HOGAR CON PURONICS</h1>
-            <p class="page-subtitle" id="pageSubtitle">Explora los 12 beneficios extraordinarios de la purificación y suavización con sistemas <strong>Puronics® Hydronex® iGen®</strong>.</p>
-            
-            <!-- Federal Financial Pricing Protection Trust Badge -->
-            <div class="federal-pricing-shield">
-                <div class="shield-icon">⚖️</div>
-                <div class="shield-text">
-                    <strong id="fedShieldTitle">GARANTÍA DE PRECIO REGULADO Y PROTEGIDO:</strong>
-                    <span id="fedShieldDesc">Todos nuestros precios y condiciones de financiamiento están grabados y respaldados por entidades financieras federales, impidiendo ser alterados o modificados por vendedores.</span>
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-title">Total Leads Capturados</div>
+            <div class="stat-value" id="statLeads">--</div>
+            <div class="stat-sub">↑ Meta Ads, Web & Lotes CSV</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Llamadas Marcela AI</div>
+            <div class="stat-value" id="statCalls">--</div>
+            <div class="stat-sub">⚡ Vapi Call Center Operativo</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Notificaciones Automáticas</div>
+            <div class="stat-value" style="font-size: 1.15rem; color: #06d6a0;">SMS • WHATSAPP • MESSENGER</div>
+            <div class="stat-sub">✅ Mensaje de Bienvenida en Tiempo Real</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Estado Servidor</div>
+            <div class="stat-value" style="color: #06d6a0; font-size: 1.5rem;">ONLINE</div>
+            <div class="stat-sub">Puerto 3000 Conectado</div>
+        </div>
+    </div>
+
+    <!-- DIRECT BULK IMPORT PANEL (Visible en la pantalla principal) -->
+    <div style="max-width: 1400px; margin: 0 auto 25px;">
+        <div class="panel-container" style="max-height: none;">
+            <div class="panel-header">
+                <div class="panel-title">📋 Pegar e Importar Lista de Clientes (Masivo)</div>
+                <div style="font-size: 0.85rem; color: var(--success); font-weight: 600;">⚡ Envío Automático de Email, SMS & WhatsApp al Importar</div>
+            </div>
+
+            <div id="directAlert" class="alert-box"></div>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <!-- Textarea para pegar -->
+                <div style="flex: 2; min-width: 300px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">
+                        Pega tu lista de clientes aquí (Un cliente por línea):
+                    </label>
+                    <textarea id="directBulkText" rows="6" style="width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(0,0,0,0.3); color: white; font-family: inherit; box-sizing: border-box;" placeholder="Ejemplo:&#10;Carlos Mendoza, +13059998877, carlos@email.com, 123 Main St&#10;Maria Gomez, +13054445566, maria@email.com, 456 Solar Ave"></textarea>
+                </div>
+
+                <!-- Opciones y Botón de Importar -->
+                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">O Selecciona un Archivo CSV:</label>
+                        <input type="file" id="directCsvFileInput" accept=".csv, .txt" onchange="handleDirectCsvUpload(event)" style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--card-border); box-sizing: border-box;">
+
+                        <div style="margin-top: 15px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid var(--card-border);">
+                            <input type="checkbox" id="directTriggerNotifications" checked style="width: auto;">
+                            <label for="directTriggerNotifications" style="font-size: 0.85rem; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                                Enviar mensaje de bienvenida automáticamente
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="directImportBtn" onclick="processDirectBulkImport()" style="background: var(--primary); color: #000; font-weight: bold; padding: 15px; border: none; border-radius: 12px; font-size: 1.05rem; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 15px rgba(255,183,3,0.3); transition: transform 0.2s;">
+                        🚀 IMPORTAR LISTA DE CLIENTES AHORA
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+        <!-- Panel 1: Leads CRM -->
+        <div class="panel-container">
+            <div class="panel-header">
+                <div class="panel-title">👥 Listado de Leads Guardados</div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-action-sm" style="background: #06d6a0; color: #000; font-weight: bold;" onclick="triggerPendingWelcome()">⚡ Enviar Bienvenida a Pendientes</button>
+                    <button class="btn-action-sm" style="background: #a855f7; color: white; font-weight: bold;" onclick="triggerPendingBlog()">📰 Enviar Blog a Pendientes</button>
+                    <button class="btn-action-sm" style="background: #334155; color: #cbd5e1;" onclick="syncEmailBounces()" title="Detecta correos inexistentes y los marca para evitar notificaciones de no entrega">🧹 Depurar Rebotes</button>
+                    <button class="btn-action-sm" style="background: var(--secondary); color: white;" onclick="sendBroadcastToAllLeads()">📢 Enviar a TODOS</button>
+                    <button class="btn-action-sm" onclick="fetchDashboardData()">🔄 Actualizar Tabla</button>
+                </div>
+            </div>
+            <div class="panel-body" id="leadsContainer">
+                <p style="color: var(--text-muted);">Cargando leads del sistema...</p>
+            </div>
+        </div>
+
+        <!-- Panel 2: Call Center AI Monitor -->
+        <div class="panel-container">
+            <div class="panel-header">
+                <div class="panel-title">📞 Monitor Call Center (Marcela AI)</div>
+                <button class="btn-action-sm" style="background: var(--secondary); color: white;" onclick="openManualCallPrompt()">📱 Nueva Llamada</button>
+            </div>
+            <div class="panel-body" id="callsContainer">
+                <p style="color: var(--text-muted);">Cargando llamadas en tiempo real...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registrar Lead Individual -->
+    <div class="modal-overlay" id="newLeadModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeNewLeadModal()">&times;</button>
+            <h2 style="margin-top: 0; color: var(--primary); font-family: 'Space Grotesk', sans-serif;">Registrar Lead Individual</h2>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">Al guardar, el sistema enviará automáticamente <strong>Email, SMS y WhatsApp</strong>.</p>
+
+            <form id="newLeadForm">
+                <div class="form-row"><label>Nombre Completo *</label><input type="text" id="leadName" required placeholder="Ej. Carlos Mendoza"></div>
+                <div class="form-row"><label>Teléfono *</label><input type="text" id="leadPhone" required placeholder="Ej. +1 (305) 999-8877"></div>
+                <div class="form-row"><label>Correo Electrónico *</label><input type="email" id="leadEmail" required placeholder="ejemplo@correo.com"></div>
+                <div class="form-row"><label>Dirección de la Propiedad</label><input type="text" id="leadAddress" placeholder="Dirección completa"></div>
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div style="flex: 1;"><label>Código Postal (ZIP)</label><input type="text" id="leadZip" placeholder="33101"></div>
+                    <div style="flex: 1;">
+                        <label>Factura Luz > $100?</label>
+                        <select id="leadBill">
+                            <option value="yes">Sí (Mayor a $100)</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-action-sm" style="width: 100%; padding: 12px; font-size: 1rem; margin-top: 10px;" id="saveLeadBtn">💾 Guardar Lead</button>
+            </form>
+        </div>
+    </div>
+
+    
+    <!-- Modal Instalar en Celular (PWA) -->
+    <div class="modal-overlay" id="mobileInstallModal" onclick="closeMobileInstallModal(event)" style="display: none;">
+        <div class="modal-content" style="max-width: 580px; text-align: left; background: #0e1526; border: 1px solid var(--border-gold, #ffb703); box-shadow: 0 20px 40px rgba(0,0,0,0.8);" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeMobileInstallModal()">&times;</button>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="font-size: 2.5rem;">📱</span>
+                <h2 style="margin: 8px 0 4px 0; color: #ffb703; font-family: 'Space Grotesk', sans-serif;">Instalar CRM en tu Teléfono</h2>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">Ten el control de tus clientes en iPhone y Android sin necesidad de App Store</p>
+            </div>
+
+            <div style="background: rgba(255,183,3,0.08); border: 1px solid rgba(255,183,3,0.25); border-radius: 10px; padding: 16px; margin-bottom: 20px;">
+                <p style="color: #f1f5f9; font-weight: bold; margin: 0 0 6px 0; font-size: 0.95rem;">
+                    🌐 Dirección para abrir desde tu celular (conectado al mismo Wi-Fi):
+                </p>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" id="mobileUrlInput" readonly value="http://192.168.1.201:3000/dashboard.html" style="background: #070b14; color: #38bdf8; font-weight: bold; border: 1px solid #1e293b; padding: 10px; border-radius: 8px; flex-grow: 1; font-size: 0.95rem;">
+                    <button class="btn-action-sm" onclick="copyMobileUrl()" style="background: #ffb703; color: #000; font-weight: bold; padding: 10px 14px;">📋 Copiar</button>
+                </div>
+                <span style="color: #64748b; font-size: 0.78rem; display: block; margin-top: 6px;">
+                    💡 Enlace local activo mientras el servidor esté iniciado en tu computadora.
+                </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;">
+                <!-- Paso iPhone -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px;">
+                    <div style="color: #38bdf8; font-weight: bold; font-size: 0.95rem; margin-bottom: 8px;">🍎 iPhone (iOS Safari)</div>
+                    <ol style="margin-left: 18px; padding-left: 0; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+                        <li>Abre el enlace en <strong>Safari</strong>.</li>
+                        <li>Toca el botón <strong>Compartir</strong> (ícono de caja con flecha arriba ⬆️).</li>
+                        <li>Selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
+                    </ol>
+                </div>
+
+                <!-- Paso Android -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px;">
+                    <div style="color: #06d6a0; font-weight: bold; font-size: 0.95rem; margin-bottom: 8px;">🤖 Android (Chrome)</div>
+                    <ol style="margin-left: 18px; padding-left: 0; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+                        <li>Abre el enlace en <strong>Chrome</strong>.</li>
+                        <li>Toca el botón de <strong>3 puntos</strong> arriba a la derecha.</li>
+                        <li>Selecciona <strong>"Instalar aplicación"</strong> o "Añadir a pantalla principal".</li>
+                    </ol>
                 </div>
             </div>
 
-            <!-- Exclusive 20-Year Offer Pill Banner -->
-            
-
-        <!-- Main Interactive Screen -->
-        <section class="commercial-screen" id="commercialScreen">
-            
-            <!-- SLIDES MOTION GRAPHICS MODE -->
-            <div class="slides-mode-content active" id="slidesModeContent">
-                
-                <!-- Active Slide Content Area with Right Lineup Photo -->
-                <div class="slide-content-area">
-                    <!-- Graphic / Animated Icon -->
-                    <div class="slide-graphic">
-                        <div class="graphic-circle" id="slideGraphic">🚀</div>
-                    </div>
-
-                    <!-- Slide Info & Narrative -->
-                    <div class="slide-text-info" id="slideTextInfo">
-                        <div class="slide-badge-row">
-                            <span class="slide-badge" id="slideBadge">Innovación Científica</span>
-                            <span class="slide-tech-tag" id="slideTechTag">SilverShield® HYgiene</span>
-                        </div>
-
-                        <h2 class="slide-title" id="slideTitle">Tecnología de Grado Espacial NASA (SilverShield®)</h2>
-                        <p class="slide-description" id="slideDescription">
-                            Desarrollada con tecnología licenciada de la NASA, la capa microbiostática con plata inhibe la acumulación de bacterias dentro del lecho del filtro.
-                        </p>
-
-                        <div class="slide-highlight-box" id="slideHighlight">
-                            Patente de la NASA aplicada a la salud de tu hogar para un agua libre de bacterias residuales.
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Official Puronics Video Player with Auto Language Sync -->
-                    <div class="right-lineup-banner video-cover-box">
-                        <video id="heroCoverVideo" autoplay loop muted playsinline poster="assets/puronics_official_lineup.png">
-                            <source src="assets/puronics_hero_video.mp4" type="video/mp4">
-                            Tu navegador no soporta video HTML5.
-                        </video>
-                        <div class="video-cover-controls">
-                            <button class="btn-vid-cover-toggle" id="btnCoverVidAudio" onclick="toggleCoverVideoAudio()" title="Activar/Silenciar Audio">🔊 Audio / Voice</button>
-                        </div>
-                        <div class="lineup-badge-tag" id="coverVideoTag">⭐ Guaranteed Best Price • Video Oficial Puronics®</div>
-                    </div>
-                </div>
-
-                <!-- Controls Bar -->
-                <div class="slides-controls-bar">
-                    <!-- Playback controls -->
-                    <div class="playback-buttons">
-                        <button class="playback-btn" onclick="prevSlide()" title="Anterior">⏮️</button>
-                        <button class="playback-btn play-pause-btn" id="btnPlayPause" onclick="toggleAutoPlay()" title="Reproducir / Pausar">▶️</button>
-                        <button class="playback-btn" onclick="nextSlide()" title="Siguiente">⏭️</button>
-                    </div>
-
-                    <!-- Progress bar & Counter -->
-                    <div class="progress-indicator">
-                        <div class="progress-text">
-                            <span id="slideCounterText">Diapositiva 1 de 12</span>
-                            <span>Auto-Play 8s</span>
-                        </div>
-                        <div class="progress-bar-track">
-                            <div class="progress-bar-fill" id="progressBarFill"></div>
-                        </div>
-                    </div>
-
-                    <!-- Audio Features -->
-                    <div class="audio-settings">
-                        <button class="settings-btn" id="btnVoiceover" onclick="toggleVoiceover()" title="Activar/Desactivar Voz Virtual Puronics">
-                            🎙️ <span id="lblVoiceover">Locución IA</span>
-                        </button>
-                        <button class="settings-btn btn-quote-slides" id="btnQuoteSlides" onclick="openCalcModal()" title="Cotizar Sistema Puronics" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); font-weight: 700; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">
-                            💬 <span id="lblQuoteSlides">Cotizar Sistema</span>
-                        </button>
-                        </div>
-                </div>
+            <div id="pwaInstallPromptBox" style="display: none; text-align: center; margin-top: 10px;">
+                <button id="pwaInstallBtn" style="background: #25d366; color: white; font-weight: bold; padding: 12px 24px; border: none; border-radius: 10px; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
+                    📲 Instalar App Ahora Mismo
+                </button>
             </div>
+        </div>
+    </div>
 
-            <!-- DYNAMIC HD WATER PURIFICATION COMMERCIAL VIDEO PLAYER -->
-            <div class="video-mode-content" id="videoModeContent">
-                <div class="video-container" id="videoContainer">
-                    <canvas id="commercialCanvas" width="960" height="540"></canvas>
+<script>
+        const API_BASE = window.location.protocol.startsWith('http') ? '' : 'http://localhost:3000';
 
-                    <!-- Custom Video Controls Overlay -->
-                    <div class="video-overlay-controls">
-                        <button class="vid-btn" id="vidPlayBtn" onclick="toggleCommercialVideo()" title="Reproducir / Pausar Video">▶</button>
+        function openNewLeadModal() { document.getElementById('newLeadModal').style.display = 'flex'; }
+        function closeNewLeadModal() { document.getElementById('newLeadModal').style.display = 'none'; }
+
+        function handleDirectCsvUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('directBulkText').value = evt.target.result;
+            };
+            reader.readAsText(file);
+        }
+
+        async function processDirectBulkImport() {
+            const rawText = document.getElementById('directBulkText').value.trim();
+            const alertBox = document.getElementById('directAlert');
+            alertBox.style.display = 'none';
+
+            if (!rawText) {
+                alertBox.className = "alert-box alert-error";
+                alertBox.innerText = "Por favor ingresa o pega un listado de contactos antes de hacer clic en importar.";
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            const btn = document.getElementById('directImportBtn');
+            btn.innerText = "⏳ Procesando lote y enviando mensajes de bienvenida...";
+            btn.disabled = true;
+
+            const lines = rawText.split('\n');
+            const leadsArray = [];
+
+            lines.forEach((line, index) => {
+                const trimmedLine = line.trim();
+                if (!trimmedLine) return;
+
+                let text = trimmedLine.replace(/"/g, '');
+
+                // 1. Extraer Email con Regex
+                const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                let email = '';
+                if (emailMatch) {
+                    email = emailMatch[0].trim();
+                    text = text.replace(email, '');
+                }
+
+                // 2. Extraer Teléfono con Regex
+                const phoneMatch = text.match(/(\+?\d{1,3}[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+                let phone = '';
+                if (phoneMatch) {
+                    phone = phoneMatch[0].trim();
+                    text = text.replace(phoneMatch[0], '');
+                }
+
+                // 3. Obtener Nombre y Dirección del texto restante
+                const cleanRemaining = text.split(/[,;\t]/).map(s => s.trim()).filter(s => s.length > 0 && s !== '-');
+                let name = cleanRemaining[0] || '';
+                let address = cleanRemaining.slice(1).join(', ') || '';
+
+                if (name.toLowerCase() === 'nombre' || name.toLowerCase() === 'name' || phone.toLowerCase() === 'telefono' || phone.toLowerCase() === 'phone') {
+                    return; // Skip headers
+                }
+
+                if (!name) {
+                    if (email) name = email.split('@')[0];
+                    else if (phone) name = `Cliente ${phone}`;
+                    else name = `Lead #${index + 1}`;
+                }
+
+                if (name || phone || email) {
+                    leadsArray.push({
+                        name,
+                        phone: phone || '',
+                        email: email || '',
+                        address: address || '',
+                        bill_over_100: 'yes',
+                        is_owner: 'yes'
+                    });
+                }
+            });
+
+            if (leadsArray.length === 0) {
+                alertBox.className = "alert-box alert-error";
+                alertBox.innerText = "No se encontraron contactos válidos en el texto ingresado.";
+                alertBox.style.display = 'block';
+                btn.innerText = "🚀 IMPORTAR LISTA DE CLIENTES AHORA";
+                btn.disabled = false;
+                return;
+            }
+
+            const triggerNotifications = document.getElementById('directTriggerNotifications').checked;
+
+            try {
+                const res = await fetch(API_BASE + '/api/leads/bulk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leads: leadsArray, triggerNotifications })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alertBox.className = "alert-box alert-success";
+                    alertBox.innerText = `✅ ¡Importación Exitosa! Se agregaron ${data.inserted} clientes al sistema (${data.skipped} duplicados omitidos). Se enviaron los mensajes de bienvenida por Email, SMS y WhatsApp.`;
+                    alertBox.style.display = 'block';
+
+                    document.getElementById('directBulkText').value = '';
+                    fetchDashboardData();
+                } else {
+                    alertBox.className = "alert-box alert-error";
+                    alertBox.innerText = `Error en la importación: ${data.error || 'Respuesta inválida del servidor.'}`;
+                    alertBox.style.display = 'block';
+                }
+            } catch (err) {
+                console.error("Error importando lote:", err);
+                alertBox.className = "alert-box alert-error";
+                alertBox.innerText = "Error de conexión con el servidor backend. Verifica que el servidor esté activo.";
+                alertBox.style.display = 'block';
+            } finally {
+                btn.innerText = "🚀 IMPORTAR LISTA DE CLIENTES AHORA";
+                btn.disabled = false;
+            }
+        }
+
+        async function fetchDashboardData() {
+            try {
+                const res = await fetch(API_BASE + '/api/leads');
+                const data = await res.json();
+                const leads = data.leads || [];
+
+                document.getElementById('statLeads').innerText = leads.length;
+
+                const leadsContainer = document.getElementById('leadsContainer');
+                leadsContainer.innerHTML = '';
+
+                if (leads.length === 0) {
+                    leadsContainer.innerHTML = '<p style="color: var(--text-muted);">No hay leads registrados aún.</p>';
+                } else {
+                    leads.forEach(lead => {
+                        const card = document.createElement('div');
+                        card.className = 'item-card';
+                        const noteContent = lead.notes || lead.message || '';
+                        const sourceContent = lead.source ? `<span style="font-size:0.75rem; color:var(--primary); background:rgba(255,183,3,0.1); padding:2px 8px; border-radius:10px; margin-left:8px;">📌 ${lead.source}</span>` : '';
+                        const smsBadge = lead.sms_status === 'sent'
+                            ? `<span style="font-size:0.72rem; color:#06d6a0; background:rgba(6,214,160,0.15); padding:2px 6px; border-radius:6px; margin-left:6px; font-weight:600;">📱 SMS Enviado</span>`
+                            : `<span style="font-size:0.72rem; color:#ffd166; background:rgba(255,209,102,0.1); padding:2px 6px; border-radius:6px; margin-left:6px;">📱 SMS Pendiente</span>`;
+                        let emailBadge = '';
+                        if (lead.email_status === 'bounced') {
+                            emailBadge = `<span style="font-size:0.72rem; color:#ef4444; background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.4); padding:2px 6px; border-radius:6px; margin-left:6px; font-weight:bold;">⚠️ Correo Inválido / Rebotado</span>`;
+                        } else if (lead.email_status === 'sent') {
+                            emailBadge = `<span style="font-size:0.72rem; color:#219ebc; background:rgba(33,158,188,0.15); padding:2px 6px; border-radius:6px; margin-left:6px; font-weight:600;">✉️ Correo Enviado</span>`;
+                        } else if (lead.email) {
+                            emailBadge = `<span style="font-size:0.72rem; color:#94a3b8; background:rgba(148,163,184,0.1); padding:2px 6px; border-radius:6px; margin-left:6px;">✉️ Correo Pendiente</span>`;
+                        }
+                        const blogBadge = lead.blog_status === 'sent'
+                            ? `<span style="font-size:0.72rem; color:#a855f7; background:rgba(168,85,247,0.15); padding:2px 6px; border-radius:6px; margin-left:6px; font-weight:600;">📰 Blog Enviado</span>`
+                            : `<span style="font-size:0.72rem; color:#94a3b8; background:rgba(148,163,184,0.1); padding:2px 6px; border-radius:6px; margin-left:6px;">📰 Blog Pendiente</span>`;
                         
-                        <div class="vid-progress-track" onclick="seekCommercialVideo(event)">
-                            <div class="vid-progress-fill" id="vidProgressFill"></div>
-                        </div>
-
-                        <span class="vid-time" id="vidTimeDisplay">0:00 / 1:15</span>
-
-                        <button class="vid-btn" id="vidMuteBtn" onclick="toggleCommercialMute()" title="Silenciar / Activar Audio">🔊</button>
-                        <button class="vid-btn" onclick="toggleCommercialFullscreen()" title="Pantalla Completa">⛶</button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        
-
-        <!-- Action Cards Banner -->
-        <section class="action-banner-row">
-            <div class="action-card">
-                <div class="action-card-icon">📋</div>
-                <div class="action-card-info">
-                    <h3 class="action-card-title" id="actionTitle1">Fichas Técnicas de Equipos</h3>
-                    <p class="action-card-desc" id="actionDesc1">Especificaciones de Hydronex® iGen®, Ósmosis Inversa Micromax®, Defender® y Batería Solar Powerwall.</p>
-                    <button class="btn-action-card" id="actionBtn1" onclick="openSpecsModal()">📄 Ver Fichas Técnicas</button>
-                </div>
-            </div>
-
-            <div class="action-card" style="border-color: var(--nasa-gold);">
-                <div class="action-card-icon gold">🎁</div>
-                <div class="action-card-info">
-                    <h3 class="action-card-title" id="actionTitle2">Oferta 20 Años de Productos Gratis</h3>
-                    <p class="action-card-desc" id="actionDesc2">Recibe durante 20 AÑOS todos tus productos de aseo personal y hogar INCLUIDOS con tu suavizador. Precios regulados por financieras federales (305-813-6159).</p>
-                    <button class="btn-action-card gold" id="actionBtn2" onclick="openCalcModal()">📲 Reclamar Oferta 20 Años</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Benefits Summary Grid -->
-        <section class="benefits-grid-section">
-            <div class="section-header">
-                <h2 class="section-title" id="sectionTitle">Explora los 12 Beneficios Directos</h2>
-                <p class="section-sub" id="sectionSub">Haz clic en cualquiera de las tarjetas para saltar instantáneamente a la diapositiva explicativa.</p>
-            </div>
-
-            <div class="benefits-grid" id="benefitsGrid">
-                <!-- Dynamically Populated by puronics_app.js -->
-            </div>
-        </section>
-
-    </main>
-
-    <!-- SPECS MODAL -->
-    <div class="modal-overlay" id="specsModal">
-        <div class="modal-container" style="max-width: 950px;">
-            <div class="modal-header">
-                <div class="modal-title-box">
-                    <span class="modal-icon">📋</span>
-                    <h3 class="modal-title" id="modalSpecsTitle">Fichas Técnicas Oficiales PURONICS®</h3>
-                </div>
-                <button class="btn-close-modal" onclick="closeSpecsModal()">✕</button>
-            </div>
-            
-            <div class="modal-body">
-                <!-- Tabs -->
-                <div class="specs-tabs">
-                    <button class="spec-tab-btn active" id="tab_hydronex" onclick="switchSpecTab('hydronex')">Hydronex® iGen®</button>
-                    <button class="spec-tab-btn" id="tab_micromax" onclick="switchSpecTab('micromax')">Micromax® RO</button>
-                    <button class="spec-tab-btn" id="tab_defender" onclick="switchSpecTab('defender')">Puronics® Defender</button>
-                    <button class="spec-tab-btn" id="tab_bateria" onclick="switchSpecTab('bateria')">🔋 Batería Powerwall</button>
-                    <button class="spec-tab-btn" id="tab_nasa" onclick="switchSpecTab('nasa')">SilverShield® NASA</button>
-                </div>
-
-                <!-- Tab 1: Hydronex -->
-                <div class="spec-tab-content" id="specContent_hydronex" style="display: block;">
-                    <div class="spec-card-grid">
-                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
-                            <img src="assets/puronics_hydronex_cutaway.png" alt="Diagrama Oficial Puronics Hydronex iGen" style="object-fit: contain; height: 260px;">
-                            <span class="spec-img-badge">Diagrama Oficial Hydronex® iGen®</span>
-                        </div>
-                        <div class="spec-card-item">
-                            <h4 class="spec-card-title">Puronics® Hydronex® iGen® (Sistema Toda la Casa)</h4>
-                            <p class="spec-card-desc">El acondicionador de agua residencial número uno con válvula digital iGen® de microprocesador inteligente y lecho de filtración bacteriostático.</p>
-                            <ul class="spec-list">
-                                <li>Válvula Inteligente iGen® con monitor SilverShield® HYgiene®.</li>
-                                <li>Tanque de 3 capas: Polietileno interno, Fibra de vidrio y Cubierta exterior de Acero Inoxidable.</li>
-                                <li>Tecnología MicroSilver Bacteriostasis™ licenciada por la NASA.</li>
-                                <li>Resina monoesférica S-759 de alta capacidad y clarificador de grava de sílice.</li>
-                                <li><strong>Precios Regulados:</strong> Tarifas grabadas por financieras federales.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 2: Micromax -->
-                <div class="spec-tab-content" id="specContent_micromax" style="display: none;">
-                    <div class="spec-card-grid">
-                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
-                            <img src="assets/puronics_official_lineup.png" alt="Gama Oficial Puronics Micromax RO" style="object-fit: contain; height: 260px;">
-                            <span class="spec-img-badge">Modelo Oficial Micromax® RO</span>
-                        </div>
-                        <div class="spec-card-item">
-                            <h4 class="spec-card-title">Puronics® Micromax® iGen® (Ósmosis Inversa Bebible)</h4>
-                            <p class="spec-card-desc">Sistema de purificación microscópica de 4 etapas para beber y cocinar directamente en el grifo de tu cocina.</p>
-                            <ul class="spec-list">
-                                <li>Filtro de sedimentos de 5 micrones para atrapar partículas y tierra.</li>
-                                <li>Membrana de Ósmosis Inversa de alta densidad (elimina PFAS, Plomo y Nitratos).</li>
-                                <li>Post-filtro de carbón activado en bloque para un sabor gourmet insuperable.</li>
-                                <li>Grifo de acero inoxidable de diseño exclusivo incluido.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 3: Defender -->
-                <div class="spec-tab-content" id="specContent_defender" style="display: none;">
-                    <div class="spec-card-grid">
-                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
-                            <img src="assets/puronics_official_lineup.png" alt="Gama Oficial Puronics Defender" style="object-fit: contain; height: 260px;">
-                            <span class="spec-img-badge">Modelo Oficial Puronics® Defender®</span>
-                        </div>
-                        <div class="spec-card-item">
-                            <h4 class="spec-card-title">Puronics® Defender® Whole-House System</h4>
-                            <p class="spec-card-desc">Sistema avanzado de supresión de cloraminas y minerales duros diseñado para zonas con alta concentración de sulfatos y dureza extrema.</p>
-                            <ul class="spec-list">
-                                <li>Medios filtrantes de doble acción Chlorostatic®.</li>
-                                <li>Operación silenciosa con mantenimiento automatizado.</li>
-                                <li>Protección continua contra la corrosión de tuberías de cobre y PEX.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 4: SilverShield NASA -->
-                <div class="spec-tab-content" id="specContent_nasa" style="display: none;">
-                    <div class="spec-card-grid">
-                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
-                            <img src="assets/puronics_hydronex_cutaway.png" alt="Tecnologia NASA SilverShield Cutaway" style="object-fit: contain; height: 260px;">
-                            <span class="spec-img-badge">🚀 Plataforma NASA SilverShield®</span>
-                        </div>
-                        <div class="spec-card-item">
-                            <h4 class="spec-card-title">Tecnología SilverShield® Protection (Patente NASA)</h4>
-                            <p class="spec-card-desc">Tecnología microbiostática exclusiva licenciada de la NASA que utiliza la plata iónica para inhibir bacterias en el lecho del filtro.</p>
-                            <ul class="spec-list">
-                                <li>Certificado por la Water Quality Association (WQA) con Sello de Oro.</li>
-                                <li>Partículas microscópicas de plata incrustadas en el lecho filtrante.</li>
-                                <li>Prevención activa de moho, hongos y biopelículas en el filtro.</li>
-                                <li>Aprobado para máxima seguridad en la salud de toda la familia.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Batería Powerwall -->
-                <div class="spec-tab-content" id="specContent_bateria" style="display: none;">
-                    <div class="spec-card-grid">
-                        <div class="spec-img-box" style="background: #ffffff; padding: 6px;">
-                            <img src="assets/tesla_powerwall_system.jpg" alt="Ficha Técnica Sistema de Batería Solar Powerwall" style="object-fit: contain; height: 260px;">
-                            <span class="spec-img-badge">⚡ Diagrama Sistema Batería Powerwall</span>
-                        </div>
-                        <div class="spec-card-item">
-                            <h4 class="spec-card-title">Sistema de Almacenamiento & Batería Solar Powerwall</h4>
-                            <p class="spec-card-desc">Esquema técnico y arquitectura de componentes del sistema de energía solar y almacenamiento de respaldo en batería Tesla Powerwall.</p>
-                            <ul class="spec-list">
-                                <li><strong>Solar Inverter:</strong> Conversión de alta eficiencia de energía fotovoltaica a corriente alterna.</li>
-                                <li><strong>Main Panel:</strong> Panel eléctrico principal para distribución de carga y protección eléctrica.</li>
-                                <li><strong>Gateway:</strong> Control inteligente del flujo de energía, monitoreo 24/7 y respaldo automático en apagones.</li>
-                                <li><strong>Tesla Powerwall:</strong> Almacenamiento en batería de litio de alta capacidad para energía ininterrumpida.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WHATSAPP QUOTE & CALCULATOR MODAL -->
-    <div class="modal-overlay" id="calcModal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <div class="modal-title-box">
-                    <span class="modal-icon">💧</span>
-                    <h3 class="modal-title" id="modalCalcTitle">Cotizar Sistema Puronics® por WhatsApp</h3>
-                </div>
-                <button class="btn-close-modal" onclick="closeCalcModal()">✕</button>
-            </div>
-
-            <div class="modal-body">
-                <div class="quote-intro-banner">
-                    <h4 id="quoteBannerTitle">🎁 ¡OFERTA EXCLUSIVA 20 AÑOS DE PRODUCTOS INCLUIDOS!</h4>
-                    <p id="quoteBannerDesc">Completa tus datos para recibir tu cotización y reclamar 20 AÑOS de productos de aseo personal y del hogar totalmente INCLUIDOS con tu suavizador Puronics®.</p>
-                </div>
-
-                <div class="federal-pricing-note" id="fedPricingNote">
-                    ⚖️ <strong>Precios Blindados:</strong> Todos los valores están grabados por financieras federales para garantizar que ningún vendedor altere el precio oficial.
-                </div>
-
-                <form id="whatsappQuoteForm" onsubmit="sendWhatsAppQuote(event)">
-                    <div class="calc-grid">
-                        <!-- Required Lead Inputs -->
-                        <div class="calc-inputs">
-                            <div class="form-group">
-                                <label for="leadName" id="calcLabelName">👤 Nombre Completo:*</label>
-                                <input type="text" id="leadName" class="form-control" placeholder="Ej: Maria Gonzalez" required>
+                        card.innerHTML = `
+                            <div class="item-top">
+                                <span class="item-name">👤 ${lead.name || 'Sin nombre'} ${sourceContent} ${smsBadge} ${emailBadge} ${blogBadge}</span>
+                                <span class="badge-status status-lead">${lead.bill_over_100 === 'yes' ? '⚡ Factura > $100' : 'Lead Registrado'}</span>
                             </div>
-
-                            <div class="form-group">
-                                <label for="leadEmail" id="calcLabelEmail">📧 Correo Electrónico:*</label>
-                                <input type="email" id="leadEmail" class="form-control" placeholder="ejemplo@correo.com" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="leadPhone" id="calcLabelPhone">📞 Teléfono / WhatsApp:*</label>
-                                <input type="tel" id="leadPhone" class="form-control" placeholder="(305) 813-6159" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="leadAddress" id="calcLabelAddress">🏠 Dirección del Hogar:*</label>
-                                <input type="text" id="leadAddress" class="form-control" placeholder="Ej: 1234 SW 8th St, Miami, FL 33135" required>
-                            </div>
-                        </div>
-
-                        <!-- Household Savings Calculations & Action Box -->
-                        <div class="calc-results-box">
-                            <div class="form-group" style="width: 100%;">
-                                <label for="inputFamilySize" id="calcLabelFamily" style="color:#fff;">Integrantes en tu Hogar:</label>
-                                <input type="number" id="inputFamilySize" class="form-control" value="4" min="1" max="12" oninput="calculateSavings()">
-                            </div>
-
-                            <div class="form-group" style="width: 100%;">
-                                <label for="inputBottledSpend" id="calcLabelSpend" style="color:#fff;">Gasto Mensual en Agua ($):</label>
-                                <input type="number" id="inputBottledSpend" class="form-control" value="80" min="0" step="5" oninput="calculateSavings()">
-                            </div>
-
-                            <span class="calc-badge" id="calcBadgeResult">Ahorro Estimado al Año</span>
-                            <div class="calc-result-number" id="calcAnnualSavings">$1,340</div>
-                            <p class="calc-result-label" id="calcBottlesEliminated">4,200 botellas de plástico eliminadas/año</p>
+                            <div class="item-detail">📞 <strong>Tel:</strong> ${lead.phone || 'N/A'} | ✉️ <strong>Email:</strong> ${lead.email || 'N/A'}${lead.messenger_id ? ` | ⚡ <strong>Messenger:</strong> Conectado` : ''}</div>
+                            <div class="item-detail">📍 <strong>Dirección:</strong> ${lead.address || 'N/A'} (${lead.zipcode || ''})</div>
+                            ${noteContent ? `<div class="item-detail" style="background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 8px; border-left: 3px solid var(--primary); margin-top: 6px; color: #f8fafc;">💬 <strong>Mensaje / Detalle:</strong> ${noteContent}</div>` : ''}
                             
-                            <button type="submit" class="btn-whatsapp-submit" id="calcBtnSubmit">
-                                💬 Reclamar Oferta de 20 Años por WhatsApp
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                            <div class="btn-group">
+                                <button class="btn-whatsapp" onclick="sendWhatsAppDirect('${lead.phone}', '${lead.name}', '${lead.address || ''}')">🟢 WhatsApp</button>
+                                <button class="btn-action-sm" style="background: #a855f7; color: white; font-weight: bold;" onclick="sendBlogModal('${lead.id}', '${lead.name}', '${lead.phone || ''}', '${lead.email || ''}')">📰 Enviar Blog</button>
+                                <button class="btn-action-sm" style="background: #06d6a0; color: #000; font-weight: bold;" onclick="triggerSingleWelcome('${lead.id}', '${lead.name}')">✨ Bienvenida</button>
+                                <button class="btn-action-sm" style="background: #ffd166; color: #000; font-weight: bold;" onclick="sendSMSFromPhone('${lead.phone}', '${lead.name}')">📱 SMS Personal</button>
+                                <button class="btn-action-sm" style="background: #0084ff; color: white;" onclick="sendMessengerDirect('${lead.messenger_id || ''}', '${lead.name}')">⚡ Messenger</button>
+                                <button class="btn-email" onclick="sendEmailDirect('${lead.email}', '${lead.name}', '${lead.email_status || ""}')">✉️ Email</button>
+                                <button class="btn-action-sm" onclick="triggerCall('${lead.phone}', '${lead.name || 'Cliente'}')">📞 Llamar Sol (Vapi)</button>
+                            </div>
+                        `;
+                        leadsContainer.appendChild(card);
+                    });
+                }
 
-    <!-- Toast Notification for Copy Link -->
-    <div class="toast-notification" id="toastNotification">
-        ✅ ¡Enlace copiado al portapapeles!
-    </div>
+                fetchCallsData();
 
-    <!-- Footer -->
+            } catch (err) {
+                console.error("Error cargando dashboard:", err);
+            }
+        }
 
-            <!-- Executive Consultant Profile Card -->
-        <section class="consultant-footer-card">
-            <div class="consultant-avatar">👔</div>
-            <div class="consultant-info">
-                <span class="consultant-badge" id="consultantBadge">CONSULTOR AUTORIZADO PURONICS®</span>
-                <h3 class="consultant-name">MBA Eliecer Hernandez</h3>
-                <p class="consultant-title" id="consultantTitle">Asesor Senior en Purificación de Agua & Tratamiento Residencial</p>
-                <div class="consultant-contacts">
-                    <a href="tel:13058136159" class="consultant-link">📞 (305) 813-6159</a>
-                    <a href="tel:13057846363" class="consultant-link">📱 (305) 784-6363</a>
-                    <a href="mailto:ehbvolt@gmail.com" class="consultant-link">📧 ehbvolt@gmail.com</a>
-                </div>
-            </div>
-            <a href="https://wa.me/13058136159?text=Hola%20MBA%20Eliecer%20Hernandez,%20quisiera%20asesor%C3%ADa%20personalizada%20para%20un%20sistema%20Puronics" target="_blank" class="btn-consultant-wa" id="btnConsultantWa">
-                💬 Contactar al Asesor
-            </a>
-        </section>
+        async function fetchCallsData() {
+            try {
+                const res = await fetch(API_BASE + '/api/voice-calls');
+                const data = await res.json();
+                const calls = data.calls || [];
 
-    <footer class="puronics-footer">
-        <p id="footerCopy">© 2026 PURONICS® Water Purification Systems. Tecnología Espacial NASA Licenciada.</p>
-        <p id="footerSub" style="margin-top: 5px; color: #64748b;">Certificaciones WQA Gold Seal, NSF International & Precios Regulados por Financieras Federales.</p>
-    </footer>
+                document.getElementById('statCalls').innerText = calls.length;
 
-    <!-- App Logic -->
-    <script src="puronics_app.js"></script>
+                const callsContainer = document.getElementById('callsContainer');
+                callsContainer.innerHTML = '';
+
+                if (calls.length === 0) {
+                    callsContainer.innerHTML = '<p style="color: var(--text-muted);">No hay registro de llamadas recientes.</p>';
+                } else {
+                    calls.forEach(call => {
+                        const isSuccess = call.status === 'qualified' || parseInt(call.duration || 0) > 15;
+                        const statusClass = isSuccess ? 'status-connected' : 'status-missed';
+                        const statusText = isSuccess ? 'CONECTADA / CALIFICADA' : 'PENDIENTE / SIN RESPUESTA';
+
+                        const card = document.createElement('div');
+                        card.className = 'item-card';
+                        card.innerHTML = `
+                            <div class="item-top">
+                                <span class="item-name">📞 ${call.customer_name || 'Cliente'} (${call.phone || 'N/A'})</span>
+                                <span class="badge-status ${statusClass}">${statusText} (${call.duration || 0}s)</span>
+                            </div>
+                            <div class="item-detail"><strong>Resumen IA:</strong> ${call.summary || 'Llamada registrada.'}</div>
+                            ${call.recording_url ? `<div style="margin: 8px 0;"><audio controls src="${call.recording_url}" style="width: 100%; height: 32px; border-radius: 8px;"></audio></div>` : ''}
+                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.78rem; color: var(--text-muted);">${new Date(call.created_at || Date.now()).toLocaleString()}</span>
+                                <button class="btn-action-sm" style="background: #ff0055; color: white;" onclick="triggerCall('${call.phone}', '${call.customer_name}')">Llamar con Sol 📞</button>
+                            </div>
+                        `;
+                        callsContainer.appendChild(card);
+                    });
+                }
+            } catch (e) {}
+        }
+
+        document.getElementById('newLeadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveLeadBtn');
+            btn.innerText = "Guardando...";
+            btn.disabled = true;
+
+            const name = document.getElementById('leadName').value;
+            const phone = document.getElementById('leadPhone').value;
+            const email = document.getElementById('leadEmail').value;
+            const address = document.getElementById('leadAddress').value;
+            const zipcode = document.getElementById('leadZip').value;
+            const bill_over_100 = document.getElementById('leadBill').value;
+
+            try {
+                const res = await fetch(API_BASE + '/api/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, email, address, zipcode, bill_over_100, is_owner: 'yes', credit_score: 'yes' })
+                });
+
+                if (res.ok) {
+                    alert(`¡Lead '${name}' guardado exitosamente!`);
+                    closeNewLeadModal();
+                    document.getElementById('newLeadForm').reset();
+                    fetchDashboardData();
+                } else {
+                    const err = await res.json();
+                    alert(`Error: ${err.error || 'No se pudo guardar el lead.'}`);
+                }
+            } catch (error) {
+                alert('Error de red al guardar el lead.');
+            } finally {
+                btn.innerText = "💾 Guardar Lead";
+                btn.disabled = false;
+            }
+        });
+
+        const DEFAULT_FOLLOWUP_MSG = `Hola, recibimos su solicitud para el programa solar de Florida. Estamos corriendo la evaluacion satelital de su techo para congelar su tarifa eléctrica a $0 inicial. Le llamaremos en breve para confirmar si califica. ¿Prefiere llamada al mediodía o en la tarde? Info: 305-813-6159`;
+
+        async function sendWhatsAppDirect(phone, name = 'Cliente', address = '') {
+            if (!phone) return alert("Teléfono no disponible.");
+            const firstName = (name && !name.includes("Lead") && !name.includes("Prospecto") && !name.includes("Usuario Messenger")) ? name.trim().split(' ')[0] : 'Estimado/a';
+            const cleanAddress = address ? address.trim() : 'su propiedad en Florida';
+            
+            const personalizedMsg = `☀️ *Programa de Medición Neta (Net Metering) Florida 2026*
+Hola ${firstName}, le saluda el Departamento Técnico de Evaluación Solar.
+
+Hemos recibido correctamente su solicitud para verificar si su vivienda califica para el programa de tarifa eléctrica fija a *$0 costo de inversión inicial*.
+
+📌 *Estado actual de su caso:*
+Su propiedad (${cleanAddress}) ha sido asignada a uno de nuestros consultores de zona y en este momento estamos cargando las coordenadas de su techo en la herramienta de radiación satelital para calcular su ahorro mensual frente a las tarifas de su proveedor eléctrico.
+
+📞 *Siguiente paso:*
+Uno de nuestros especialistas le marcará brevemente desde este número o el (305) 813-6159 para validar dos datos técnicos de la estructura de su techo.
+
+⏱️ *Para coordinar:*
+¿Le resulta más cómodo atender una breve llamada de 3 minutos ahora en la mañana o después de las 5:00 PM?
+
+*(Tip: Si tiene a mano su última factura de electricidad o su app en el celular, puede enviarnos una foto respondiendo a este mensaje para tener su gráfico de ahorro exacto al momento de hablar).*
+
+Atentamente,
+*Equipo de Consultoría Solar Florida*
+📱 Tel: (305) 813-6159`;
+
+            const message = prompt(`Revisa o edita el mensaje de WhatsApp para ${name} (${phone}):`, personalizedMsg);
+            if (!message) return;
+
+            let cleanPhone = phone.replace(/\D/g, '');
+            if (cleanPhone.length === 10) cleanPhone = '1' + cleanPhone;
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        async function sendSMSDirect(phone, name = 'Cliente') {
+            if (!phone) return alert("Teléfono no disponible.");
+            const firstName = (name && !name.includes("Lead") && !name.includes("Prospecto") && !name.includes("Usuario Messenger")) ? name.trim().split(' ')[0] : 'Estimado/a';
+            const waLink = `https://wa.me/13058136159?text=${encodeURIComponent('Hola ' + firstName + ', recibi su mensaje de texto sobre el estudio solar')}`;
+            const defaultSms = `Hola ${firstName}, recibimos su solicitud para el programa solar de Florida. Evaluamos su techo para congelar su tarifa eléctrica a $0 inicial. Le llamaremos para confirmar si califica. Prefiere llamada al mediodia o en la tarde? Info: 305-813-6159\n\n📲 WhatsApp: ${waLink}`;
+            
+            const message = prompt(`Escribe el mensaje de texto SMS para ${name} (${phone}):`, defaultSms);
+            if (!message) return;
+
+            try {
+                const res = await fetch(API_BASE + '/api/messages/send-sms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, message })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ${data.message || 'Mensaje SMS enviado con éxito.'}`);
+                } else {
+                    alert(`⚠️ ${data.error || 'No se pudo enviar el mensaje SMS.'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión con el servidor al enviar SMS.');
+            }
+        }
+
+        function sendSMSFromPhone(phone, name = 'Cliente') {
+            if (!phone) return alert("Teléfono no disponible.");
+            let cleanPhone = phone.replace(/\D/g, '');
+            if (cleanPhone.length === 10) cleanPhone = '1' + cleanPhone;
+            const formattedPhone = '+' + cleanPhone;
+            const firstName = (name && !name.includes("Lead") && !name.includes("Prospecto") && !name.includes("Usuario Messenger")) ? name.trim().split(' ')[0] : 'Estimado/a';
+            const waLink = `https://wa.me/13058136159?text=${encodeURIComponent('Hola ' + firstName + ', recibi su mensaje sobre el estudio solar')}`;
+            const defaultSms = `Hola ${firstName}, recibimos su solicitud para el programa solar de Florida. Evaluamos su techo para congelar su tarifa eléctrica a $0 inicial. Le llamaremos para confirmar si califica. ¿Prefiere llamada al mediodía o en la tarde? Info: 305-813-6159\n\n📲 WhatsApp: ${waLink}`;
+            
+            const message = prompt(`Revisa o edita el SMS que saldrá desde tu celular personal para ${name} (${formattedPhone}):`, defaultSms);
+            if (!message) return;
+
+            // Abre la app nativa de Mensajes en tu móvil o PC
+            window.location.href = `sms:${formattedPhone}?&body=${encodeURIComponent(message)}`;
+        }
+
+        async function sendMessengerDirect(psid, name = 'Cliente') {
+            if (!psid) {
+                const manualPsid = prompt(`Ingresa el Facebook PSID o ID de Messenger de ${name}:`);
+                if (!manualPsid) return;
+                psid = manualPsid.trim();
+            }
+
+            const message = prompt(`Escribe el mensaje de Facebook Messenger para ${name}:`, DEFAULT_FOLLOWUP_MSG);
+            if (!message) return;
+
+            try {
+                const res = await fetch(API_BASE + '/api/messages/send-messenger', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ recipientId: psid, message })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ${data.message || 'Mensaje de Messenger enviado con éxito.'}`);
+                } else {
+                    alert(`⚠️ ${data.error || 'No se pudo enviar el mensaje por Messenger.'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión con el servidor al enviar Messenger.');
+            }
+        }
+
+        async function syncEmailBounces() {
+            if (!confirm("¿Deseas escanear la bandeja de entrada para detectar automáticamente correos que rebotaron (inexistentes) y marcarlos para no volver a enviarles?")) {
+                return;
+            }
+
+            try {
+                alert("⏳ Conectando con Gmail para auditar reportes de no entrega (bounces)...");
+                const res = await fetch(API_BASE + '/api/leads/sync-bounces', { method: 'POST' });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ${data.message || 'Rebotes depurados exitosamente.'}`);
+                    fetchDashboardData();
+                } else {
+                    alert(`⚠️ ${data.error || 'No se pudo sincronizar los rebotes.'}`);
+                }
+            } catch (e) {
+                alert('Error al sincronizar rebotes con el servidor.');
+            }
+        }
+
+        async function sendEmailDirect(email, name = 'Cliente', status = '') {
+            if (!email) return alert("Email no disponible.");
+            if (status === 'bounced') {
+                const proceed = confirm(`⚠️ ATENCIÓN: El correo '${email}' fue rechazado anteriormente por el servidor de destino porque la cuenta no existe o está inactiva.\n\nTe sugerimos comunicarte con el cliente por WhatsApp o Teléfono para pedirle su correo actual.\n\n¿Deseas intentar enviar el correo de todas formas?`);
+                if (!proceed) return;
+            }
+            
+            const message = prompt(`Escribe el mensaje de correo para ${name} (${email}):`, DEFAULT_FOLLOWUP_MSG);
+            if (!message) return;
+
+            try {
+                const res = await fetch(API_BASE + '/api/messages/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, subject: 'Información del Programa NET METERING - DEPARTAMENTO ENERGIA SOLAR NETA (NET METERING) FLORIDA', message })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ${data.message || 'Correo enviado con éxito.'}`);
+                } else {
+                    alert(`⚠️ ${data.error || 'No se pudo enviar el correo.'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión con el servidor al enviar correo.');
+            }
+        }
+
+        async function triggerCall(phone, customerName = 'Cliente') {
+            if (!phone) return alert("Número no disponible");
+            if (!confirm(`¿Iniciar llamada de voz automática con Sol (Vapi AI) al ${phone}?`)) return;
+
+            try {
+                const res = await fetch(API_BASE + '/api/vapi/outbound-call', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, customerName })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ${data.message}`);
+                    fetchDashboardData();
+                } else {
+                    alert(`⚠️ ${data.error || 'No se pudo iniciar la llamada.'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión con el servidor de llamadas.');
+            }
+        }
+
+        async function sendBroadcastToAllLeads() {
+            if (!confirm("¿Deseas enviar el mensaje oficial del DEPARTAMENTO DE CONSULTORIA sobre NET METERING a TODOS los clientes del listado (por SMS, WhatsApp, Messenger y Email)?")) {
+                return;
+            }
+
+            const msgText = DEFAULT_FOLLOWUP_MSG;
+
+            try {
+                alert("⏳ Iniciando envío masivo omnicanal a todos los clientes del listado...");
+                const res = await fetch(API_BASE + '/api/leads/send-followup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        channels: ['sms', 'whatsapp', 'messenger', 'email'],
+                        message: msgText
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ¡Mensaje enviado con éxito a los ${data.count || 'todos los'} clientes de la base de datos!`);
+                } else {
+                    alert(`Error al enviar mensajes: ${data.error || 'Ocurrió un error.'}`);
+                }
+            } catch (err) {
+                console.error("Error en broadcast:", err);
+                alert("Error de conexión al enviar mensajes masivos.");
+            }
+        }
+
+        function openManualCallPrompt() {
+            const phone = prompt("Ingresa el número de teléfono del cliente (ej. +13051234567):");
+            if (phone) triggerCall(phone);
+        }
+
+        async function triggerPendingWelcome() {
+            if (!confirm("¿Deseas enviar el mensaje de bienvenida omnicanal (SMS + Email con enlace directo a WhatsApp) a todos los prospectos que aún no lo han recibido?")) {
+                return;
+            }
+
+            try {
+                alert("⏳ Iniciando el envío de bienvenida a prospectos pendientes...");
+                const res = await fetch(API_BASE + '/api/leads/send-welcome-pending', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ Proceso completado: Se enviaron mensajes de bienvenida a ${data.count || 0} prospectos.`);
+                    fetchDashboardData();
+                } else {
+                    alert(`⚠️ Error: ${data.error || 'No se pudo completar el envío.'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión con el servidor.');
+            }
+        }
+
+        fetchDashboardData();
+        setInterval(fetchDashboardData, 5000);
+    
+        async function triggerPendingBlog() {
+            if (!confirm("¿Deseas enviar los artículos educativos del blog solar a todos los prospectos pendientes (por Correo y SMS con enlace a WhatsApp)?")) {
+                return;
+            }
+
+            try {
+                alert("⏳ Iniciando el envío de artículos educativos del blog a prospectos pendientes...");
+                const res = await fetch(API_BASE + '/api/leads/send-blog-pending', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ Proceso completado: Artículos del blog enviados a ${data.count || 0} prospectos.`);
+                    fetchDashboardData();
+                } else {
+                    alert(`⚠️ Error: ${data.error || 'No se pudo completar el envío del blog.'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión con el servidor al enviar blog.');
+            }
+        }
+
+        async function triggerSingleWelcome(leadId, leadName) {
+            if (!confirm(`¿Enviar mensaje oficial de bienvenida omnicanal a ${leadName}?`)) return;
+
+            try {
+                const res = await fetch(API_BASE + '/api/leads/send-welcome', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leadId })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ ${data.message || 'Bienvenida enviada con éxito.'}`);
+                    fetchDashboardData();
+                } else {
+                    alert(`⚠️ Error: ${data.error || 'No se pudo enviar la bienvenida.'}`);
+                }
+            } catch (e) {
+                alert('Error de conexión al enviar bienvenida.');
+            }
+        }
+
+        async function sendBlogModal(leadId, name, phone, email) {
+            const firstName = (name && !name.includes("Lead") && !name.includes("Prospecto")) ? name.trim().split(' ')[0] : 'Estimado Propietario';
+            const blogUrl = "https://ehbvolt-maker.github.io/sol-web/blog.html";
+            
+            const choice = prompt(
+                `📰 ENVIAR ARTÍCULOS DEL BLOG A ${name}\n\nElige cómo deseas enviar las guías educativas:\n1 - WhatsApp (Abre chat con mensaje educativo listo)\n2 - SMS (Vía API del servidor)\n3 - Correo Electrónico (Boletín HTML oficial con tarjetas)\n4 - Enviar por TODOS los canales automáticos\n\nEscribe 1, 2, 3 o 4:`,
+                "1"
+            );
+
+            if (!choice) return;
+
+            if (choice === "1") {
+                if (!phone) return alert("Teléfono no disponible.");
+                let cleanPhone = phone.replace(/\D/g, '');
+                if (cleanPhone.length === 10) cleanPhone = '1' + cleanPhone;
+                
+                const waText = `📚 *Guía Educativa Solar Florida 2026*\nHola ${firstName}, le comparto este portal oficial preparado por nuestro Departamento Técnico para que conozca cómo funciona el programa de Net Metering y cómo congelar su tarifa eléctrica a $0 inicial:\n\n👉 ${blogUrl}\n\n¿Desea que validemos su estudio en 15 minutos?\nAtte: Consultoría Solar Florida (305) 813-6159`;
+                
+                window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(waText)}`, '_blank');
+                
+                // Actualizar status en DB
+                fetch(API_BASE + '/api/leads/send-blog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leadId, channels: ['whatsapp'] })
+                }).then(() => fetchDashboardData());
+
+            } else if (choice === "2") {
+                if (!phone) return alert("Teléfono no disponible.");
+                fetch(API_BASE + '/api/leads/send-blog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leadId, channels: ['sms'] })
+                }).then(r => r.json()).then(data => {
+                    alert(`✅ ${data.message || 'SMS con artículos del blog enviado.'}`);
+                    fetchDashboardData();
+                });
+
+            } else if (choice === "3") {
+                if (!email) return alert("Correo no disponible.");
+                fetch(API_BASE + '/api/leads/send-blog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leadId, channels: ['email'] })
+                }).then(r => r.json()).then(data => {
+                    alert(`✅ ${data.message || 'Boletín del blog enviado por correo.'}`);
+                    fetchDashboardData();
+                });
+
+            } else if (choice === "4") {
+                fetch(API_BASE + '/api/leads/send-blog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leadId, channels: ['whatsapp', 'sms', 'email'] })
+                }).then(r => r.json()).then(data => {
+                    alert(`✅ ${data.message || 'Blog enviado por todos los canales.'}`);
+                    fetchDashboardData();
+                });
+            }
+        }
+
+
+        // PWA Installation & Modal Functions
+        function showMobileInstallModal() {
+            document.getElementById('mobileInstallModal').style.display = 'flex';
+        }
+        function closeMobileInstallModal() {
+            document.getElementById('mobileInstallModal').style.display = 'none';
+        }
+        function copyMobileUrl() {
+            const copyText = document.getElementById('mobileUrlInput');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert("📋 Enlace copiado al portapapeles: " + copyText.value);
+            });
+        }
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('[PWA] Service Worker registrado exitosamente.', reg.scope);
+                }).catch(err => {
+                    console.warn('[PWA] Service Worker no se pudo registrar:', err.message);
+                });
+            });
+        }
+
+        let deferredPwaPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPwaPrompt = e;
+            const promptBox = document.getElementById('pwaInstallPromptBox');
+            if (promptBox) promptBox.style.display = 'block';
+            const installBtn = document.getElementById('pwaInstallBtn');
+            if (installBtn) {
+                installBtn.onclick = () => {
+                    deferredPwaPrompt.prompt();
+                    deferredPwaPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('[PWA] Usuario aceptó instalar la aplicación');
+                        }
+                        deferredPwaPrompt = null;
+                        closeMobileInstallModal();
+                    });
+                };
+            }
+        });
+
+</script>
 </body>
 </html>

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Educativo Solar Florida | Departamento de Consultoría Técnica</title>
+    <meta name="description" content="Aprende cómo funciona el programa de Medición Neta (Net Metering) en Florida, cómo congelar tu tarifa eléctrica y desmiente los mitos sobre la energía solar.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070b14;
+            --bg-card: #0e1526;
+            --bg-card-hover: #15203a;
+            --primary: #ffb703;
+            --primary-hover: #fb8500;
+            --cyan: #219ebc;
+            --light-blue: #8ecae6;
+            --green-wa: #25d366;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-gold: rgba(255, 183, 3, 0.35);
+            --radius-lg: 16px;
+            --radius-md: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: linear-gradient(90deg, #023047 0%, #070b14 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+        }
+
+        .topbar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 183, 3, 0.15);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid var(--border-gold);
+        }
+
+        .topbar-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .topbar-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 24px 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 720px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .hero-badge-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: var(--light-blue);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Filter and Search Bar */
+        .filter-section {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px 10px 38px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Articles Grid */
+        .articles-grid {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 30px;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-gold);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+            background: var(--bg-card-hover);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+            background: #021a29;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .article-card:hover .card-img {
+            transform: scale(1.05);
+        }
+
+        .card-category-tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(7, 11, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-gold);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .card-read-time {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card-excerpt {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-read-link {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .card-share-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .card-share-btn:hover {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        /* Banner CTA Box */
+        .cta-banner {
+            max-width: 1200px;
+            margin: 0 auto 70px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(2, 48, 71, 0.8) 0%, rgba(14, 21, 38, 0.95) 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-text h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .cta-text p {
+            color: var(--light-blue);
+            font-size: 1rem;
+            max-width: 600px;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-wa-cta {
+            background-color: var(--green-wa);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 26px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-wa-cta:hover {
+            transform: translateY(-2px);
+            background-color: #1ebd5a;
+        }
+
+        .btn-phone-cta {
+            background-color: var(--primary);
+            color: #000;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-phone-cta:hover {
+            transform: translateY(-2px);
+            background-color: var(--primary-hover);
+        }
+
+        /* Article Modal Reader */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 850px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 35px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-hero-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 20px 0 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-body h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin: 25px 0 12px;
+        }
+
+        .modal-body p {
+            color: #e2e8f0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .modal-body ul {
+            margin: 15px 0 20px 25px;
+            color: #cbd5e1;
+        }
+
+        .modal-body li {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .highlight-box {
+            background: rgba(255, 183, 3, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 18px 22px;
+            border-radius: 8px;
+            margin: 24px 0;
+            font-size: 1rem;
+            color: #fef08a;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            background: #05080e;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.1rem;
+            }
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .cta-banner {
+                padding: 25px;
+                text-align: center;
+            }
+            .cta-actions {
+                justify-content: center;
+                width: 100%;
+            }
+            .modal-content {
+                padding: 22px;
+            }
+            .modal-hero-img {
+                height: 190px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra Superior Oficial -->
+    <div class="topbar">
+        <div class="topbar-badge">
+            ☀️ DEPARTAMENTO DE CONSULTORÍA TÉCNICA SOLAR FLORIDA
+        </div>
+        <div class="topbar-links">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="dashboard.html">📊 Acceso CRM</a>
+            <a href="tel:3058136159">📞 (305) 813-6159</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-badges">
+            <span class="hero-badge-pill">⚡ Programa Medición Neta 2026</span>
+            <span class="hero-badge-pill">📍 Cobertura Oficial en Florida</span>
+            <span class="hero-badge-pill">💰 $0 Inversión Inicial ($0 Down)</span>
+        </div>
+        <h1>Portal Educativo de Energía Solar para Propietarios de Florida</h1>
+        <p>Todo lo que necesitas saber antes de tu consulta técnica de 15 minutos: desmitificando costos, explicando cómo congelar tu factura con tu proveedor eléctrico y protegiendo tu vivienda en temporada de huracanes.</p>
+    </header>
+
+    <!-- Filtro y Buscador -->
+    <div class="filter-section">
+        <div class="categories">
+            <button class="cat-btn active" onclick="filterArticles('all')">Todos los Artículos</button>
+            <button class="cat-btn" onclick="filterArticles('net-metering')">Medición Neta</button>
+            <button class="cat-btn" onclick="filterArticles('mitos')">Mitos y Costos</button>
+            <button class="cat-btn" onclick="filterArticles('ingenieria')">Ingeniería y Techos</button>
+            <button class="cat-btn" onclick="filterArticles('baterias')">Baterías y Tormentas</button>
+        </div>
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Buscar artículo, tema o ley..." onkeyup="searchArticles()">
+        </div>
+    </div>
+
+    <!-- Cuadrícula de Artículos -->
+    <main class="articles-grid" id="articlesGrid">
+
+        <!-- ARTÍCULO 1 -->
+        <article class="article-card" data-category="net-metering" onclick="openArticle(1)">
+            <div class="card-img-wrapper">
+                <img src="assets/solar_benefits_es.png" alt="Net Metering Florida" class="card-img" onerror="this.src='assets/home.png'">
+                <span class="card-category-tag">Medición Neta</span>
+                <span class="card-read-time">⏱️ 4 min lectura</span>
+            </div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span>📅 Publicado 2026</span>
+                    <span>•</span>
+                    <span>✍️ Ing. Técnico Solar</span>
+                </div>
+                <h2 class="card-title">Guía Completa: Cómo congelar tu factura eléctrica mediante Net Metering con tu proveedor eléctrico</h2>
+                <p class="card-excerpt">Conoce cómo la Ley de Florida obliga a tu compañía eléctrica a medir de forma bidireccional tu energía, acumulando créditos en kWh cuando tu techo produce excedente para compensar las noches y los meses de verano.</p>
+                <div class="card-footer">
+                    <span class="card-read-link">Leer artículo completo &rarr;</span>
+                    <button class="card-share-btn" onclick="event.stopPropagation(); shareArticle('Guía Net Metering 2026', 1)">📲 Compartir</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ARTÍCULO 2 -->
+        <article class="article-card" data-category="mitos" onclick="openArticle(2)">
+            <div class="card-img-wrapper">
+                <img src="assets/solar_install_1.png" alt="Mito de Paneles Gratis" class="card-img" onerror="this.src='assets/home.png'">
+                <span class="card-category-tag">Mitos y Realidad</span>
+                <span class="card-read-time">⏱️ 5 min lectura</span>
+            </div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span>📅 Actualizado 2026</span>
+                    <span>•</span>
+                    <span>✍️ Dpto. Cumplimiento</span>
+                </div>
+                <h2 class="card-title">¿Paneles Solares "Gratis" en Florida? La Verdad sobre el Programa a $0 Inversión Inicial ($0 Down)</h2>
+                <p class="card-excerpt">Desmintiendo los anuncios engañosos de internet: Por qué ningún panel es "regalado por el gobierno", pero cómo los propietarios que pagan más de $100 de luz pueden sustituir su factura por una cuota fija sin poner dinero de su bolsillo.</p>
+                <div class="card-footer">
+                    <span class="card-read-link">Leer artículo completo &rarr;</span>
+                    <button class="card-share-btn" onclick="event.stopPropagation(); shareArticle('La Verdad sobre Paneles a $0 Inicial', 2)">📲 Compartir</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ARTÍCULO 3 -->
+        <article class="article-card" data-category="ingenieria" onclick="openArticle(3)">
+            <div class="card-img-wrapper">
+                <img src="assets/silfab_440_panel.png" alt="Inspección Satelital de Techos" class="card-img" onerror="this.src='assets/home.png'">
+                <span class="card-category-tag">Ingeniería</span>
+                <span class="card-read-time">⏱️ 3 min lectura</span>
+            </div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span>📅 Técnico 2026</span>
+                    <span>•</span>
+                    <span>✍️ Dpto. de Diseño 3D</span>
+                </div>
+                <h2 class="card-title">Así funciona la Inspección Satelital 3D de tu Techo antes de tu llamada informativa</h2>
+                <p class="card-excerpt">Antes de marcar tu número, nuestros ingenieros modelan tu casa mediante satélite para evaluar azimut, inclinación, micro-sombras y resistencia a vientos huracanados. Descubre qué evaluamos en tiempo real.</p>
+                <div class="card-footer">
+                    <span class="card-read-link">Leer artículo completo &rarr;</span>
+                    <button class="card-share-btn" onclick="event.stopPropagation(); shareArticle('Inspección Satelital 3D de Techos', 3)">📲 Compartir</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ARTÍCULO 4 -->
+        <article class="article-card" data-category="baterias" onclick="openArticle(4)">
+            <div class="card-img-wrapper">
+                <img src="assets/tesla_powerwall_3.png" alt="Baterías Solares vs Generadores" class="card-img" onerror="this.src='assets/home.png'">
+                <span class="card-category-tag">Baterías y Huracanes</span>
+                <span class="card-read-time">⏱️ 6 min lectura</span>
+            </div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span>📅 Temporada 2026</span>
+                    <span>•</span>
+                    <span>✍️ Especialista de Emergencias</span>
+                </div>
+                <h2 class="card-title">Baterías de Respaldo Solar vs Generadores de Gasolina en Temporada de Huracanes</h2>
+                <p class="card-excerpt">Durante tormentas severas en Florida, las gasolineras colapsan o se quedan sin luz. Descubre por qué las baterías de litio inteligentes (Tesla Powerwall 3 / Enphase) se recargan día tras día con el sol garantizando aire acondicionado continuo.</p>
+                <div class="card-footer">
+                    <span class="card-read-link">Leer artículo completo &rarr;</span>
+                    <button class="card-share-btn" onclick="event.stopPropagation(); shareArticle('Baterías Solares vs Generadores', 4)">📲 Compartir</button>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Banner de Conversión Directa -->
+    <section class="cta-banner">
+        <div class="cta-text">
+            <h2>¿Tienes preguntas sobre tu factura o la elegibilidad de tu techo?</h2>
+            <p>Nuestros ingenieros certificados pueden analizar tu dirección satelitalmente en menos de 10 minutos sin compromiso ni costo alguno.</p>
+        </div>
+        <div class="cta-actions">
+            <a href="https://wa.me/13058136159?text=Hola%2C%20le%C3%AD%20su%20portal%20educativo%20solar%20y%20deseo%20validar%20la%20calificaci%C3%B3n%20de%20mi%20propiedad" target="_blank" class="btn-wa-cta">
+                🟢 Chatear por WhatsApp (305) 813-6159
+            </a>
+            <a href="tel:3058136159" class="btn-phone-cta">
+                📞 Llamada Directa
+            </a>
+        </div>
+    </section>
+
+    <!-- Modal de Lectura de Artículos -->
+    <div class="modal-overlay" id="articleModal" onclick="closeArticleModal(event)">
+        <div class="modal-content" id="modalContainer" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeArticleModal()">&times;</button>
+            <div id="modalArticleData"></div>
+        </div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer>
+        <p><strong>DEPARTAMENTO DE CONSULTORÍA ENERGÉTICA SOLAR FLORIDA 2026</strong></p>
+        <p style="margin-top: 8px;">Atención al Cliente: (305) 813-6159 | (305) 784-6363 | Email: <a href="mailto:ehbequitysolar@gmail.com">ehbequitysolar@gmail.com</a></p>
+        <p style="margin-top: 8px; font-size: 0.8rem; color: #64748b;">
+            Operando en cumplimiento con las regulaciones de la Comisión de Servicios Públicos de Florida (PSC) y el programa estatal de Medición Neta (Rule 25-6.065, F.A.C.). No afiliado gubernamentalmente.
+        </p>
+    </footer>
+
+    <!-- Scripts de Interactividad y Contenido Completo -->
+    <script>
+        const articlesDB = {
+            1: {
+                title: "Guía Completa: Cómo congelar tu factura eléctrica mediante Net Metering con tu proveedor eléctrico",
+                category: "Medición Neta (Net Metering)",
+                time: "4 minutos de lectura",
+                date: "Septiembre 2026",
+                img: "assets/solar_benefits_es.png",
+                content: `
+                    <p>Si eres dueño de casa en Florida, es muy probable que hayas notado cómo la tarifa por kilovatio-hora (kWh) de tu proveedor eléctrico ha experimentado aumentos sostenidos año tras año debido a cargos por combustible, tormentas y expansión de infraestructura.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>📌 Fundamento Legal en Florida:</strong> La Regla 25-6.065 del Código Administrativo de Florida (F.A.C.) exige a las principales empresas de servicios públicos (incluyendo Duke Energy, Tampa Electric / TECO, Florida Power & Light, OUC y cooperativas participantes) ofrecer Medición Neta a clientes residenciales interconectados.
+                    </div>
+
+                    <h2>1. ¿Qué es exactamente la Medición Neta (Net Metering)?</h2>
+                    <p>La Medición Neta es un mecanismo de facturación que funciona como una cuenta bancaria energética. Cuando tus paneles solares de alta eficiencia producen más energía de la que tu hogar consume durante las horas pico de sol (por ejemplo, al mediodía cuando la familia está fuera o el consumo es menor), ese excedente de electricidad no se pierde: <strong>se inyecta a la red eléctrica local a través de un contador bidireccional</strong>.</p>
+                    
+                    <h2>2. ¿Cómo gira tu contador hacia atrás?</h2>
+                    <p>El contador digital bidireccional instalado por tu proveedor eléctrico registra dos flujos:</p>
+                    <ul>
+                        <li><strong>Energía importada:</strong> Los kWh que consumes de la red durante la noche o días de lluvia intensa.</li>
+                        <li><strong>Energía exportada:</strong> Los kWh solares limpios que tu techo envió a la red eléctrica comunitaria.</li>
+                    </ul>
+                    <p>Al final del ciclo de facturación mensual, la compañía eléctrica resta la energía exportada de la importada. Si generaste más de lo que consumiste, <strong>recibes un saldo de créditos en kWh a tu favor</strong> que se traslada al mes siguiente para compensar los meses más calurosos del verano cuando el aire acondicionado trabaja al máximo.</p>
+
+                    <h2>3. ¿Cómo logras congelar tu gasto mensual?</h2>
+                    <p>En lugar de pagar facturas impredecibles de $200, $350 o más a tu proveedor eléctrico que seguirán subiendo por la inflación, el programa de energía solar te permite reemplazar ese pago variable por una cuota fija mensual mucho menor, pagando por tu propio sistema de energía solar a $0 costo de inversión inicial.</p>
+
+                    <div style="background: rgba(2, 48, 71, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--cyan); margin: 25px 0;">
+                        <h3 style="color: var(--light-blue); margin-bottom: 8px;">¿Deseas saber cuántos créditos de Net Metering acumularía tu techo?</h3>
+                        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 12px;">Uno de nuestros asesores técnicos puede calcular tu balance anual exacto con solo revisar tu última factura de luz.</p>
+                        <a href="https://wa.me/13058136159?text=Hola%2C%20le%C3%AD%20el%20art%C3%ADculo%20sobre%20Net%20Metering%20y%20quiero%20revisar%20mi%20balance%20energ%C3%A9tico" target="_blank" class="btn-wa-cta" style="font-size: 0.9rem; padding: 10px 18px;">
+                            🟢 Consultar por WhatsApp con el Ing. Técnico (305) 813-6159
+                        </a>
+                    </div>
+                `
+            },
+            2: {
+                title: "¿Paneles Solares 'Gratis' en Florida? La Verdad sobre el Programa a $0 Inversión Inicial ($0 Down)",
+                category: "Mitos y Realidad",
+                time: "5 minutos de lectura",
+                date: "Septiembre 2026",
+                img: "assets/solar_install_1.png",
+                content: `
+                    <p>En las redes sociales abundan anuncios engañosos con titulares como <em>"El gobierno está regalando paneles solares gratis en Florida"</em> o <em>"Inscríbete para que no pagues nada nunca más"</em>. Como consultores técnicos transparentes, debemos ser directos:</p>
+                    
+                    <div class="highlight-box">
+                        <strong>⚠️ Desmintiendo el mito:</strong> El gobierno federal ni el estado de Florida regalan paneles solares. Cualquier empresa que afirme que te instalará paneles "completamente gratis sin contrato" no te está diciendo la verdad técnica.
+                    </div>
+
+                    <h2>1. Entonces, ¿a qué se refiere el término \"$0 Down\" o \"$0 Inversión Inicial\"?</h2>
+                    <p>Lo que sí es 100% real y está regulado por programas de financiamiento de energía limpia (como préstamos solares a tasa preferencial o PPA residenciales) es el modelo <strong>$0 Down</strong>.</p>
+                    <p>Bajo este esquema:</p>
+                    <ul>
+                        <li>No tienes que pagar miles de dólares de tu bolsillo al inicio.</li>
+                        <li>El equipo completo (paneles monocristalinos Tier-1, microinversores, cableado de grado marino y permisos de la ciudad) se diseña e instala con <strong>$0 de cuota inicial</strong>.</li>
+                        <li>No realizas ningún desembolso hasta que tu sistema esté completamente interconectado a la red de tu proveedor eléctrico y generando electricidad limpia.</li>
+                    </ul>
+
+                    <h2>2. ¿Quién califica realmente para este programa?</h2>
+                    <p>Para calificar a la sustitución de tarifa sin inversión inicial, se deben cumplir 3 condiciones estrictas:</p>
+                    <ol style="margin-left: 20px; color: #cbd5e1; line-height: 1.8;">
+                        <li><strong>Ser el propietario del inmueble (Homeowner):</strong> No aplica para inquilinos porque se requiere autorización legal para interconectar con el contador de la vivienda.</li>
+                        <li><strong>Pagar una factura de luz promedio mayor a $100/mes:</strong> Si pagas menos de $100, el retorno de inversión y el ahorro neto no justifican la instalación.</li>
+                        <li><strong>Puntaje de crédito razonable (usualmente 650+):</strong> Para acceder a la tasa de financiamiento solar preferencial a $0 inicial.</li>
+                    </ol>
+
+                    <h2>3. La matemática del cambio: Deuda vs Inversión en Activo</h2>
+                    <p>Cuando pagas a tu proveedor eléctrico, el 100% de ese dinero es un gasto a fondo perdido: no genera valor ni plusvalía para tu propiedad. Al cambiar a energía solar a $0 inicial, cambias ese dinero que ya estás obligado a pagar por una cuota menor que va a pagar un equipo tuyo, incrementando el valor de tu vivienda en el mercado inmobiliario.</p>
+
+                    <div style="text-align: center; margin: 30px 0 10px;">
+                        <a href="https://wa.me/13058136159?text=Hola%2C%20le%C3%AD%20su%20art%C3%ADculo%20sobre%20el%20mito%20de%20paneles%20gratis.%20Quiero%20saber%20si%20mi%20casa%20califica%20a%20%240%20inicial" target="_blank" class="btn-wa-cta">
+                            🟢 Verificar mi Calificación al Programa a $0 Inicial
+                        </a>
+                    </div>
+                `
+            },
+            3: {
+                title: "Así funciona la Inspección Satelital 3D de tu Techo antes de tu llamada informativa",
+                category: "Ingeniería Satelital",
+                time: "3 minutos de lectura",
+                date: "Septiembre 2026",
+                img: "assets/silfab_440_panel.png",
+                content: `
+                    <p>Una de las preguntas más frecuentes que nos hacen los propietarios es: <em>"¿Por qué me piden mi dirección antes de la llamada informativa?"</em></p>
+                    <p>La respuesta es simple: En el Departamento de Consultoría Técnica de Florida <strong>no enviamos vendedores a improvisar ni a quitarte horas en tu sala de estar</strong>. Antes de llamarte, un equipo de ingenieros corre un estudio satelital preliminar de tu techo.</p>
+
+                    <h2>1. ¿Qué tecnología utilizamos?</h2>
+                    <p>Utilizamos software geoespacial y tecnología LiDAR integrada con mapas satelitales de alta resolución de Florida. Con esto evaluamos:</p>
+                    <ul>
+                        <li><strong>Inclinación y Azimut:</strong> La orientación exacta de las aguas de tu techo (las caras orientadas al Sur y al Oeste reciben la mayor radiación solar en Florida).</li>
+                        <li><strong>Obstáculos y Micro-Sombras:</strong> Identificamos árboles colindantes, chimeneas, unidades de aire acondicionado en el techo o tuberías de ventilación para ubicar los paneles únicamente donde recibirán 100% sol directo.</li>
+                        <li><strong>Superficie Utilizable:</strong> Calculamos con precisión de centímetros cuántos paneles solares Silfab de 440W de alta potencia caben en tu techo para cubrir el 100% de tu consumo eléctrico.</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <strong>🛡️ Seguridad Estructural y Vientos de Huracán:</strong> Florida cuenta con el código de construcción más exigente de EE. UU. Todos los sistemas se diseñan para resistir vientos sostenidos de hasta 175 MPH (Cat 5), utilizando soportes impermeabilizados que garantizan la integridad de tus tejas o shingle.
+                    </div>
+
+                    <h2>2. ¿Por qué se valida la llamada en solo 15 minutos?</h2>
+                    <p>Como ya contamos con el diseño 3D y la proyección de ahorro sobre la pantalla, la llamada de 15 minutos es solo para validar dos detalles que el satélite no puede ver (edad aproximada del techo y confirmar el monto promedio de tu recibo de luz), responder tus dudas técnicas y mostrarte los números exactos de ahorro.</p>
+
+                    <div style="text-align: center; margin: 30px 0 10px;">
+                        <a href="https://wa.me/13058136159?text=Hola%2C%20quiero%20que%20hagan%20el%20estudio%20satelital%203D%20de%20mi%20techo" target="_blank" class="btn-wa-cta">
+                            🛰️ Solicitar Estudio Satelital 3D de Mi Techo
+                        </a>
+                    </div>
+                `
+            },
+            4: {
+                title: "Baterías de Respaldo Solar vs Generadores de Gasolina en Temporada de Huracanes",
+                category: "Baterías y Huracanes",
+                time: "6 minutos de lectura",
+                date: "Septiembre 2026",
+                img: "assets/tesla_powerwall_3.png",
+                content: `
+                    <p>En Florida, la temporada de huracanes es una realidad anual. Cada vez que una tormenta azota la península, miles de familias sufren cortes de energía que pueden durar desde varias horas hasta semanas enteras.</p>
+                    <p>Tradicionalmente, muchos hogares recurrían a generadores portátiles a gasolina. Sin embargo, en 2026 la combinación de <strong>paneles solares con baterías de litio inteligentes (como Tesla Powerwall 3 o Enphase IQ)</strong> ha dejado obsoletos a los generadores convencionales.</p>
+
+                    <h2>1. El gran problema de los generadores a gasolina en una emergencia</h2>
+                    <ul>
+                        <li><strong>Escasez inmediata de combustible:</strong> Las gasolineras colapsan con filas de 4 horas antes del huracán, y después del paso de la tormenta muchas no pueden bombear gasolina porque tampoco tienen luz.</li>
+                        <li><strong>Mantenimiento y riesgo de asfixia:</strong> Emiten monóxido de carbono tóxico y no pueden operar bajo lluvia intensa o vientos huracanados sin riesgo.</li>
+                        <li><strong>Ruido ensordecedor:</strong> Un generador opera a más de 75-85 decibelios día y noche.</li>
+                    </ul>
+
+                    <h2>2. La ventaja indiscutible de una Batería de Respaldo Solar</h2>
+                    <div class="highlight-box">
+                        <strong>☀️ Autonomía Infinita:</strong> Una batería de litio no necesita gasolina. Durante el día, tus paneles solares alimentan tu casa y recargan la batería al 100%. Durante la noche, la batería alimenta tus electrodomésticos esenciales, refrigeradores y aire acondicionado. Al salir el sol a la mañana siguiente, el ciclo se repite indefinidamente.
+                    </div>
+
+                    <h2>3. Transición Instantánea sin Interrupciones</h2>
+                    <p>Cuando la red de tu proveedor eléctrico colapsa por una tormenta, la batería detecta el corte en menos de 10 milisegundos. Tus luces ni siquiera parpadearán y los equipos médicos, computadoras y refrigeradores continuarán operando sin interrupción.</p>
+
+                    <div style="background: rgba(2, 48, 71, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--border-gold); margin: 25px 0;">
+                        <h3 style="color: var(--primary); margin-bottom: 8px;">¿Te gustaría incluir respaldo para huracanes en tu estudio?</h3>
+                        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 12px;">Podemos cotizar tu sistema con o sin batería inteligente de litio de acuerdo con tus prioridades de seguridad.</p>
+                        <a href="https://wa.me/13058136159?text=Hola%2C%20le%C3%AD%20su%20art%C3%ADculo%20sobre%20bater%C3%ADas%20y%20huracanes.%20Deseo%20incluir%20bater%C3%ADa%20en%20mi%20estudio%20solar" target="_blank" class="btn-wa-cta" style="font-size: 0.9rem; padding: 10px 18px;">
+                            🟢 Consultar Opciones de Batería por WhatsApp (305) 813-6159
+                        </a>
+                    </div>
+                `
+            }
+        };
+
+        function filterArticles(category) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.article-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function searchArticles() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.article-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openArticle(id) {
+            const article = articlesDB[id];
+            if (!article) return;
+
+            const container = document.getElementById('modalArticleData');
+            container.innerHTML = `
+                <div style="display: inline-block; background: rgba(255, 183, 3, 0.15); border: 1px solid var(--border-gold); padding: 4px 14px; border-radius: 20px; color: var(--primary); font-size: 0.8rem; font-weight: bold; margin-bottom: 12px;">
+                    \${article.category.toUpperCase()} • \${article.time}
+                </div>
+                <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.85rem; color: #fff; line-height: 1.3; margin-bottom: 8px;">
+                    \${article.title}
+                </h1>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px;">
+                    Publicado por el Departamento de Consultoría Técnica Solar Florida • Actualizado \${article.date}
+                </div>
+                <img src="\${article.img}" alt="\${article.title}" class="modal-hero-img" onerror="this.src='assets/home.png'">
+                <div class="modal-body">
+                    \${article.content}
+                </div>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <a href="https://wa.me/13058136159?text=Hola%2C%20le%C3%AD%20el%20art%C3%ADculo%20\${encodeURIComponent(article.title)}%20y%20deseo%20m%C3%A1s%20informaci%C3%B3n" target="_blank" class="btn-wa-cta">
+                        🟢 Hablar con un Asesor sobre este Artículo
+                    </a>
+                    <button class="card-share-btn" style="padding: 10px 18px; font-size: 0.9rem;" onclick="shareArticle('\${article.title}', \${id})">
+                        📲 Compartir este Artículo
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('articleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticleModal(e) {
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function shareArticle(title, id) {
+            const url = window.location.origin + window.location.pathname + '#articulo-' + id;
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: 'Te comparto esta guía educativa sobre paneles solares en Florida: ' + title,
+                    url: url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('📋 Enlace copiado al portapapeles: ' + url);
+                });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#articulo-')) {
+                const id = parseInt(hash.replace('#articulo-', ''));
+                if (articlesDB[id]) {
+                    setTimeout(() => openArticle(id), 300);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
