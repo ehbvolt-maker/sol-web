@@ -44,7 +44,7 @@ def api_call(endpoint, params=None):
         return False, {"error": {"message": str(e)}}
 
 # 1. Validar Token (/me)
-ok, me = api_call("me", {"fields": "id,name,email"})
+ok, me = api_call("me", {"fields": "id,name"})
 if not ok:
     err = me.get("error", {})
     print(f"\n❌ TOKEN INVÁLIDO O EXPIRADO:")
