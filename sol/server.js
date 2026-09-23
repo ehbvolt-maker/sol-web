@@ -33,8 +33,14 @@ function hashSha256(data) {
     return crypto.createHash('sha256').update(data).digest('hex');
 }
 
-// Función para enviar eventos a la API de Conversiones de Meta (CAPI)
-async function sendMetaConversionsAPI(lead, eventName) {
+function getCookie(req, name) {
+    if (!req || !req.headers || !req.headers.cookie) return null;
+    const match = req.headers.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'));
+    return match ? decodeURIComponent(match[2]) : null;
+}
+
+// Función avanzada para enviar eventos a la API de Conversiones de Meta (CAPI v20.0)
+async function sendMetaConversionsAPI(lead, eventName, context = {}) {
     const pixelId = process.env.META_PIXEL_ID;
     const accessToken = process.env.META_ACCESS_TOKEN;
 
@@ -49,41 +55,69 @@ async function sendMetaConversionsAPI(lead, eventName) {
 
         const userData = {};
         if (normalizedEmail) {
-            userData.em = hashSha256(normalizedEmail);
+            userData.em = [hashSha256(normalizedEmail)];
         }
         if (normalizedPhone) {
-            userData.ph = hashSha256(normalizedPhone);
+            userData.ph = [hashSha256(normalizedPhone)];
         }
         if (lead.name) {
             const parts = lead.name.trim().toLowerCase().split(/\s+/);
-            if (parts[0]) userData.fn = hashSha256(parts[0]);
-            if (parts.length > 1) userData.ln = hashSha256(parts.slice(1).join(' '));
+            if (parts[0]) userData.fn = [hashSha256(parts[0])];
+            if (parts.length > 1) userData.ln = [hashSha256(parts.slice(1).join(' '))];
         }
         if (lead.zipcode) {
-            const cleanZip = lead.zipcode.replace(/\D/g, '').slice(0, 5);
-            if (cleanZip) userData.zp = hashSha256(cleanZip);
+            const cleanZip = String(lead.zipcode).replace(/\D/g, '').slice(0, 5);
+            if (cleanZip) userData.zp = [hashSha256(cleanZip)];
         }
-        userData.country = hashSha256('us');
+        if (lead.address) {
+            userData.ct = [hashSha256(lead.address.trim().toLowerCase())];
+        }
+        userData.st = [hashSha256('fl')]; // Florida Solar
+        userData.country = [hashSha256('us')];
+
+        // Parámetros de coincidencia avanzada directa (sin hashing)
+        const clientIp = context.clientIp || lead.client_ip;
+        if (clientIp && !clientIp.includes('127.0.0.1') && !clientIp.includes('::1')) {
+            userData.client_ip_address = clientIp;
+        }
+        const userAgent = context.userAgent || lead.user_agent;
+        if (userAgent) {
+            userData.client_user_agent = userAgent;
+        }
+        const fbp = context.fbp || lead.fbp;
+        if (fbp) {
+            userData.fbp = fbp;
+        }
+        const fbc = context.fbc || lead.fbc;
+        if (fbc) {
+            userData.fbc = fbc;
+        }
         if (lead.leadgen_id) {
-            userData.lead_id = lead.leadgen_id;
+            userData.lead_id = String(lead.leadgen_id);
         }
 
-        const payload = {
-            data: [
-                {
-                    event_name: eventName,
-                    event_time: Math.floor(Date.now() / 1000),
-                    action_source: "system_generated",
-                    user_data: userData,
-                    custom_data: {
-                        lead_event_source: "crm"
-                    }
-                }
-            ]
+        const eventId = context.eventId || lead.event_id || `sol_${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
+        const actionSource = lead.leadgen_id ? "system_generated" : "website";
+        const eventSourceUrl = context.eventSourceUrl || "https://ehbvolt-maker.github.io/sol-web/";
+
+        const eventData = {
+            event_name: eventName,
+            event_time: Math.floor(Date.now() / 1000),
+            event_id: eventId,
+            action_source: actionSource,
+            event_source_url: eventSourceUrl,
+            user_data: userData,
+            custom_data: {
+                lead_event_source: lead.source || "crm_solar",
+                currency: "USD",
+                value: eventName === 'QualifiedLead' ? 250.00 : (eventName === 'Lead' ? 50.00 : 0.00),
+                content_name: lead.notes || "Florida Solar Opportunity"
+            }
         };
 
+        const payload = { data: [eventData] };
         const url = `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`;
-        console.log(`[Meta CAPI] Enviando evento '${eventName}' para el Lead ID ${lead.id || 'N/A'}...`);
+        console.log(`[Meta CAPI] Enviando evento '${eventName}' (Event ID: ${eventId}) para el Lead ID ${lead.id || 'N/A'}...`);
 
         const response = await fetch(url, {
             method: 'POST',
@@ -93,9 +127,13 @@ async function sendMetaConversionsAPI(lead, eventName) {
 
         const resData = await response.json();
         if (resData.error) {
-            console.error('[Meta CAPI Error]:', resData.error.message);
+            if (resData.error.code === 190) {
+                console.error('[Meta CAPI Token Expired]: El META_ACCESS_TOKEN ha expirado (Error 190). Es necesario renovarlo en .env con un System User Token permanente.');
+            } else {
+                console.error('[Meta CAPI Error]:', resData.error.message);
+            }
         } else {
-            console.log(`[Meta CAPI Success]: Evento '${eventName}' reportado exitosamente.`, JSON.stringify(resData));
+            console.log(`[Meta CAPI Success]: Evento '${eventName}' reportado exitosamente. FB Trace: ${resData.fbtrace_id || 'OK'}, Events Received: ${resData.events_received}`);
         }
     } catch (error) {
         console.error('[Meta CAPI Exception]:', error.message);
@@ -152,8 +190,20 @@ app.use(express.static(path.join(__dirname), {
 }));
 
 // ==========================================
-// RUTAS DEL PORTAL EDUCATIVO DEL BLOG
+// RUTAS DEL PORTAL EDUCATIVO DEL BLOG Y CRM
 // ==========================================
+app.get('/crm', (req, res) => {
+    res.redirect('/dashboard.html');
+});
+
+app.get('/dashboard', (req, res) => {
+    res.redirect('/dashboard.html');
+});
+
+app.get('/app', (req, res) => {
+    res.redirect('/dashboard.html');
+});
+
 app.get('/blog', (req, res) => {
     res.redirect('/blog.html');
 });
@@ -161,6 +211,7 @@ app.get('/blog', (req, res) => {
 app.get('/blog.html', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'blog.html'));
 });
+
 
 
 // Database setup
@@ -315,6 +366,20 @@ app.post('/api/leads', (req, res) => {
 
     const leadNotes = notes || message || '';
     const leadSource = source || 'Formulario Web';
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || req.ip;
+    const userAgent = req.headers['user-agent'] || '';
+    const fbp = req.body.fbp || getCookie(req, '_fbp');
+    const fbc = req.body.fbc || getCookie(req, '_fbc');
+    const eventId = req.body.event_id || `sol_${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
+
+    const capiContext = {
+        eventId,
+        clientIp,
+        userAgent,
+        fbp,
+        fbc,
+        eventSourceUrl: req.headers['referer'] || "https://ehbvolt-maker.github.io/sol-web/"
+    };
 
     const query = `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id, notes, source, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     db.run(query, [name, phone || '', address || '', email, zipcode || '', bill_over_100 || '', credit_score || '', roof_type || '', is_owner || '', leadgen_id || null, leadNotes, leadSource, leadNotes], function(err) {
@@ -327,9 +392,13 @@ app.post('/api/leads', (req, res) => {
                     }
                     db.get(`SELECT id FROM leads WHERE email = ?`, [email], (findErr, row) => {
                         const existingId = row ? row.id : null;
-                        const leadObj = { id: existingId, name, phone, email, leadgen_id };
+                        const leadObj = { 
+                            id: existingId, name, phone, email, address, zipcode, leadgen_id, source: leadSource, notes: leadNotes,
+                            event_id: eventId, fbp, fbc, client_ip: clientIp, user_agent: userAgent
+                        };
+                        sendMetaConversionsAPI(leadObj, 'Lead', capiContext);
                         sendRealTimeFollowUp(leadObj);
-                        res.status(200).json({ success: true, message: 'Lead actualizado y mensajes de seguimiento enviados con éxito.', leadId: existingId });
+                        res.status(200).json({ success: true, message: 'Lead actualizado y seguimiento enviado con éxito.', leadId: existingId, eventId });
                     });
                 });
                 return;
@@ -338,10 +407,25 @@ app.post('/api/leads', (req, res) => {
         }
         
         const leadId = this.lastID;
-        const leadObj = { id: leadId, name, phone, email, leadgen_id };
+        const leadObj = { 
+            id: leadId, 
+            name, 
+            phone, 
+            email, 
+            address, 
+            zipcode, 
+            leadgen_id, 
+            source: leadSource, 
+            notes: leadNotes,
+            event_id: eventId,
+            fbp,
+            fbc,
+            client_ip: clientIp,
+            user_agent: userAgent
+        };
 
-        // Enviar evento Lead a Meta Conversions API
-        sendMetaConversionsAPI(leadObj, 'Lead');
+        // Enviar evento Lead a Meta Conversions API con deduplicación y matching avanzado
+        sendMetaConversionsAPI(leadObj, 'Lead', capiContext);
 
         // Enviar Seguimiento Masivo en Tiempo Real
         sendRealTimeFollowUp(leadObj);
@@ -351,7 +435,7 @@ app.post('/api/leads', (req, res) => {
                             (bill_over_100 === 'yes' || bill_over_100 === 'Sí' || bill_over_100 === 'si') && 
                             (credit_score === 'yes' || credit_score === 'Sí' || credit_score === 'si');
         if (isQualified) {
-            sendMetaConversionsAPI(leadObj, 'QualifiedLead');
+            sendMetaConversionsAPI(leadObj, 'QualifiedLead', capiContext);
         }
 
         // Enviar Correo Electrónico Automático al Administrador (HTML Premium)
@@ -1124,6 +1208,41 @@ Tel: (305) 813-6159`;
             emailResult = await sendFollowUpEmail(lead.email, emailSubject, lead, waLink);
         } catch (e) {
             console.error('[Seguimiento Real-Time Email Error]:', e.message);
+        }
+    }
+
+    // 4.1. Notificación inmediata por correo al Consultor (Eliecer)
+    const adminEmail = process.env.GMAIL_USER || 'ehbequitysolar@gmail.com';
+    if (adminEmail && process.env.GMAIL_APP_PASS) {
+        try {
+            const rawPhone = (lead.phone || '').replace(/[^0-9]/g, '');
+            const chatLink = rawPhone ? `https://wa.me/${rawPhone}` : waLink;
+            await transporter.sendMail({
+                from: `"SolarNext Alert" <${adminEmail}>`,
+                to: adminEmail,
+                subject: `🚨 ¡NUEVO LEAD META ADS!: ${lead.name || 'Cliente'} (${lead.phone || 'Sin tel'})`,
+                html: `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; background: #f7fafc;">
+                        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 24px; border-radius: 8px; border-left: 6px solid #e53e3e; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h2 style="color: #1a202c; margin-top: 0;">⚡ Nuevo Lead Calificado de Meta Ads</h2>
+                            <p style="font-size: 16px; margin: 8px 0;"><strong>Nombre:</strong> ${lead.name || 'N/A'}</p>
+                            <p style="font-size: 16px; margin: 8px 0;"><strong>Teléfono:</strong> <a href="tel:${lead.phone}" style="color: #2b6cb0; font-weight: bold;">${lead.phone || 'N/A'}</a></p>
+                            <p style="font-size: 16px; margin: 8px 0;"><strong>Email:</strong> ${lead.email || 'N/A'}</p>
+                            <p style="font-size: 16px; margin: 8px 0;"><strong>Dirección:</strong> ${lead.address || 'N/A'} ${lead.zipcode ? `(ZIP: ${lead.zipcode})` : ''}</p>
+                            <p style="font-size: 16px; margin: 8px 0;"><strong>¿Es Dueño de Casa?:</strong> <span style="color: ${lead.is_owner === 'yes' ? '#38a169' : '#e53e3e'}; font-weight: bold;">${lead.is_owner === 'yes' ? 'SÍ (Calificado)' : (lead.is_owner || 'N/A')}</span></p>
+                            <p style="font-size: 16px; margin: 8px 0;"><strong>Factura de Luz:</strong> <strong>${lead.bill_over_100 || 'N/A'}</strong></p>
+                            <p style="font-size: 14px; color: #718096; margin: 8px 0;"><strong>Origen:</strong> ${lead.source || 'Meta Ads Form 2026'}</p>
+                            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+                            <a href="${chatLink}" style="display: inline-block; background: #25d366; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
+                                📲 Abrir Chat de WhatsApp con el Cliente
+                            </a>
+                        </div>
+                    </div>
+                `
+            });
+            console.log(`[Admin Alert] Notificación enviada a ${adminEmail}`);
+        } catch (adminErr) {
+            console.error('[Admin Alert Error]:', adminErr.message);
         }
     }
 
@@ -2279,7 +2398,7 @@ Sé directo, educado, empático y mantén las respuestas cortas (1-2 párrafos).
 
 // Función auxiliar para descargar los datos de la API de Meta Graph
 async function fetchAndProcessMetaLead(leadgenId) {
-    const accessToken = process.env.META_ACCESS_TOKEN;
+    const accessToken = process.env.META_PAGE_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN;
     if (!accessToken) {
         console.error('[Meta Webhook Error] Falta configurar META_ACCESS_TOKEN en el archivo .env');
         return;
@@ -2292,6 +2411,8 @@ async function fetchAndProcessMetaLead(leadgenId) {
 
         if (data.error) {
             console.error('[Meta Graph API Error]:', data.error.message);
+            db.run(`CREATE TABLE IF NOT EXISTS pending_leads (leadgen_id TEXT PRIMARY KEY, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, error_msg TEXT, status TEXT DEFAULT 'pending')`);
+            db.run(`INSERT OR IGNORE INTO pending_leads (leadgen_id, error_msg, status) VALUES (?, ?, 'pending_token')`, [leadgenId, data.error.message]);
             return;
         }
 
@@ -2327,7 +2448,6 @@ async function fetchAndProcessMetaLead(leadgenId) {
                 isOwner = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true') || lowerVal.includes('propietario')) ? 'yes' : 'no';
             } else if (fieldName.includes('bill') || fieldName.includes('factura') || fieldName.includes('luz') || fieldName.includes('100') || fieldName.includes('paga')) {
                 const lowerVal = value.toLowerCase();
-                isOwner = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true') || !lowerVal.includes('menos')) ? 'yes' : 'no';
                 billOver100 = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true') || !lowerVal.includes('menos')) ? 'yes' : 'no';
             } else if (fieldName.includes('credit') || fieldName.includes('credito') || fieldName.includes('crédito') || fieldName.includes('score')) {
                 const lowerVal = value.toLowerCase();
@@ -2346,7 +2466,19 @@ async function fetchAndProcessMetaLead(leadgenId) {
             name = `Lead Meta Ads (${phone})`;
         }
 
-        console.log(`[Meta Webhook] Registrando lead: ${name}, Teléfono: ${phone}, Email: ${email}`);
+        // Filtro de Números Internacionales (Protección Anti-Fugas Fuera de EE.UU./Florida)
+        const cleanDigits = phone.replace(/[^0-9]/g, '');
+        const isUSNumber = phone.startsWith('+1') || cleanDigits.length === 10 || (cleanDigits.length === 11 && cleanDigits.startsWith('1'));
+        let leadNotes = "Lead Meta Ads 2026";
+        let isInternationalSpam = false;
+
+        if (!isUSNumber) {
+            console.warn(`[Meta Webhook Alerta] Número internacional detectado (${phone}). Marcando como fuera de zona.`);
+            leadNotes = `Descalificado automático: Número fuera de EE.UU./Florida (${phone})`;
+            isInternationalSpam = true;
+        }
+
+        console.log(`[Meta Webhook] Registrando lead: ${name}, Teléfono: ${phone}, Email: ${email}, Notas: ${leadNotes}`);
 
         // Insertar o actualizar en SQLite
         const existingLead = await new Promise((resolve, reject) => {
@@ -2371,8 +2503,8 @@ async function fetchAndProcessMetaLead(leadgenId) {
 
             await new Promise((resolve, reject) => {
                 db.run(
-                    `UPDATE leads SET name = ?, email = ?, address = ?, zipcode = ?, bill_over_100 = ?, credit_score = ?, roof_type = ?, is_owner = ?, leadgen_id = ? WHERE id = ?`,
-                    [updatedName, updatedEmail || null, updatedAddress, updatedZip, updatedBill, updatedCredit, updatedRoof, updatedOwner, leadgenId, leadId],
+                    `UPDATE leads SET name = ?, email = ?, address = ?, zipcode = ?, bill_over_100 = ?, credit_score = ?, roof_type = ?, is_owner = ?, leadgen_id = ?, notes = ? WHERE id = ?`,
+                    [updatedName, updatedEmail || null, updatedAddress, updatedZip, updatedBill, updatedCredit, updatedRoof, updatedOwner, leadgenId, leadNotes, leadId],
                     (err) => {
                         if (err) reject(err);
                         else resolve();
@@ -2382,8 +2514,8 @@ async function fetchAndProcessMetaLead(leadgenId) {
         } else {
             await new Promise((resolve, reject) => {
                 db.run(
-                    `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [name, phone, address, email || null, zipcode, billOver100, creditScore, roofType, isOwner, leadgenId],
+                    `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id, notes, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Meta Ads Form 2026')`,
+                    [name, phone, address, email || null, zipcode, billOver100, creditScore, roofType, isOwner, leadgenId, leadNotes],
                     function(err) {
                         if (err) reject(err);
                         else {
@@ -2395,10 +2527,16 @@ async function fetchAndProcessMetaLead(leadgenId) {
             });
         }
 
-        // Si califica, enviar emails HTML y disparar Webhook de Make.com
-        const isQualified = isOwner === 'yes' && billOver100 === 'yes' && creditScore === 'yes';
+        // Si es internacional, no gastar presupuesto en SMS ni procesar llamadas
+        if (isInternationalSpam) {
+            console.log(`[Meta Webhook] Lead ID ${leadId} omitido de automatizaciones salientes por ser número internacional.`);
+            return;
+        }
 
-        const leadObj = { id: leadId, name, phone, email, leadgen_id: leadgenId };
+        // Criterio de calificación: Dueño de casa + factura > $100 (score opcional/asumido)
+        const isQualified = isOwner === 'yes' && billOver100 === 'yes' && (creditScore === 'yes' || !creditScore);
+
+        const leadObj = { id: leadId, name, phone, email, leadgen_id: leadgenId, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore };
         // Disparar CAPI Lead (es un nuevo lead que capturamos en el CRM)
         sendMetaConversionsAPI(leadObj, 'Lead');
 
@@ -2411,9 +2549,10 @@ async function fetchAndProcessMetaLead(leadgenId) {
         }
 
         // Enviar Correo Electrónico al Administrador (HTML Alerta)
+        const adminEmail = process.env.GMAIL_USER || 'ehbequitysolar@gmail.com';
         const mailOptions = {
-            from: `Equity Puronics <${process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com'}>`,
-            to: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
+            from: `Equity Solar CRM <${adminEmail}>`,
+            to: adminEmail,
             subject: `☀️ NUEVO LEAD SOLAR META ADS: ${name}`,
             text: `Felicidades! Tienes un nuevo lead registrado por formulario de Meta Ads.\n\nNombre: ${name}\nTeléfono: ${phone}\nEmail: ${email}`,
             html: generateAdminEmailHTML({ name, phone, address, email, zipcode, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore, roof_type: roofType })
@@ -2465,6 +2604,26 @@ async function fetchAndProcessMetaLead(leadgenId) {
         console.error('[Meta Graph Lead error]:', err.message);
     }
 }
+
+// Endpoint para reintentar la sincronización de leads pendientes de Meta
+app.get('/api/leads/sync-pending-meta', async (req, res) => {
+    try {
+        db.all(`SELECT * FROM pending_leads WHERE status = 'pending_token' ORDER BY created_at DESC`, [], async (err, rows) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (!rows || rows.length === 0) return res.json({ message: 'No hay leads pendientes por sincronizar.', count: 0 });
+            
+            let processed = 0;
+            for (const r of rows) {
+                await fetchAndProcessMetaLead(r.leadgen_id);
+                db.run(`UPDATE pending_leads SET status = 'processed' WHERE leadgen_id = ?`, [r.leadgen_id]);
+                processed++;
+            }
+            res.json({ success: true, processedCount: processed });
+        });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
 // ==========================================
 // PLANTILLAS DE CORREO ELECTRONICO HTML (PREMIUM)
@@ -3180,12 +3339,12 @@ app.get('/agua-es-vida', (req, res) => {
 // ==========================================
 
 async function syncMetaLeadsFromAPI() {
-    const accessToken = process.env.META_ACCESS_TOKEN;
-    const adId = process.env.META_AD_ID || '120247850187220678';
+    const accessToken = process.env.META_PAGE_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN;
+    const targetId = process.env.META_LEADGEN_FORM_ID || process.env.META_AD_ID || '1761421208269513';
     if (!accessToken) return;
 
     try {
-        const url = `https://graph.facebook.com/v20.0/${adId}/leads?fields=id,created_time,field_data&access_token=${accessToken}&limit=50`;
+        const url = `https://graph.facebook.com/v20.0/${targetId}/leads?fields=id,created_time,field_data&access_token=${accessToken}&limit=50`;
         const res = await fetch(url);
         const data = await res.json();
         
@@ -3204,6 +3363,8 @@ async function syncMetaLeadsFromAPI() {
             let phone = '';
             let email = '';
             let address = '';
+            let zipcode = '';
+            let roofType = '';
             let isOwner = 'no';
             let billOver100 = 'no';
 
@@ -3221,7 +3382,11 @@ async function syncMetaLeadsFromAPI() {
                     isOwner = (val.toLowerCase().includes('si') || val.toLowerCase().includes('yes') || val.toLowerCase().includes('dueño')) ? 'yes' : 'no';
                 } else if (fname.includes('100') || fname.includes('bill') || fname.includes('factura') || fname.includes('pagas') || fname.includes('cuánto') || fname.includes('luz')) {
                     billOver100 = val.toLowerCase().includes('menos de $100') ? 'no' : 'yes';
-                } else if (fname.includes('zona') || fname.includes('location')) {
+                } else if (fname.includes('zip') || fname.includes('postal')) {
+                    zipcode = val;
+                } else if (fname.includes('roof') || fname.includes('techo')) {
+                    roofType = val;
+                } else if (fname.includes('address') || fname.includes('direc') || fname.includes('street') || fname.includes('zona') || fname.includes('location')) {
                     if (!address) address = val;
                     else address += ` (${val})`;
                 }
@@ -3240,16 +3405,19 @@ async function syncMetaLeadsFromAPI() {
                 console.log(`[Meta Auto-Sync] ¡Nuevo lead detectado en Meta Ads!: ${name} (${phone})`);
                 await new Promise((resolve, reject) => {
                     db.run(
-                        `INSERT INTO leads (name, phone, address, email, bill_over_100, is_owner, leadgen_id, source) VALUES (?, ?, ?, ?, ?, ?, ?, 'Meta Ads Form')`,
-                        [name, phone, address, email || null, billOver100, isOwner, leadgenId],
+                        `INSERT INTO leads (name, phone, address, email, zipcode, roof_type, bill_over_100, is_owner, leadgen_id, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Meta Ads Form 2026')`,
+                        [name, phone, address, email || null, zipcode || null, roofType || null, billOver100, isOwner, leadgenId],
                         async function(err) {
                             if (err) reject(err);
                             else {
                                 const newLeadId = this.lastID;
-                                const leadObj = { id: newLeadId, name, phone, email, leadgen_id: leadgenId };
+                                const leadObj = { id: newLeadId, name, phone, email, zipcode, address, leadgen_id: leadgenId, is_owner: isOwner, bill_over_100: billOver100 };
                                 
                                 try { await sendRealTimeFollowUp(leadObj); } catch(e) { console.error('[FollowUp Error]:', e.message); }
                                 try { sendMetaConversionsAPI(leadObj, 'Lead'); } catch(e) {}
+                                if (isOwner === 'yes' && billOver100 === 'yes') {
+                                    try { sendMetaConversionsAPI(leadObj, 'QualifiedLead'); } catch(e) {}
+                                }
                                 resolve();
                             }
                         }

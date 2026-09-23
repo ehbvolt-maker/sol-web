@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Playbook de Neuroventas para Sistemas Solares - One-Sit Close</title>
+  <style>
+    @page {
+      size: letter portrait;
+      margin: 10mm 11mm 10mm 11mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      background-color: #ffffff;
+      line-height: 1.44;
+      font-size: 10.5px;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      background: #ffffff;
+      height: 258mm;
+      max-height: 258mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: 2mm 0;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* Top and Bottom Bars */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    .brand-tag {
+      font-size: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #92400e;
+      background: #fef3c7;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #fde68a;
+    }
+
+    .doc-meta {
+      font-size: 8px;
+      color: #64748b;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1.5px solid #e2e8f0;
+      padding-top: 5px;
+      font-size: 8px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    /* Main Hero Banner */
+    .main-hero {
+      background: linear-gradient(135deg, #0b1329 0%, #1e293b 60%, #1e3a8a 100%);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 15px 18px;
+      margin-bottom: 11px;
+      box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.15);
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fbbf24;
+      margin-bottom: 4px;
+    }
+
+    .main-hero h1 {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: -0.3px;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .main-hero p {
+      font-size: 10px;
+      color: #cbd5e1;
+      max-width: 95%;
+      line-height: 1.35;
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      border-left: 4px solid #f59e0b;
+      padding-left: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 8px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    /* Card Components */
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 9px 11px;
+    }
+
+    .card.accent {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .card.dark {
+      background: #0b1329;
+      color: #ffffff;
+      border-color: #1e293b;
+    }
+
+    .card-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card.dark .card-title {
+      color: #fcd34d;
+    }
+
+    /* Neuro Triad Cards */
+    .brain-box {
+      border-radius: 6px;
+      padding: 9px 10px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+    .brain-box.reptil { background: #fef2f2; border-color: #fecaca; }
+    .brain-box.limbico { background: #eff6ff; border-color: #bfdbfe; }
+    .brain-box.cortex { background: #f0fdf4; border-color: #bbf7d0; }
+
+    .brain-badge {
+      font-size: 7.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 4px;
+      letter-spacing: 0.3px;
+    }
+    .reptil .brain-badge { background: #dc2626; color: #ffffff; }
+    .limbico .brain-badge { background: #2563eb; color: #ffffff; }
+    .cortex .brain-badge { background: #16a34a; color: #ffffff; }
+
+    /* Script Callout Boxes */
+    .script-box {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-left: 3.5px solid #0f172a;
+      border-radius: 0 5px 5px 0;
+      padding: 7px 10px;
+      font-size: 9.6px;
+      line-height: 1.4;
+      color: #1e293b;
+      margin: 4px 0 6px 0;
+    }
+
+    .script-box strong {
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    /* Badges */
+    .badge {
+      font-size: 7.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+
+    /* Comparison Table */
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0;
+      font-size: 9.5px;
+    }
+
+    .table-custom th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 6px 8px;
+      text-align: left;
+      font-weight: 800;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .table-custom td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+
+    .table-custom tr:nth-child(even) td { background: #f8fafc; }
+    .table-custom td.danger { background: #fff1f2; color: #9f1239; font-weight: 600; }
+    .table-custom td.success { background: #f0fdf4; color: #166534; font-weight: 600; }
+
+    /* Step Process Timeline */
+    .step-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 6.5px;
+      margin: 4px 0;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 7px 10px;
+    }
+
+    .step-num {
+      background: #0f172a;
+      color: #f59e0b;
+      font-weight: 900;
+      font-size: 11px;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-content { flex: 1; }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .step-title {
+      font-size: 10.8px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .step-time {
+      font-size: 8px;
+      font-weight: 800;
+      background: #e2e8f0;
+      color: #334155;
+      padding: 1.5px 6px;
+      border-radius: 8px;
+    }
+
+    /* Lists */
+    ul.check-list {
+      list-style: none;
+      margin: 3px 0;
+    }
+
+    ul.check-list li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 3px;
+      font-size: 9.6px;
+      line-height: 1.36;
+    }
+
+    ul.check-list li::before {
+      content: '✔';
+      position: absolute;
+      left: 0;
+      color: #16a34a;
+      font-weight: 900;
+    }
+
+    .highlight-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3.5px solid #f59e0b;
+      padding: 6px 10px;
+      margin: 6px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 9.2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PÁGINA 1 ================= -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <span class="brand-tag">PLAYBOOK TÁCTICO DE CAMPO</span>
+        <span class="doc-meta">METODOLOGÍA DE NEUROVENTAS SOLAR | ONE-SIT CLOSE</span>
+      </div>
+
+      <div class="main-hero">
+        <span class="hero-badge">SISTEMAS SOLARES RESIDENCIALES Y COMERCIALES</span>
+        <h1>VENTAS SOLARES DE ALTO IMPACTO EN LA PRIMERA CITA</h1>
+        <p>Estrategia estructurada de conversión acelerada: Del contacto inmediato en 5 minutos al cierre legal y firma técnica en la primera visita.</p>
+      </div>
+
+      <div class="section-title">1. Neurobiología del Comprador Solar (Los 3 Cerebros)</div>
+      <p style="font-size: 9.6px; color: #475569; margin-bottom: 7px;">
+        El 85% de la decisión de compra es inconsciente. No vendemos silicio ni tecnología; vendemos <strong>autonomía, control y protección financiera contra un monopolio abusivo</strong>. El cerebro compra en este orden biológico:
+      </p>
+
+      <div class="grid-3">
+        <div class="brain-box reptil">
+          <span class="brain-badge">85% Decisión · Cerebro Reptil</span>
+          <div style="font-weight: 800; font-size: 10.5px; color: #991b1b; margin-bottom: 2px;">Supervivencia y Control</div>
+          <p style="font-size: 9.2px; color: #450a0a;">
+            Detecta amenazas a los recursos del hogar. La compañía eléctrica que sube tarifas arbitrariamente ataca su <strong>control</strong>. Busca seguridad y dominio de su territorio.
+          </p>
+        </div>
+
+        <div class="brain-box limbico">
+          <span class="brain-badge">10% Decisión · Cerebro Límbico</span>
+          <div style="font-weight: 800; font-size: 10.5px; color: #1e40af; margin-bottom: 2px;">Emoción y Estatus</div>
+          <p style="font-size: 9.2px; color: #172554;">
+            Busca la tranquilidad de no angustiarse por el aire acondicionado en verano. Siente orgullo de ser un propietario inteligente y vanguardista que protege a su familia.
+          </p>
+        </div>
+
+        <div class="brain-box cortex">
+          <span class="brain-badge">5% Decisión · Neocórtex</span>
+          <div style="font-weight: 800; font-size: 10.5px; color: #166534; margin-bottom: 2px;">Lógica y Justificación</div>
+          <p style="font-size: 9.2px; color: #052e16;">
+            Solo entra al final para validar numéricamente lo que el reptil ya decidió. Necesita verificar garantías, créditos fiscales (ITC), kWh producidos y retorno financiero.
+          </p>
+        </div>
+      </div>
+
+      <div class="card accent" style="margin-bottom: 10px;">
+        <div class="card-title" style="color: #92400e;">
+          ⚖️ El Principio Rector: Sesgo de Aversión a la Pérdida (Daniel Kahneman)
+        </div>
+        <p style="font-size: 9.2px; color: #78350f;">
+          El dolor psicológico de <strong>perder $1,000</strong> es dos veces más intenso que el placer de <strong>ahorrar $1,000</strong>.<br>
+          • <strong>Error del novato:</strong> <em>«Con paneles te vas a ahorrar $50 al mes.»</em> (El cerebro lo percibe irrelevante).<br>
+          • <strong>Disparo del Closer de Élite:</strong> <em>«Seguir como estás te va a costar más de $60,000 tirados a la basura en los próximos 15 años sin recuperar un solo centavo.»</em>
+        </p>
+      </div>
+
+      <div class="section-title">2. La Regla de Oro del Primer Contacto (Velocidad &lt; 5 Minutos)</div>
+      
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⏱️ El Factor Velocidad de Contacto</div>
+          <ul class="check-list">
+            <li>Llamar en los primeros <strong>5 minutos</strong> multiplica por <strong>21x</strong> la tasa de calificación del lead.</li>
+            <li>A los 30 minutos de espera, la dopamina y la intención de compra caen un <strong>65%</strong>.</li>
+            <li>Si no contesta: Secuencia trinidad inmediata (<strong>Llamada + SMS instantáneo + Correo electrónico</strong>).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔒 La Regla Inquebrantable de Decisores</div>
+          <p style="font-size: 9.2px; color: #334155; margin-bottom: 4px;">
+            <strong>«Si no están ambos propietarios en la mesa, la cita NO existe.»</strong>
+          </p>
+          <p style="font-size: 9.2px; color: #64748b;">
+            El 70% de las ventas solares caídas en primera cita se deben a la objeción: <em>«Tengo que consultarlo con mi cónyuge»</em>. Esto se neutraliza y filtra en el agendamiento, jamás en la mesa de cierre.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Playbook de Ventas Solares con Neuroventas</span>
+      <span>Confidencial | Fuerza de Ventas de Alto Rendimiento</span>
+      <span>Página 1</span>
+    </div>
+  </div>
+
+  <!-- ================= PÁGINA 2 ================= -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <span class="brand-tag">MÓDULO 2 | GUIONES DE PROSPECCIÓN</span>
+        <span class="doc-meta">SECUENCIA DE CONTACTO OMNICANAL INMEDIATO</span>
+      </div>
+
+      <div class="section-title">Protocolo de Contacto Omnicanal Inmediato</div>
+      <p style="font-size: 9.6px; color: #475569; margin-bottom: 8px;">
+        El objetivo de este primer contacto <strong>no es vender el sistema</strong>, sino <strong>vender la cita de auditoría técnica</strong> posicionándote como especialista evaluador y no como vendedor tradicional.
+      </p>
+
+      <div class="card" style="margin-bottom: 9px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+          <span class="card-title">📞 Canal 1: Guión de la Primera Llamada (Interrupción de Patrón)</span>
+          <span class="badge badge-amber">&lt; 90 Segundos</span>
+        </div>
+        <div class="script-box">
+          <strong>Tú:</strong> «¿Hola [Nombre]? Habla [Tu Nombre], especialista del programa de evaluación técnica energética para [Nombre de la Zona/Ciudad]. Veo que registraste tu propiedad para verificar si califica para el programa de tarifa congelada a cero costo de bolsillo. La llamada es breve: solo necesito confirmar si tu factura promedio de luz supera los [Ej. $130/$150] al mes o estás pagando menos.»<br>
+          <strong>Prospecto:</strong> «Sí, pago bastante más que eso, como $220.»<br>
+          <strong>Tú (Validación + Urgencia Reptil):</strong> «Comprendido, [Nombre]. Justamente las casas en tu código postal que pagan más de $150 son las más afectadas por los incrementos anuales obligatorios de la compañía eléctrica. Mi trabajo hoy no es venderte nada, sino correr el software satelital con tu consumo real para ver si tu techo tiene la orientación adecuada para calificar.<br>
+          Tengo al ingeniero disponible hoy a las 6:00 pm o mañana a las 10:00 am para mostrarte el mapa satelital en 20 minutos. ¿Quién más toma las decisiones de la casa contigo, tu pareja o tú únicamente?»
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 9px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+          <span class="card-title">💬 Canal 2: SMS / WhatsApp de Impacto Inmediato</span>
+          <span class="badge badge-green">Alta Tasa de Apertura (&gt;90%)</span>
+        </div>
+        <div class="script-box" style="border-left-color: #10b981;">
+          «Hola [Nombre], te escribe [Tu Nombre] del programa solar para [Ciudad]. Revisando satelitalmente tu zona, detectamos que las casas con tu código postal tuvieron un incremento promedio del 14% en la tarifa eléctrica este último año. Tengo listo el pre-diseño de tu techo para confirmar si tu propiedad califica para el programa de intercambio de tarifa ($0 de inversión de bolsillo). ¿Tienes 2 minutos hoy para revisar si calificas antes de que se cierren las aprobaciones de interconexión de este mes?»
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+          <span class="card-title">✉️ Canal 3: Correo Electrónico (Estructura P.A.S.: Problema - Agitación - Solución)</span>
+          <span class="badge badge-blue">Nutrición &amp; Autoridad</span>
+        </div>
+        <div style="font-size: 9.2px; line-height: 1.36; color: #334155; background: #ffffff; padding: 7px 9px; border-radius: 4px; border: 1px solid #e2e8f0;">
+          <strong>Asunto:</strong> [Nombre], verificación técnica de viabilidad solar para tu propiedad en [Zona]<br><br>
+          Hola [Nombre],<br>
+          Muchos propietarios en tu sector nos comentan exactamente lo mismo antes de agendar: <em>«Estoy cansado de que mi factura eléctrica suba cada temporada sin que aumente mi consumo»</em>.<br><br>
+          La realidad es simple: Seguir con la compañía tradicional equivale a <strong>rentar</strong> tu energía de por vida con aumentos obligatorios. El programa solar permite <strong>comprar</strong> tu energía a una cuota fija y congelada, redirigiendo el dinero que de todos modos ya estás pagando.<br><br>
+          Hemos preparado un reporte preliminar que incluye:<br>
+          1. <strong>Cálculo del Pozo Sin Fondo:</strong> Cuánto proyectas regalarle a la red en 10 y 20 años.<br>
+          2. <strong>Viabilidad Satelital:</strong> Capacidad de generación y radiación de tu cubierta.<br>
+          3. <strong>Ahorro Neto Inmediato:</strong> Reducción neta mensual a costo cero de bolsillo.<br><br>
+          👉 <strong>Agenda tus 20 minutos de revisión aquí:</strong> [Enlace a Calendly / WhatsApp]<br>
+          <em style="font-size: 8px; color: #64748b;">*Nota: Para validar la viabilidad técnica y legal, ambos titulares de la propiedad deben estar presentes.</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Playbook de Ventas Solares con Neuroventas</span>
+      <span>Confidencial | Fuerza de Ventas de Alto Rendimiento</span>
+      <span>Página 2</span>
+    </div>
+  </div>
+
+  <!-- ================= PÁGINA 3 ================= -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <span class="brand-tag">MÓDULO 3 | ESTRUCTURA DE LA CITA</span>
+        <span class="doc-meta">EL PROTOCOLO CRONOMETRADO DE 60 MINUTOS (ONE-SIT CLOSE)</span>
+      </div>
+
+      <div class="section-title">El Protocolo de Cierre en la Primera Cita (Paso a Paso)</div>
+
+      <div class="step-timeline">
+        <!-- PASO 1 -->
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-title">Encuadre de Control &amp; «Pacto de Salida»</span>
+              <span class="step-time">Min 0 a 10</span>
+            </div>
+            <p style="font-size: 9.1px; color: #475569; margin-bottom: 2px;">
+              <strong>Objetivo Neuro:</strong> Desarmar la resistencia. Al darle permiso de decir "NO", el prospecto baja el cortisol y confía.
+            </p>
+            <div class="script-box">
+              «[Nombre], al final de esta revisión pueden pasar solo dos cosas: 1. Que veamos los números y tu techo y resulte que NO te conviene; si es así, te lo digo con franqueza y seguimos siendo amigos. 2. O que veamos que eliminamos tu factura actual, congelamos tu costo mensual a una tarifa menor y los números tienen todo el sentido común. Si es así, hoy mismo reservamos tu turno de instalación. ¿Te parece justo?»
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-title">Diagnóstico de Dolor &amp; El «Villano Común»</span>
+              <span class="step-time">Min 10 a 25</span>
+            </div>
+            <p style="font-size: 9.1px; color: #475569; margin-bottom: 2px;">
+              <strong>Objetivo Neuro:</strong> El enemigo es la compañía eléctrica (monopolio abusivo), no tú. Muestra el costo de la inacción.
+            </p>
+            <p style="font-size: 9.2px; color: #1e293b;">
+              Toma su factura y calcula en papel: <em>«Pagas $200/mes. Con una inflación del 6% anual, en 15 años le habrás entregado <strong>$55,800</strong> a la red. ¿Cuánto te van a devolver de ese dinero? <strong>Cero.</strong> Es un gasto con 0% de retorno patrimonial.»</em>
+            </p>
+          </div>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-title">Reencuadre de Identidad: «Rentar vs. Ser Dueño»</span>
+              <span class="step-time">Min 25 a 35</span>
+            </div>
+            <p style="font-size: 9.1px; color: #475569; margin-bottom: 2px;">
+              <strong>Objetivo Neuro:</strong> Metáfora simple para evitar que el cerebro gaste glucosa analizando tecnicismos.
+            </p>
+            <div class="script-box">
+              «Tú compraste esta casa porque sabías que rentar era tirar dinero a la basura. Hoy con la energía haces lo mismo: <strong>rentas tus electrones</strong> a un casero que te sube la tarifa cuando quiere. Nosotros no te traemos un gasto nuevo: redirigimos lo que ya pagas para que seas <strong>dueño de tu planta solar</strong> a una cuota fija menor.»
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 4 -->
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-title">Presentación de Contraste Extremo (El Cuadro Binario)</span>
+              <span class="step-time">Min 35 a 45</span>
+            </div>
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th style="width: 50%;">Opción A: Red Eléctrica Tradicional (Renta)</th>
+                  <th style="width: 50%; background: #059669;">Opción B: Programa Solar Calificado (Propiedad)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="danger">❌ $220/mes (Incrementos anuales obligatorios)</td>
+                  <td class="success">✔ $145/mes (Tarifa fija congelada)</td>
+                </tr>
+                <tr>
+                  <td class="danger">❌ $88,000+ tirados en 20 años (0% retorno)</td>
+                  <td class="success">✔ Cuota finita; luego energía 100% gratuita</td>
+                </tr>
+                <tr>
+                  <td class="danger">❌ Plusvalía de tu propiedad: $0</td>
+                  <td class="success">✔ Incremento de plusvalía patrimonial directa</td>
+                </tr>
+                <tr>
+                  <td class="danger">❌ Estado mental: Vulnerable e indefenso</td>
+                  <td class="success">✔ Estado mental: Protegido e independiente ($0 de bolsillo)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PASO 5 -->
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-title">Cierre Asumido por Doble Alternativa</span>
+              <span class="step-time">Min 45 a 60</span>
+            </div>
+            <div class="script-box">
+              «[Nombre], como ves aquí, el mes que viene tienes que pagar $220 sin recuperar nada, o pagar $145 quedándote con el sistema y ahorrándote $75 limpios cada mes. Para bloquear los incentivos e ingresar el plano de ingeniería hoy mismo, ¿ponemos la solicitud a tu nombre únicamente o al de ambos?»
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Playbook de Ventas Solares con Neuroventas</span>
+      <span>Confidencial | Fuerza de Ventas de Alto Rendimiento</span>
+      <span>Página 3</span>
+    </div>
+  </div>
+
+  <!-- ================= PÁGINA 4 ================= -->
+  <div class="page">
+    <div>
+      <div class="header-bar">
+        <span class="brand-tag">MÓDULO 4 &amp; 5 | CIERRE &amp; DESARME</span>
+        <span class="doc-meta">MANEJO QUIRÚRGICO DE OBJECIONES Y CHECKLIST DE CAMPO</span>
+      </div>
+
+      <div class="section-title">Desarme Quirúrgico de Objeciones en la Primera Cita</div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="color: #b91c1c;">🛑 «Déjame pensarlo / No firmo hoy»</div>
+          <p style="font-size: 8.5px; color: #64748b; margin-bottom: 2px;"><strong>Diagnóstico:</strong> Miedo a equivocarse.</p>
+          <div class="script-box">
+            «Entiendo perfectamente, [Nombre]. Cuando alguien quiere pensarlo es por dos cosas: o no ve el ahorro económico, o siente que hay un riesgo oculto. ¿Cuál es en tu caso? (...) Si lo piensas, cada mes que pasa es dinero que le regalas a la eléctrica. Además, firmar la solicitud hoy solo inicia la auditoría estructural; tienes el periodo legal de garantía donde si los ingenieros no aprueban el 100% de la producción, se cancela sin costo. ¿Tiene sentido congelar tu tarifa hoy mientras el equipo técnico hace las pruebas?»
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="color: #b91c1c;">🛑 «No quiero otro préstamo / deuda»</div>
+          <p style="font-size: 8.5px; color: #64748b; margin-bottom: 2px;"><strong>Diagnóstico:</strong> Alerta reptil de escasez.</p>
+          <div class="script-box">
+            «[Nombre], la realidad es que <strong>tú ya tienes una deuda de por vida</strong>: se llama factura de luz. La diferencia es que esa deuda nunca termina de pagarse, no te da plusvalía y la tasa te la sube la eléctrica. Tú no estás asumiendo un costo nuevo; estás sustituyendo una deuda eterna por un activo propio que te cuesta menos desde el primer mes. Entre pagar más por rentar o pagar menos por ser dueño, ¿qué protege mejor a tu familia?»
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 8px;">
+        <div class="card">
+          <div class="card-title" style="color: #b91c1c;">🛑 «Tengo que hablarlo con mi pareja»</div>
+          <div class="script-box">
+            «Si tu cónyuge estuviera aquí y viera que van a cambiar un recibo de $220 por uno de $145 sin poner un solo centavo de entrada... ¿qué diría? Llamémosla 3 minutos ahora mismo o pongámosla en altavoz, le muestro el ahorro neto y aclaramos cualquier duda técnica en vivo.»
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="color: #b91c1c;">🛑 «Voy a cotizar con otras compañías»</div>
+          <div class="script-box">
+            «Es prudente comparar. Pero en energía solar el precio del panel es estándar; lo que cambia es la garantía de producción y la velocidad de interconexión con la red. Nosotros ya congelamos tu crédito federal/local hoy. Si encuentras un diseño con la misma ingeniería a menor costo, te igualamos la oferta. Avancemos con el estudio técnico hoy.»
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Checklist de Campo y Mandamientos del Closer</div>
+
+      <div class="grid-2">
+        <div class="card accent">
+          <div class="card-title" style="color: #92400e;">📋 Checklist Pre-Cita Innegociable</div>
+          <ul class="check-list" style="color: #78350f;">
+            <li>Factura eléctrica histórica completa en mano (mínimo 12 meses).</li>
+            <li>100% de los tomadores de decisión presentes en la mesa.</li>
+            <li>Inspección satelital previa realizada (orientación, sombras, techo).</li>
+            <li>Pacto de salida acordado en los primeros 5 minutos.</li>
+            <li>Contrato digital o tablet cargada lista para firma técnica.</li>
+          </ul>
+        </div>
+
+        <div class="card dark">
+          <div class="card-title">⚡ Los 5 Mandamientos Inviolables</div>
+          <ul class="check-list" style="color: #e2e8f0;">
+            <li>1. El riesgo no es comprar solar; el riesgo es seguir con la red.</li>
+            <li>2. Cero tecnicismos inútiles; habla de libertad y patrimonio.</li>
+            <li>3. Habla el 20% del tiempo; haz preguntas el 80% restante.</li>
+            <li>4. La objeción que no previenes es la venta que pierdes.</li>
+            <li>5. Cierra asumiendo la venta: firmar es un trámite de sentido común.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="display: flex; justify-content: space-around; text-align: center; margin-top: 6px;">
+        <div>
+          <div style="font-size: 13px; font-weight: 900; color: #0f172a;">&lt; 5 min</div>
+          <div style="font-size: 7.5px; text-transform: uppercase; color: #64748b;">Primer Contacto</div>
+        </div>
+        <div>
+          <div style="font-size: 13px; font-weight: 900; color: #d97706;">&gt; 65%</div>
+          <div style="font-size: 7.5px; text-transform: uppercase; color: #64748b;">Show-Up (Ambos Decisores)</div>
+        </div>
+        <div>
+          <div style="font-size: 13px; font-weight: 900; color: #059669;">&gt; 40%</div>
+          <div style="font-size: 7.5px; text-transform: uppercase; color: #64748b;">Cierre en 1ª Cita</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Playbook de Ventas Solares con Neuroventas</span>
+      <span>Confidencial | Fuerza de Ventas de Alto Rendimiento</span>
+      <span>Página 4</span>
+    </div>
+  </div>
+
+</body>
+</html>

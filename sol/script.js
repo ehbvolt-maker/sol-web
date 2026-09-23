@@ -400,11 +400,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             submitLead.style.display = 'none';
+            const leadEventId = 'lead_web_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
             quizData.email = email;
             quizData.name = name;
             quizData.phone = phone;
             quizData.address = address;
             quizData.zipcode = zipcode;
+            quizData.event_id = leadEventId;
+            
+            // Rastrear Evento Lead de Meta en el navegador con Event ID para deduplicación con CAPI
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    value: 50.00,
+                    currency: 'USD',
+                    content_name: 'Lead Solar Florida Calificado'
+                }, { eventID: leadEventId });
+            }
             
             try {
                 const response = await fetch('/api/leads', {
@@ -436,15 +447,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     setTimeout(() => {
                         window.open(waLink, '_blank');
                     }, 2000);
-                    
-                    // Rastrear Evento Lead de Meta
-                    if (typeof fbq === 'function') {
-                        fbq('track', 'Lead', {
-                            value: 0.00,
-                            currency: 'USD',
-                            content_name: 'Lead Puronics Calificado'
-                        });
-                    }
                     
                     // Iniciar chat de IA en segundo plano
                     if(!chatWindow.classList.contains('active')){

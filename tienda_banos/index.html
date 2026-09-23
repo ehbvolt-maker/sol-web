@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxBath Studio | Diseñador de Baños, Showroom Local & Talento Constructor</title>
+    <meta name="description" content="Diseña tu propio baño en tiempo real con nuestro estudio 2D interactivo, calcula materiales y presupuestos, visita nuestro Showroom Local y contrata a nuestros maestros constructores certificados.">
+    <meta name="keywords" content="diseño de baños 2d, remodelacion de baños, showroom de baños local, tienda de griferia local, constructores de baños, porcelanato gran formato, ducha walk-in, muebles roble baño">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <i class="fa-solid fa-bath brand-icon"></i>
+                <div class="brand-text">
+                    <span class="brand-name">LuxBath</span>
+                    <span class="brand-sub">Studio & Craftsmanship</span>
+                </div>
+            </a>
+            
+            <nav class="nav-menu" id="navMenu">
+                <a href="#hero" class="nav-link active" data-i18n="nav_home">Inicio</a>
+                <a href="#disenador" class="nav-link highlight-link"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="nav_designer">Diseñador 2D</span></a>
+                <a href="#constructores" class="nav-link"><i class="fa-solid fa-user-gear"></i> <span data-i18n="nav_builders">Constructores</span></a>
+                <a href="#cotizador" class="nav-link"><i class="fa-solid fa-calculator"></i> <span data-i18n="nav_calc">Calculadora</span></a>
+                <a href="#proyectos" class="nav-link" data-i18n="nav_gallery">Galería</a>
+                <a href="#catalogo" class="nav-link" data-i18n="nav_showroom">Showroom Local</a>
+                <a href="#contacto" class="nav-link" data-i18n="nav_contact">Contacto</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Functional Language Switcher Button -->
+                <button class="lang-toggle" id="langToggle" title="Cambiar Idioma / Switch Language">
+                    <i class="fa-solid fa-globe"></i> <span id="langText">ES</span>
+                </button>
+                <a href="#catalogo" class="btn-showroom-header">
+                    <i class="fa-solid fa-store"></i> <span data-i18n="nav_showroom">Showroom Local</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Toast Notification Overlay -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-container">
+            <div class="hero-badge">
+                <i class="fa-solid fa-gem"></i> <span data-i18n="hero_badge">Arquitectura, Tecnología & Arte en Remodelación</span>
+            </div>
+            <h1 class="hero-title" id="heroTitle" data-i18n="hero_title_html">Diseña tu Baño Soñado y <span>Calcula Cada Detalle</span></h1>
+            <p class="hero-subtitle" data-i18n="hero_subtitle">
+                Visualiza acabados en tiempo real con nuestro configurador 2D, calcula materiales exactos para tu obra, visita nuestro Showroom Local y confía el trabajo a nuestros maestros constructores certificados.
+            </p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">+280</span>
+                    <span class="stat-label" data-i18n="stat_designed">Baños Diseñados</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">10 Años</span>
+                    <span class="stat-label" data-i18n="stat_warranty">Garantía en Obra</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label" data-i18n="stat_craftsmen">Artesanos Certificados</span>
+                </div>
+            </div>
+
+            <div class="hero-cta-group">
+                <a href="#disenador" class="btn-primary btn-glow">
+                    <i class="fa-solid fa-compass-drafting"></i> <span data-i18n="btn_design_live">Diseñar Mi Baño en Vivo</span>
+                </a>
+                <a href="#constructores" class="btn-secondary">
+                    <i class="fa-solid fa-user-shield"></i> <span data-i18n="btn_view_builders">Ver Maestros Constructores</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust & Craftsmanship Bar -->
+    <section class="trust-bar">
+        <div class="trust-container">
+            <div class="trust-card">
+                <i class="fa-solid fa-droplet-slash trust-icon"></i>
+                <div>
+                    <h4 data-i18n="trust_waterproof_title">Impermeabilización 100%</h4>
+                    <p data-i18n="trust_waterproof_desc">Sistemas multicapa con garantía hidrostática de 48h.</p>
+                </div>
+            </div>
+            <div class="trust-card">
+                <i class="fa-solid fa-truck-fast trust-icon"></i>
+                <div>
+                    <h4 data-i18n="trust_showroom_title">Showroom & Almacén Local</h4>
+                    <p data-i18n="trust_showroom_desc">Exhibiciones físicas e inventario listo para entrega en 24h.</p>
+                </div>
+            </div>
+            <div class="trust-card">
+                <i class="fa-solid fa-cube trust-icon"></i>
+                <div>
+                    <h4 data-i18n="trust_2d_title">Estudio 2D Interactivo</h4>
+                    <p data-i18n="trust_2d_desc">Prueba azulejos, grifería y muebles antes de iniciar.</p>
+                </div>
+            </div>
+            <div class="trust-card">
+                <i class="fa-solid fa-people-group trust-icon"></i>
+                <div>
+                    <h4 data-i18n="trust_craftsmen_title">Mano de Obra Certificada</h4>
+                    <p data-i18n="trust_craftsmen_desc">Elige directamente al equipo artesano de tu proyecto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 1: INTERACTIVE 2D BATHROOM DESIGNER STUDIO -->
+    <section class="designer-section" id="disenador">
+        <div class="section-header">
+            <span class="section-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="designer_tag">Estudio Virtual Interactivo</span></span>
+            <h2 data-i18n="designer_title">Diseñador de Baños en Tiempo Real</h2>
+            <p data-i18n="designer_subtitle">Selecciona combinaciones de porcelanato, grifería, iluminación y mobiliario. La vista previa se actualizará al instante.</p>
+        </div>
+
+        <!-- Presets quick selector -->
+        <div class="presets-bar">
+            <span class="presets-title"><i class="fa-solid fa-bolt"></i> <span data-i18n="presets_label">Estilos Pre-diseñados:</span></span>
+            <button class="btn-preset active" data-preset="japandi">
+                <i class="fa-solid fa-leaf"></i> <span data-i18n="preset_japandi">Japandi Spa</span>
+            </button>
+            <button class="btn-preset" data-preset="luxury">
+                <i class="fa-solid fa-crown"></i> <span data-i18n="preset_luxury">Luxury Gold & Mármol</span>
+            </button>
+            <button class="btn-preset" data-preset="slate">
+                <i class="fa-solid fa-mountain"></i> <span data-i18n="preset_slate">Pizarra Minimalista</span>
+            </button>
+            <button class="btn-preset" data-preset="zellige">
+                <i class="fa-solid fa-gem"></i> <span data-i18n="preset_zellige">Verde Esmeralda & Latón</span>
+            </button>
+        </div>
+
+        <div class="designer-container">
+            <!-- Left: Interactive Canvas / SVG Viewer -->
+            <div class="visualizer-card">
+                <div class="visualizer-header">
+                    <div class="visualizer-title">
+                        <i class="fa-solid fa-eye"></i> <span data-i18n="visualizer_preview_title">Vista Previa en Vivo 2D</span>
+                    </div>
+                    <div class="visualizer-badge" id="activePresetBadge">
+                        Estilo: Japandi Spa
+                    </div>
+                </div>
+
+                <!-- SVG Interactive Render Canvas -->
+                <div class="canvas-wrapper">
+                    <svg id="bathroomSvg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <!-- Gradients & Patterns -->
+                            <!-- Calacatta Marble Pattern -->
+                            <linearGradient id="gradCalacatta" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fdfdfd" />
+                                <stop offset="40%" stop-color="#f2f2f5" />
+                                <stop offset="70%" stop-color="#e5e7eb" />
+                                <stop offset="100%" stop-color="#fdfdfd" />
+                            </linearGradient>
+
+                            <!-- Dark Slate Pattern -->
+                            <linearGradient id="gradSlate" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#1e293b" />
+                                <stop offset="50%" stop-color="#0f172a" />
+                                <stop offset="100%" stop-color="#1e293b" />
+                            </linearGradient>
+
+                            <!-- Oak Wood Pattern -->
+                            <linearGradient id="gradWood" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#b47b48" />
+                                <stop offset="50%" stop-color="#8c5828" />
+                                <stop offset="100%" stop-color="#a36b37" />
+                            </linearGradient>
+
+                            <!-- Emerald Zellige -->
+                            <linearGradient id="gradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#064e3b" />
+                                <stop offset="50%" stop-color="#047857" />
+                                <stop offset="100%" stop-color="#022c22" />
+                            </linearGradient>
+
+                            <!-- Microcement -->
+                            <linearGradient id="gradMicrocement" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#94a3b8" />
+                                <stop offset="100%" stop-color="#64748b" />
+                            </linearGradient>
+
+                            <!-- Terrazzo -->
+                            <linearGradient id="gradTerrazzo" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f8fafc" />
+                                <stop offset="50%" stop-color="#e2e8f0" />
+                                <stop offset="100%" stop-color="#cbd5e1" />
+                            </linearGradient>
+
+                            <!-- Metallic Gold -->
+                            <linearGradient id="gradGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fde047" />
+                                <stop offset="50%" stop-color="#d97706" />
+                                <stop offset="100%" stop-color="#b45309" />
+                            </linearGradient>
+
+                            <!-- Metallic Black -->
+                            <linearGradient id="gradBlackMatte" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#334155" />
+                                <stop offset="100%" stop-color="#0f172a" />
+                            </linearGradient>
+
+                            <!-- Metallic Chrome -->
+                            <linearGradient id="gradChrome" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ffffff" />
+                                <stop offset="50%" stop-color="#94a3b8" />
+                                <stop offset="100%" stop-color="#cbd5e1" />
+                            </linearGradient>
+
+                            <!-- Metallic Rose Gold -->
+                            <linearGradient id="gradRoseGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f43f5e" />
+                                <stop offset="50%" stop-color="#fb7185" />
+                                <stop offset="100%" stop-color="#be123c" />
+                            </linearGradient>
+
+                            <!-- LED Glow Filter -->
+                            <filter id="ledGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="10" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+
+                        <!-- Background Main Wall -->
+                        <rect id="svgWall" x="0" y="0" width="800" height="440" fill="url(#gradCalacatta)" transition="fill 0.5s ease" />
+                        
+                        <!-- Wall Texture Overlay Lines (Tile Joints) -->
+                        <g id="svgWallJoints" opacity="0.15" stroke="#000" stroke-width="1">
+                            <line x1="200" y1="0" x2="200" y2="440" />
+                            <line x1="400" y1="0" x2="400" y2="440" />
+                            <line x1="600" y1="0" x2="600" y2="440" />
+                            <line x1="0" y1="140" x2="800" y2="140" />
+                            <line x1="0" y1="280" x2="800" y2="280" />
+                        </g>
+
+                        <!-- Floor -->
+                        <polygon id="svgFloor" points="0,440 800,440 800,600 0,600" fill="#8c5828" />
+                        <g id="svgFloorGrid" opacity="0.25" stroke="#000" stroke-width="1.5">
+                            <line x1="0" y1="480" x2="800" y2="480" />
+                            <line x1="0" y1="530" x2="800" y2="530" />
+                            <line x1="0" y1="570" x2="800" y2="570" />
+                            <line x1="150" y1="440" x2="100" y2="600" />
+                            <line x1="300" y1="440" x2="250" y2="600" />
+                            <line x1="450" y1="440" x2="400" y2="600" />
+                            <line x1="600" y1="440" x2="550" y2="600" />
+                        </g>
+
+                        <!-- Recessed LED Wall Niche (Left Wall) -->
+                        <g id="svgNicheGroup">
+                            <rect x="50" y="80" width="110" height="220" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2" />
+                            <rect id="svgNicheLight" x="52" y="82" width="106" height="15" fill="#fde047" opacity="0.8" filter="url(#ledGlow)" />
+                            <!-- Niche Shelf items -->
+                            <rect x="70" y="240" width="25" height="40" rx="3" fill="#ffffff" opacity="0.9" />
+                            <rect x="105" y="230" width="30" height="50" rx="4" fill="#0f172a" opacity="0.8" />
+                            <line x1="50" y1="190" x2="160" y2="190" stroke="#475569" stroke-width="3" />
+                            <rect x="75" y="140" width="20" height="45" rx="3" fill="#e2e8f0" />
+                        </g>
+
+                        <!-- Mirror & Backlight -->
+                        <g id="svgMirrorGroup">
+                            <!-- LED Halo Glow -->
+                            <circle id="svgMirrorGlow" cx="400" cy="160" r="95" fill="#fde047" opacity="0.5" filter="url(#ledGlow)" />
+                            <!-- Mirror Glass -->
+                            <circle id="svgMirrorShape" cx="400" cy="160" r="85" fill="#e2e8f0" stroke="url(#gradGold)" stroke-width="4" />
+                            <!-- Mirror Reflection Highlight -->
+                            <path d="M 340 120 Q 390 100 440 120" stroke="#ffffff" stroke-width="4" fill="none" opacity="0.6" stroke-linecap="round" />
+                        </g>
+
+                        <!-- Vanity Cabinet & Basin -->
+                        <g id="svgVanityGroup">
+                            <!-- Cabinet Body (Floating) -->
+                            <rect id="svgVanityCabinet" x="260" y="320" width="280" height="100" rx="10" fill="url(#gradWood)" stroke="#1e293b" stroke-width="2" />
+                            <!-- Cabinet Drawers gap -->
+                            <line x1="400" y1="330" x2="400" y2="410" stroke="#000" opacity="0.3" stroke-width="2" />
+                            <!-- Drawer Handles -->
+                            <rect id="svgHandle1" x="320" y="365" width="50" height="6" rx="3" fill="url(#gradGold)" />
+                            <rect id="svgHandle2" x="430" y="365" width="50" height="6" rx="3" fill="url(#gradGold)" />
+
+                            <!-- Countertop -->
+                            <rect id="svgCountertop" x="250" y="305" width="300" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+
+                            <!-- Vessel Sink Bowl -->
+                            <ellipse id="svgSink" cx="400" cy="300" rx="75" ry="22" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" />
+                            <ellipse cx="400" cy="302" rx="60" ry="14" fill="#e2e8f0" />
+                            <!-- Drain Hole -->
+                            <ellipse id="svgDrain" cx="400" cy="305" rx="10" ry="4" fill="url(#gradGold)" />
+
+                            <!-- Faucet / Tap -->
+                            <path id="svgFaucet" d="M 400 240 L 400 280 M 400 240 Q 400 220 385 225 L 385 245" stroke="url(#gradGold)" stroke-width="8" stroke-linecap="round" fill="none" />
+                        </g>
+
+                        <!-- Shower Enclosure or Tub (Right side) -->
+                        <g id="svgFixtureGroup">
+                            <!-- Glass Panel Partition -->
+                            <rect id="svgGlassPanel" x="590" y="40" width="10" height="400" fill="#00d2ff" opacity="0.25" stroke="#38bdf8" stroke-width="1" />
+                            
+                            <!-- Rain Shower Head & Pipe -->
+                            <path id="svgShowerPipe" d="M 750 60 L 680 60 L 680 90" stroke="url(#gradGold)" stroke-width="6" fill="none" stroke-linecap="round" />
+                            <!-- Shower Head Disk -->
+                            <ellipse id="svgShowerHead" cx="680" cy="92" rx="30" ry="6" fill="url(#gradGold)" />
+                            <!-- Water Spray Lines -->
+                            <g id="svgWaterSpray" opacity="0.6" stroke="#00d2ff" stroke-width="1.5" stroke-dasharray="4,4">
+                                <line x1="660" y1="98" x2="655" y2="440" />
+                                <line x1="675" y1="98" x2="675" y2="440" />
+                                <line x1="690" y1="98" x2="695" y2="440" />
+                                <line x1="700" y1="98" x2="710" y2="440" />
+                            </g>
+
+                            <!-- Freestanding Tub (Hidden by default unless Tub is chosen) -->
+                            <g id="svgTubGroup" display="none">
+                                <path id="svgTubBody" d="M 580 340 C 580 430, 600 440, 680 440 C 760 440, 780 430, 780 340 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3" />
+                                <ellipse cx="680" cy="340" rx="100" ry="25" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="2" />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Live Summary Bar -->
+                <div class="visualizer-footer">
+                    <div class="visualizer-info">
+                        <span><i class="fa-solid fa-coins text-gold"></i> <span data-i18n="est_price_label">Presupuesto Estimado:</span></span>
+                        <strong id="designerEstPrice">$4,580 USD</strong>
+                    </div>
+                    <div class="visualizer-actions">
+                        <button class="btn-secondary btn-sm" id="btnSyncCalculator">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i> <span data-i18n="btn_sync_calc">Pasar a Calculadora</span>
+                        </button>
+                        <button class="btn-primary btn-sm" id="btnExportSpec">
+                            <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn_export_spec">Ver Ficha Técnica</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Interactive Controls Panel -->
+            <div class="controls-card">
+                <h3><i class="fa-solid fa-sliders"></i> <span data-i18n="controls_title">Personaliza tu Baño</span></h3>
+                <p class="controls-subtitle" data-i18n="controls_subtitle">Modifica cada acabado y observa los cambios en el lienzo 2D.</p>
+
+                <!-- Control 1: Wall Finish -->
+                <div class="control-group">
+                    <label class="control-label"><i class="fa-solid fa-border-all"></i> <span data-i18n="ctrl_wall">1. Pared Principal (Azulejos)</span></label>
+                    <div class="options-grid" id="wallOptions">
+                        <button class="option-btn active" data-type="wall" data-value="calacatta">
+                            <span class="swatch swatch-calacatta"></span>
+                            <span data-i18n="opt_calacatta">Mármol Calacatta</span>
+                        </button>
+                        <button class="option-btn" data-type="wall" data-value="slate">
+                            <span class="swatch swatch-slate"></span>
+                            <span data-i18n="opt_slate">Pizarra Negra</span>
+                        </button>
+                        <button class="option-btn" data-type="wall" data-value="wood">
+                            <span class="swatch swatch-wood"></span>
+                            <span data-i18n="opt_wood">Madera Roble</span>
+                        </button>
+                        <button class="option-btn" data-type="wall" data-value="emerald">
+                            <span class="swatch swatch-emerald"></span>
+                            <span data-i18n="opt_emerald">Verde Zellige</span>
+                        </button>
+                        <button class="option-btn" data-type="wall" data-value="microcement">
+                            <span class="swatch swatch-microcement"></span>
+                            <span data-i18n="opt_microcement">Microcemento</span>
+                        </button>
+                        <button class="option-btn" data-type="wall" data-value="terrazzo">
+                            <span class="swatch swatch-terrazzo"></span>
+                            <span data-i18n="opt_terrazzo">Terrazzo Crema</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Control 2: Floor Finish -->
+                <div class="control-group">
+                    <label class="control-label"><i class="fa-solid fa-grip"></i> <span data-i18n="ctrl_floor">2. Revestimiento de Piso</span></label>
+                    <div class="options-grid" id="floorOptions">
+                        <button class="option-btn active" data-type="floor" data-value="wood">
+                            <span class="swatch swatch-wood"></span>
+                            <span data-i18n="opt_floor_wood">Listón Roble</span>
+                        </button>
+                        <button class="option-btn" data-type="floor" data-value="dark">
+                            <span class="swatch swatch-darkfloor"></span>
+                            <span data-i18n="opt_floor_dark">Hormigón Oscuro</span>
+                        </button>
+                        <button class="option-btn" data-type="floor" data-value="hex">
+                            <span class="swatch swatch-hex"></span>
+                            <span data-i18n="opt_floor_hex">Hexagonal Blanco</span>
+                        </button>
+                        <button class="option-btn" data-type="floor" data-value="travertine">
+                            <span class="swatch swatch-travertine"></span>
+                            <span data-i18n="opt_floor_travertine">Travertino Cálido</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Control 3: Hardware Finish (Faucets/Pipes) -->
+                <div class="control-group">
+                    <label class="control-label"><i class="fa-solid fa-faucet"></i> <span data-i18n="ctrl_hardware">3. Acabado de Grifería & Herrajes</span></label>
+                    <div class="options-grid" id="hardwareOptions">
+                        <button class="option-btn active" data-type="hardware" data-value="gold">
+                            <span class="swatch swatch-gold"></span>
+                            <span data-i18n="opt_hw_gold">Oro Cepillado</span>
+                        </button>
+                        <button class="option-btn" data-type="hardware" data-value="black">
+                            <span class="swatch swatch-black"></span>
+                            <span data-i18n="opt_hw_black">Negro Mate</span>
+                        </button>
+                        <button class="option-btn" data-type="hardware" data-value="chrome">
+                            <span class="swatch swatch-chrome"></span>
+                            <span data-i18n="opt_hw_chrome">Cromo Pulido</span>
+                        </button>
+                        <button class="option-btn" data-type="hardware" data-value="rosegold">
+                            <span class="swatch swatch-rosegold"></span>
+                            <span data-i18n="opt_hw_rosegold">Oro Rosa</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Control 4: Vanity Unit -->
+                <div class="control-group">
+                    <label class="control-label"><i class="fa-solid fa-sink"></i> <span data-i18n="ctrl_vanity">4. Mueble de Baño & Lavamanos</span></label>
+                    <div class="options-grid" id="vanityOptions">
+                        <button class="option-btn active" data-type="vanity" data-value="oak">
+                            <i class="fa-solid fa-box"></i> <span data-i18n="opt_vanity_oak">Roble Flotante</span>
+                        </button>
+                        <button class="option-btn" data-type="vanity" data-value="blackmarble">
+                            <i class="fa-solid fa-square"></i> <span data-i18n="opt_vanity_blackmarble">Mármol Negro</span>
+                        </button>
+                        <button class="option-btn" data-type="vanity" data-value="white">
+                            <i class="fa-solid fa-stop"></i> <span data-i18n="opt_vanity_white">Minimal Blanco</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Control 5: Mirror & LED -->
+                <div class="control-group">
+                    <label class="control-label"><i class="fa-solid fa-lightbulb"></i> <span data-i18n="ctrl_mirror">5. Espejo & Nicho Retroiluminado</span></label>
+                    <div class="options-grid" id="mirrorOptions">
+                        <button class="option-btn active" data-type="mirror" data-value="roundled">
+                            <i class="fa-solid fa-circle text-gold"></i> <span data-i18n="opt_mirror_roundled">Redondo LED 80cm</span>
+                        </button>
+                        <button class="option-btn" data-type="mirror" data-value="goldframe">
+                            <i class="fa-solid fa-square text-gold"></i> <span data-i18n="opt_mirror_goldframe">Marco Dorado</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Control 6: Shower / Tub -->
+                <div class="control-group">
+                    <label class="control-label"><i class="fa-solid fa-shower"></i> <span data-i18n="ctrl_fixture">6. Zona de Ducha / Tina</span></label>
+                    <div class="options-grid" id="fixtureOptions">
+                        <button class="option-btn active" data-type="fixture" data-value="shower">
+                            <i class="fa-solid fa-shower"></i> <span data-i18n="opt_fixture_shower">Ducha Walk-in Lluvia</span>
+                        </button>
+                        <button class="option-btn" data-type="fixture" data-value="tub">
+                            <i class="fa-solid fa-bath"></i> <span data-i18n="opt_fixture_tub">Tina Exenta Ovalada</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: PROMOTING BUILDERS & CRAFTSMEN TALENT -->
+    <section class="builders-section" id="constructores">
+        <div class="section-header">
+            <span class="section-tag"><i class="fa-solid fa-user-check"></i> <span data-i18n="builders_tag">El Alma de la Obra</span></span>
+            <h2 data-i18n="builders_title">Nuestros Maestros Constructores & Artesanos</h2>
+            <p data-i18n="builders_subtitle">La diferencia entre una remodelación común y una obra de arte reside en la maestría técnica de nuestras manos expertas. Conoce al equipo que ejecutará tu proyecto.</p>
+        </div>
+
+        <div class="builders-grid">
+            <!-- Builder 1 -->
+            <div class="builder-card">
+                <div class="builder-badge-top"><i class="fa-solid fa-award"></i> Gran Formato & 45°</div>
+                <div class="builder-header">
+                    <div class="builder-avatar">
+                        <i class="fa-solid fa-user-ninja"></i>
+                    </div>
+                    <div class="builder-meta">
+                        <h3>Carlos Ruiz</h3>
+                        <span class="builder-role">Maestro Azulejero & Gran Formato</span>
+                        <div class="builder-exp"><i class="fa-solid fa-briefcase"></i> 14 Años de Experiencia</div>
+                    </div>
+                </div>
+                <p class="builder-bio">Especialista certificado en corte e instalación de porcelanatos de gran formato (120x240cm). Famoso por sus biselados a 45° sin esquineros de plástico.</p>
+                <div class="builder-skills">
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Cortes a 45° Biselados</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Nivelación Láser Perfecta</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Schluter Systems</span>
+                </div>
+                <button class="btn-primary btn-full btn-select-builder" data-builder="Carlos Ruiz (Azulejero & Cortes 45°)">
+                    <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_select_builder">Elegir a este Maestro para mi Obra</span>
+                </button>
+            </div>
+
+            <!-- Builder 2 -->
+            <div class="builder-card">
+                <div class="builder-badge-top"><i class="fa-solid fa-shield-halved"></i> Impermeabilización 100%</div>
+                <div class="builder-header">
+                    <div class="builder-avatar">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div class="builder-meta">
+                        <h3>Ing. Elena Morales</h3>
+                        <span class="builder-role">Directora de Fontanería & Anti-filtración</span>
+                        <div class="builder-exp"><i class="fa-solid fa-briefcase"></i> 11 Años de Experiencia</div>
+                    </div>
+                </div>
+                <p class="builder-bio">Especialista en redes hidráulicas PEX-A, desagües invisibles de plato continuo y pruebas de estanqueidad hidrostática certificada por 48 horas.</p>
+                <div class="builder-skills">
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Fontanería PEX-A</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Drenajes Ocultos</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Prueba Estanqueidad 48h</span>
+                </div>
+                <button class="btn-primary btn-full btn-select-builder" data-builder="Ing. Elena Morales (Fontanería & Impermeabilización)">
+                    <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_select_builder">Elegir a este Maestro para mi Obra</span>
+                </button>
+            </div>
+
+            <!-- Builder 3 -->
+            <div class="builder-card">
+                <div class="builder-badge-top"><i class="fa-solid fa-hammer"></i> Carpintería de Lujo</div>
+                <div class="builder-header">
+                    <div class="builder-avatar">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div class="builder-meta">
+                        <h3>Mateo Benítez</h3>
+                        <span class="builder-role">Maestro Ebanista & Carpintería Marina</span>
+                        <div class="builder-exp"><i class="fa-solid fa-briefcase"></i> 9 Años de Experiencia</div>
+                    </div>
+                </div>
+                <p class="builder-bio">Artesano de la madera tratada contra humedad. Fabrica vanitys suspendidos a medida, marcos de espejo en roble macizo y organizadores ocultos.</p>
+                <div class="builder-skills">
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Madera Marina Anti-agua</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Encimeras Mármol/Granito</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Cajones Soft-Close</span>
+                </div>
+                <button class="btn-primary btn-full btn-select-builder" data-builder="Mateo Benítez (Ebanista & Muebles a Medida)">
+                    <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_select_builder">Elegir a este Maestro para mi Obra</span>
+                </button>
+            </div>
+
+            <!-- Builder 4 -->
+            <div class="builder-card">
+                <div class="builder-badge-top"><i class="fa-solid fa-bolt"></i> Domótica & Nichos LED</div>
+                <div class="builder-header">
+                    <div class="builder-avatar">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <div class="builder-meta">
+                        <h3>Javier Silva</h3>
+                        <span class="builder-role">Técnico en Iluminación IP67 & Domótica</span>
+                        <div class="builder-exp"><i class="fa-solid fa-briefcase"></i> 12 Años de Experiencia</div>
+                    </div>
+                </div>
+                <p class="builder-bio">Experto en ambientes de luz cálida indirecta, tiras LED de grado marino IP67 empotradas en nichos y espejos inteligentes desempañantes.</p>
+                <div class="builder-skills">
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Iluminación Cove IP67</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> Espejos Táctiles Smart</span>
+                    <span class="skill-tag"><i class="fa-solid fa-check"></i> NichosIluminados</span>
+                </div>
+                <button class="btn-primary btn-full btn-select-builder" data-builder="Javier Silva (Iluminación & Domótica IP67)">
+                    <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_select_builder">Elegir a este Maestro para mi Obra</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Craftsmanship Showcase Banner -->
+        <div class="craft-showcase-box">
+            <div class="craft-info">
+                <h3><i class="fa-solid fa-gem text-gold"></i> Estándar de Ejecución LuxBath</h3>
+                <p>No utilizamos perfiles de plástico ni masilla estándar. Todos nuestros azulejos de borde se cortan a bisel de 45° para lograr esquinas de piedra continuas y elegantes.</p>
+            </div>
+            <div class="craft-pills">
+                <div class="craft-pill"><i class="fa-solid fa-shield-check"></i> 10 Años de Garantía Escrita</div>
+                <div class="craft-pill"><i class="fa-solid fa-clock-rotate-left"></i> Cumplimiento de Plazo por Contrato</div>
+                <div class="craft-pill"><i class="fa-solid fa-broom"></i> Limpieza Diaria e Insonorización</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: ADVANCED MATERIAL CALCULATOR & BUDGET ESTIMATOR -->
+    <section class="calculator-section" id="cotizador">
+        <div class="section-header">
+            <span class="section-tag"><i class="fa-solid fa-calculator"></i> <span data-i18n="calc_tag">Cálculo de Insumos & Costos</span></span>
+            <h2 data-i18n="calc_title">Calculadora de Materiales y Presupuesto Detallado</h2>
+            <p data-i18n="calc_subtitle">Obtén el desglose financiero exacto y la cantidad física de insumos requeridos (cajas de azulejo, pegamento, fragua e impermeabilizante) para tu baño.</p>
+        </div>
+
+        <div class="calc-wrapper">
+            <!-- Left: Inputs Form -->
+            <div class="calc-form">
+                <!-- Step 1: Area -->
+                <div class="calc-group">
+                    <label class="calc-label">
+                        <span data-i18n="calc_step1">1. Superficie de Piso (m²)</span>
+                        <strong id="areaValue">6 m²</strong>
+                    </label>
+                    <input type="range" id="areaSlider" min="2" max="25" value="6" step="1" class="custom-range">
+                    <div class="range-labels">
+                        <span>2 m² (Baño Visita)</span>
+                        <span>8 m² (Baño Familiar)</span>
+                        <span>25 m² (Suite De Lujo)</span>
+                    </div>
+                </div>
+
+                <!-- Step 2: Quality Tier -->
+                <div class="calc-group">
+                    <label class="calc-label"><span data-i18n="calc_step2">2. Nivel de Acabados & Materiales</span></label>
+                    <div class="tier-grid">
+                        <button type="button" class="tier-card active" data-tier="standard">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <h4 data-i18n="tier_standard_title">Estándar</h4>
+                            <p data-i18n="tier_standard_desc">Cerámica de calidad, grifería cromo, accesorios clásicos.</p>
+                        </button>
+                        <button type="button" class="tier-card" data-tier="premium">
+                            <i class="fa-solid fa-star"></i>
+                            <h4 data-i18n="tier_premium_title">Premium</h4>
+                            <p data-i18n="tier_premium_desc">Porcelanato gran formato, grifería negro mate, ducha lluvia.</p>
+                        </button>
+                        <button type="button" class="tier-card" data-tier="luxury">
+                            <i class="fa-solid fa-crown"></i>
+                            <h4 data-i18n="tier_luxury_title">Luxury Gold</h4>
+                            <p data-i18n="tier_luxury_desc">Mármol natural, grifería empotrada dorada, tina exenta, luces LED.</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Add-ons -->
+                <div class="calc-group">
+                    <label class="calc-label"><span data-i18n="calc_step3">3. Opciones de Obra & Adicionales</span></label>
+                    <div class="checkbox-grid">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="chkDucha" checked data-price="450">
+                            <span class="checkmark"></span>
+                            <span data-i18n="chk_ducha">Ducha a Nivel de Piso (Walk-in) (+$450)</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="chkTina" data-price="1200">
+                            <span class="checkmark"></span>
+                            <span data-i18n="chk_tina">Tina Exenta de Resina/Acrílico (+$1,200)</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="chkLED" checked data-price="320">
+                            <span class="checkmark"></span>
+                            <span data-i18n="chk_led">Nichos con Tira LED IP67 (+$320)</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="chkDemolicion" checked data-price="380">
+                            <span class="checkmark"></span>
+                            <span data-i18n="chk_demolicion">Demolición & Retiro de Escombros (+$380)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Results Panel with Tabs -->
+            <div class="calc-result-box">
+                <div class="calc-tabs">
+                    <button class="calc-tab-btn active" id="tabBudgetBtn" onclick="switchCalcTab('budget')">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> <span data-i18n="tab_budget">Presupuesto ($)</span>
+                    </button>
+                    <button class="calc-tab-btn" id="tabMaterialsBtn" onclick="switchCalcTab('materials')">
+                        <i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="tab_materials">Materiales Físicos</span>
+                    </button>
+                </div>
+
+                <!-- Tab 1: Financial Budget -->
+                <div class="tab-content active" id="tabBudget">
+                    <div class="result-breakdown">
+                        <div class="breakdown-row">
+                            <span>Fontanería & Red Hidráulica PEX:</span>
+                            <strong id="costFontaneria">$950 USD</strong>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Porcelanatos & Revestimientos:</span>
+                            <strong id="costRevestimiento">$1,480 USD</strong>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Grifería, Mueble & Artefactos:</span>
+                            <strong id="costArtefactos">$1,100 USD</strong>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Adicionales & Luces LED:</span>
+                            <strong id="costAdicionales">$1,150 USD</strong>
+                        </div>
+                        <div class="breakdown-divider"></div>
+                        <div class="breakdown-total">
+                            <span>Total Estimado Proyecto:</span>
+                            <strong id="costTotal">$4,680 USD</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Physical Material Breakdown -->
+                <div class="tab-content" id="tabMaterials">
+                    <div class="materials-list">
+                        <div class="mat-item">
+                            <i class="fa-solid fa-border-all text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Porcelanato de Pared (+10% merma)</strong>
+                                <p id="matWallText">22 m² (aprox. 16 Cajas de 1.44m²)</p>
+                            </div>
+                        </div>
+                        <div class="mat-item">
+                            <i class="fa-solid fa-grip text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Porcelanato de Piso (+10% merma)</strong>
+                                <p id="matFloorText">6.6 m² (aprox. 6 Cajas de 1.20m²)</p>
+                            </div>
+                        </div>
+                        <div class="mat-item">
+                            <i class="fa-solid fa-fill-drip text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Pegamento Flexible C2TE (25kg)</strong>
+                                <p id="matGlueText">6 Sacos de pegamento flexible</p>
+                            </div>
+                        </div>
+                        <div class="mat-item">
+                            <i class="fa-solid fa-bucket text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Fragua / Boquilla Impermeable</strong>
+                                <p id="matGroutText">3.5 kg de fragua epóxica anti-humedad</p>
+                            </div>
+                        </div>
+                        <div class="mat-item">
+                            <i class="fa-solid fa-droplet-slash text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Membrana de Impermeabilización</strong>
+                                <p id="matProofText">12 m² de membrana elástica anti-filtración</p>
+                            </div>
+                        </div>
+                        <div class="mat-item">
+                            <i class="fa-solid fa-calendar-day text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Plazo Estimado de Ejecución</strong>
+                                <p id="matDaysText">7 a 9 días hábiles</p>
+                            </div>
+                        </div>
+                        <div class="mat-item selected-builder-highlight" id="selectedBuilderBar">
+                            <i class="fa-solid fa-user-check text-gold"></i>
+                            <div class="mat-info">
+                                <strong>Equipo de Constructores Asignado:</strong>
+                                <p id="selectedBuilderName">Equipo Estándar LuxBath</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-actions">
+                    <button class="btn-primary btn-full" id="btnRequestQuote">
+                        <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_request_quote">Enviar Proyecto & Agendar Visita</span>
+                    </button>
+                </div>
+                <p class="calc-note"><i class="fa-solid fa-lock"></i> Incluye asesoría técnica previa y medición láser sin costo en tu domicilio.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: MODERN DESIGNS GALLERY & INSPIRATION -->
+    <section class="projects-section" id="proyectos">
+        <div class="section-header">
+            <span class="section-tag"><i class="fa-solid fa-images"></i> <span data-i18n="gallery_tag">Tendencias & Inspiración</span></span>
+            <h2 data-i18n="gallery_title">Galería de Diseños Modernos</h2>
+            <p data-i18n="gallery_subtitle">Haz clic en <strong>"Cargar en Diseñador"</strong> en cualquiera de nuestras obras para pre-cargar ese estilo en el configurador en vivo.</p>
+        </div>
+
+        <div class="catalog-filters">
+            <button class="filter-btn active" data-projfilter="all">Todos</button>
+            <button class="filter-btn" data-projfilter="japandi">Japandi</button>
+            <button class="filter-btn" data-projfilter="luxury">Luxury Gold</button>
+            <button class="filter-btn" data-projfilter="slate">Minimalista</button>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Card 1 -->
+            <div class="project-card" data-projcat="japandi">
+                <div class="project-img-wrapper">
+                    <img src="assets/hero_bg.jpg" alt="Remodelación Baño Japandi Spa">
+                    <span class="badge-featured">Japandi Spa</span>
+                </div>
+                <div class="project-content">
+                    <span class="project-location"><i class="fa-solid fa-location-dot"></i> Suite Principal</span>
+                    <h3>Concepto Spa en Roble & Mármol</h3>
+                    <p>Ducha walk-in con grifería negro mate, nichos retroiluminados y revestimiento vertical listonado en madera tratada.</p>
+                    <div class="project-tags">
+                        <span>Roble Natural</span>
+                        <span>Negro Mate</span>
+                        <span>Walk-in LED</span>
+                    </div>
+                    <button class="btn-secondary btn-full btn-load-style" data-preset="japandi">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="btn_load_style">Cargar este Estilo en el Diseñador 2D</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="project-card" data-projcat="luxury">
+                <div class="project-img-wrapper">
+                    <img src="assets/shower_set.jpg" alt="Baño Luxury Gold Calacatta">
+                    <span class="badge-featured">Luxury Gold</span>
+                </div>
+                <div class="project-content">
+                    <span class="project-location"><i class="fa-solid fa-location-dot"></i> Penthouse Residence</span>
+                    <h3>Mármol Calacatta & Grifería Dorada</h3>
+                    <p>Porcelanato de gran formato 120x60, grifería de latón cepillado empotrada y espejo circular e iluminación tenue.</p>
+                    <div class="project-tags">
+                        <span>Calacatta</span>
+                        <span>Oro Cepillado</span>
+                        <span>Espejo LED</span>
+                    </div>
+                    <button class="btn-secondary btn-full btn-load-style" data-preset="luxury">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="btn_load_style">Cargar este Estilo en el Diseñador 2D</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="project-card" data-projcat="slate">
+                <div class="project-img-wrapper">
+                    <img src="assets/oak_vanity.jpg" alt="Baño Pizarra Minimalista">
+                    <span class="badge-featured">Minimalista</span>
+                </div>
+                <div class="project-content">
+                    <span class="project-location"><i class="fa-solid fa-location-dot"></i> Casa Loft Moderna</span>
+                    <h3>Pizarra Negra & Terrazzo</h3>
+                    <p>Ambiente sobrio con azulejo pizarra de textura mate, vanity flotante en roble y mampara de vidrio extra-claro.</p>
+                    <div class="project-tags">
+                        <span>Pizarra Negra</span>
+                        <span>Mueble Flotante</span>
+                        <span>Cromo Pulido</span>
+                    </div>
+                    <button class="btn-secondary btn-full btn-load-style" data-preset="slate">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="btn_load_style">Cargar este Estilo en el Diseñador 2D</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: PRODUCT CATALOG / LOCAL SHOWROOM STORE -->
+    <section class="catalog-section" id="catalogo">
+        <div class="section-header">
+            <span class="section-tag"><i class="fa-solid fa-store"></i> <span data-i18n="catalog_tag">Showroom & Tienda Local LuxBath</span></span>
+            <h2 data-i18n="catalog_title">Catálogo Exclusivo en Tienda Local & Showroom</h2>
+            <p data-i18n="catalog_subtitle">Artículos importados con inventario físico en nuestro almacén local. Visita nuestras exhibiciones o solicita despacho express en 24h.</p>
+        </div>
+
+        <div class="catalog-filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="griferia">Grifería</button>
+            <button class="filter-btn" data-filter="muebles">Muebles</button>
+            <button class="filter-btn" data-filter="duchas">Duchas & Paneles</button>
+            <button class="filter-btn" data-filter="accesorios">Accesorios LED</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Product 1 -->
+            <div class="product-card" data-category="duchas">
+                <div class="product-image">
+                    <img src="assets/shower_set.jpg" alt="Sistema de Ducha Termostático Negro Mate">
+                    <span class="badge-featured">Disponible en Showroom</span>
+                    <a href="#contacto" onclick="openProductModal('Sistema Ducha Negro Mate', '$289.00', 'assets/shower_set.jpg')" class="btn-showroom-tag">
+                        <i class="fa-solid fa-store"></i> <span data-i18n="btn_view_showroom">Ver en Tienda Local</span>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <div class="product-rating">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span>(48 opiniones locales)</span>
+                    </div>
+                    <h3 class="product-title">Sistema de Ducha Termostático Lluvia - Negro Mate</h3>
+                    <p class="product-desc">Cuerpo de latón macizo, selector de 3 vías y regadera ultra delgada de 30cm.</p>
+                    <div class="product-price-row">
+                        <div class="price-container">
+                            <span class="price-current">$289.00 USD</span>
+                            <span class="price-old">$349.00</span>
+                        </div>
+                        <button class="btn-cart" onclick="openProductModal('Sistema Ducha Negro Mate', '$289.00', 'assets/shower_set.jpg')">
+                            <i class="fa-solid fa-eye"></i> Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card" data-category="muebles">
+                <div class="product-image">
+                    <img src="assets/oak_vanity.jpg" alt="Mueble Flotante Roble Natural">
+                    <span class="badge-featured">Exhibición en Vivo</span>
+                    <a href="#contacto" onclick="openProductModal('Mueble Roble Flotante', '$540.00', 'assets/oak_vanity.jpg')" class="btn-showroom-tag">
+                        <i class="fa-solid fa-store"></i> <span data-i18n="btn_view_showroom">Ver en Tienda Local</span>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <div class="product-rating">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span>(32 opiniones locales)</span>
+                    </div>
+                    <h3 class="product-title">Mueble Flotante de Roble con Lavamanos Cerámico</h3>
+                    <p class="product-desc">Madera tratada anti-humedad de 90cm, cajones soft-close y lavabo de sobreponer.</p>
+                    <div class="product-price-row">
+                        <div class="price-container">
+                            <span class="price-current">$540.00 USD</span>
+                            <span class="price-old">$620.00</span>
+                        </div>
+                        <button class="btn-cart" onclick="openProductModal('Mueble Roble Flotante', '$540.00', 'assets/oak_vanity.jpg')">
+                            <i class="fa-solid fa-eye"></i> Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card" data-category="griferia">
+                <div class="product-image">
+                    <img src="assets/shower_set.jpg" alt="Grifería Monomando Empotrada Dorada">
+                    <span class="badge-featured">Entrega 24h</span>
+                    <a href="#contacto" onclick="openProductModal('Monomando Lux Gold', '$165.00', 'assets/shower_set.jpg')" class="btn-showroom-tag">
+                        <i class="fa-solid fa-store"></i> <span data-i18n="btn_view_showroom">Ver en Tienda Local</span>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <div class="product-rating">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                        <span>(19 opiniones locales)</span>
+                    </div>
+                    <h3 class="product-title">Monomando Empotrado Lux Gold para Lavabo</h3>
+                    <p class="product-desc">Acabado PVD cepillado resistente a rayones y huellas. Válvula cerámica incluida.</p>
+                    <div class="product-price-row">
+                        <div class="price-container">
+                            <span class="price-current">$165.00 USD</span>
+                        </div>
+                        <button class="btn-cart" onclick="openProductModal('Monomando Lux Gold', '$165.00', 'assets/shower_set.jpg')">
+                            <i class="fa-solid fa-eye"></i> Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card" data-category="accesorios">
+                <div class="product-image">
+                    <img src="assets/hero_bg.jpg" alt="Espejo Inteligente Retroiluminado LED">
+                    <span class="badge-featured">Tecnología LED</span>
+                    <a href="#contacto" onclick="openProductModal('Espejo LED Anti-empañamiento', '$210.00', 'assets/hero_bg.jpg')" class="btn-showroom-tag">
+                        <i class="fa-solid fa-store"></i> <span data-i18n="btn_view_showroom">Ver en Tienda Local</span>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <div class="product-rating">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span>(56 opiniones locales)</span>
+                    </div>
+                    <h3 class="product-title">Espejo Redondo LED Anti-empañamiento 80cm</h3>
+                    <p class="product-desc">Sensor táctil, regulador de intensidad (3000K-6000K) y sistema térmico desempañante.</p>
+                    <div class="product-price-row">
+                        <div class="price-container">
+                            <span class="price-current">$210.00 USD</span>
+                            <span class="price-old">$260.00</span>
+                        </div>
+                        <button class="btn-cart" onclick="openProductModal('Espejo LED Anti-empañamiento', '$210.00', 'assets/hero_bg.jpg')">
+                            <i class="fa-solid fa-eye"></i> Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: CONTACT & REQUEST QUOTE FORM -->
+    <section class="contact-section" id="contacto">
+        <div class="contact-container">
+            <div class="contact-info">
+                <span class="section-tag"><i class="fa-solid fa-headset"></i> <span data-i18n="contact_tag">Atención Personalizada & Showroom</span></span>
+                <h2 data-i18n="contact_title">¿Listo para Hacer Realidad tu Nuevo Baño?</h2>
+                <p data-i18n="contact_subtitle">Visita nuestro showroom local o envíanos tu solicitud. Tus selecciones del Diseñador 2D, la Calculadora de Materiales y tu Maestro Constructor Preferido quedarán registradas automáticamente.</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <strong>Teléfono & WhatsApp Directo</strong>
+                            <p>+1 (800) 555-LUXBATH</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <strong>Correo de Proyectos & Ventas</strong>
+                            <p>contacto@luxbathstudio.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <strong>Showroom & Almacén Local</strong>
+                            <p>Av. de la Arquitectura 1050, Distrito de Diseño</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form" id="contactForm">
+                <h3 data-i18n="form_title">Solicitar Evaluación Técnica & Reservar en Showroom</h3>
+                <div class="form-group">
+                    <label for="txtName" data-i18n="form_name">Nombre Completo</label>
+                    <input type="text" id="txtName" required placeholder="Ej. Carlos Mendoza">
+                </div>
+                <div class="form-group">
+                    <label for="txtEmail" data-i18n="form_email">Correo Electrónico</label>
+                    <input type="email" id="txtEmail" required placeholder="tuemail@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="txtPhone" data-i18n="form_phone">Teléfono / WhatsApp</label>
+                    <input type="tel" id="txtPhone" required placeholder="+1 (555) 000-0000">
+                </div>
+                <div class="form-group">
+                    <label for="txtBuilderSelected" data-i18n="form_builder">Equipo de Constructores Elegido</label>
+                    <input type="text" id="txtBuilderSelected" readonly value="Ninguno seleccionado (Asignación Automática LuxBath)">
+                </div>
+                <div class="form-group">
+                    <label for="txtMessage" data-i18n="form_msg">Resumen del Diseño y Proyecto</label>
+                    <textarea id="txtMessage" rows="4" placeholder="Describe brevemente tus requerimientos, fecha de visita al showroom o dudas..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-full">
+                    <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_submit_form">Enviar Solicitud de Obra</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-bath brand-icon"></i>
+                    <div class="brand-text">
+                        <span class="brand-name">LuxBath</span>
+                        <span class="brand-sub">Studio & Craftsmanship</span>
+                    </div>
+                </div>
+                <p data-i18n="footer_desc">Innovación tecnológica en diseño de baños, acabados exclusivos en tienda local y la maestría artesanal de nuestros mejores constructores.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h4 data-i18n="footer_nav_title">Navegación</h4>
+                <ul>
+                    <li><a href="#disenador" data-i18n="nav_designer">Diseñador 2D en Vivo</a></li>
+                    <li><a href="#constructores" data-i18n="nav_builders">Maestros Constructores</a></li>
+                    <li><a href="#cotizador" data-i18n="nav_calc">Calculadora de Insumos</a></li>
+                    <li><a href="#proyectos" data-i18n="nav_gallery">Galería de Tendencias</a></li>
+                    <li><a href="#catalogo" data-i18n="nav_showroom">Showroom Local LuxBath</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-i18n="footer_guarantee_title">Garantías LuxBath</h4>
+                <ul>
+                    <li><i class="fa-solid fa-check text-gold"></i> <span data-i18n="footer_g1">10 Años en Obra e Impermeabilización</span></li>
+                    <li><i class="fa-solid fa-check text-gold"></i> <span data-i18n="footer_g2">Cortes a 45° de Precisión Milimétrica</span></li>
+                    <li><i class="fa-solid fa-check text-gold"></i> <span data-i18n="footer_g3">Inventario Local & Retiro Inmediato</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n="footer_rights">&copy; 2026 LuxBath Studio & Local Showroom. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Product Quickview Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img src="" id="modalImg" alt="Producto">
+                </div>
+                <div class="modal-details">
+                    <span class="modal-badge"><i class="fa-solid fa-shield-check"></i> Calidad Garantizada LuxBath</span>
+                    <h3 id="modalTitle">Título Producto</h3>
+                    <div class="modal-price" id="modalPrice">$0.00 USD</div>
+                    <p class="modal-desc">Fabricado con aleación de latón libre de plomo, acabados electroplacados anti-corrosión y garantía de 5 años. Disponible en nuestro Showroom Local.</p>
+                    <div class="modal-actions">
+                        <button class="btn-primary" onclick="closeProductModal(); document.getElementById('contacto').scrollIntoView({behavior:'smooth'});">
+                            <i class="fa-solid fa-store"></i> Reservar en Showroom
+                        </button>
+                        <button class="btn-secondary" onclick="closeProductModal()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Spec Sheet Export Modal -->
+    <div class="modal-overlay" id="specModal">
+        <div class="modal-card modal-lg">
+            <button class="modal-close" onclick="closeSpecModal()">&times;</button>
+            <div class="spec-modal-content">
+                <div class="spec-header">
+                    <i class="fa-solid fa-bath brand-icon"></i>
+                    <div>
+                        <h2>Ficha Técnica del Diseño de Baño</h2>
+                        <p>Resumen de configuración creada en el Estudio Virtual 2D</p>
+                    </div>
+                </div>
+                <div class="spec-body" id="specModalBody">
+                    <!-- Dynamic spec sheet output -->
+                </div>
+                <div class="spec-footer">
+                    <button class="btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir Ficha</button>
+                    <button class="btn-primary" onclick="closeSpecModal(); document.getElementById('contacto').scrollIntoView({behavior:'smooth'});"><i class="fa-solid fa-paper-plane"></i> Cotizar este Diseño</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="app.js"></script>
+</body>
+</html>

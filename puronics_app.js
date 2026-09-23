@@ -11,7 +11,7 @@ const uiTranslations = {
         fedShieldTitle: "GARANTÍAS REALES & PROGRAMAS FEDERALES DE ENERGÍA RENOVABLE:",
         zeroDownBadge: "⚡ Empieza a Ahorrar — $0 Inicial (Cero Inicial)",
         zeroDownText: "Este comercial abarca las garantías reales de los programas federales de energía renovable. Opción de renta, compra financiada o en efectivo, con precios de costos respaldados y grabados por el programa ENERGÍA NETA, impidiendo sean modificados por vendedores. <button class=\"btn-check-qualify\" onclick=\"openCalcModal()\">🏡 Mira si tu propiedad califica</button>",
-        fedShieldDesc: "Precios de costo respaldados y grabados por el programa <strong>ENERGÍA NETA</strong>, impidiendo que sean modificados por vendedores. Opciones de <strong>Renta</strong>, <strong>Compra Financiada</strong> o <strong>Efectivo</strong>. <button class="btn-check-qualify" onclick="openCalcModal()">🏡 Mira si tu propiedad califica</button>",
+        fedShieldDesc: "Precios de costo respaldados y grabados por el programa <strong>ENERGÍA NETA</strong>, impidiendo que sean modificados por vendedores. Opciones de <strong>Renta</strong>, <strong>Compra Financiada</strong> o <strong>Efectivo</strong>. <button class=\"btn-check-qualify\" onclick=\"openCalcModal()\">🏡 Mira si tu propiedad califica</button>",
         btnModeSlides: "✨ Diapositivas Interactivas",
         btnModeVideo: "🎬 Comercial de Agua Puronics®",
         actionTitle1: "Fichas Técnicas de Equipos",
@@ -55,7 +55,7 @@ const uiTranslations = {
         fedShieldTitle: "REAL GUARANTEES & FEDERAL RENEWABLE ENERGY PROGRAMS:",
         zeroDownBadge: "⚡ Empieza a Ahorrar — $0 Inicial (Cero Inicial)",
         zeroDownText: "Este comercial abarca las garantías reales de los programas federales de energía renovable. Opción de renta, compra financiada o en efectivo, con precios de costos respaldados y grabados por el programa ENERGÍA NETA, impidiendo sean modificados por vendedores. <button class=\"btn-check-qualify\" onclick=\"openCalcModal()\">🏡 Mira si tu propiedad califica</button>",
-        fedShieldDesc: "Cost prices backed and locked by the <strong>NET ENERGY</strong> program, preventing vendor price modifications. Options for <strong>Rental</strong>, <strong>Financed Purchase</strong>, or <strong>Cash</strong>. <button class="btn-check-qualify" onclick="openCalcModal()">🏡 See if your property qualifies</button>",
+        fedShieldDesc: "Cost prices backed and locked by the <strong>NET ENERGY</strong> program, preventing vendor price modifications. Options for <strong>Rental</strong>, <strong>Financed Purchase</strong>, or <strong>Cash</strong>. <button class=\"btn-check-qualify\" onclick=\"openCalcModal()\">🏡 See if your property qualifies</button>",
         btnModeSlides: "✨ Interactive Slides",
         btnModeVideo: "🎬 Puronics® Water Commercial",
         actionTitle1: "Equipment Datasheets",
@@ -784,6 +784,74 @@ function setupEventListeners() {
         };
     }
 }
+
+// Función Global para Enviar Cotización e Inscribir Lead en CRM
+window.sendWhatsAppQuote = async function(event) {
+    if (event) event.preventDefault();
+
+    const name = document.getElementById('leadName') ? document.getElementById('leadName').value : '';
+    const email = document.getElementById('leadEmail') ? document.getElementById('leadEmail').value : '';
+    const phone = document.getElementById('leadPhone') ? document.getElementById('leadPhone').value : '';
+    const address = document.getElementById('leadAddress') ? document.getElementById('leadAddress').value : '';
+    const familySize = document.getElementById('inputFamilySize') ? document.getElementById('inputFamilySize').value : '4';
+    const bottledSpend = document.getElementById('inputBottledSpend') ? document.getElementById('inputBottledSpend').value : '80';
+
+    if (!name.trim() || !phone.trim()) {
+        alert('Por favor ingresa tu nombre completo y número de teléfono.');
+        return;
+    }
+
+    const eventId = 'puronics_lead_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+    const leadPayload = {
+        name: name,
+        email: email || `puronics_${phone.replace(/\D/g, '')}@solpuronics.com`,
+        phone: phone,
+        address: address,
+        notes: `Cotización Puronics - Familia: ${familySize} personas | Gasto Mensual Agua: $${bottledSpend}`,
+        source: 'Formulario Cotizador Puronics',
+        event_id: eventId
+    };
+
+    if (typeof fbq === 'function') {
+        fbq('track', 'Lead', {
+            content_name: 'Cotización Puronics Water',
+            currency: 'USD',
+            value: 50.00
+        }, { eventID: eventId });
+    }
+
+    try {
+        const res = await fetch('/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadPayload)
+        });
+        const data = await res.json();
+        console.log('✅ Lead enviado exitosamente al CRM:', data);
+
+        if (typeof fbq === 'function') {
+            fbq('track', 'Contact', {
+                content_name: 'WhatsApp Cotización Puronics'
+            }, { eventID: 'contact_' + Date.now() });
+        }
+
+        fetch('/api/whatsapp/simulate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                phone: phone,
+                message: `Nueva cotización Puronics enviada por ${name} (${phone}). Email: ${email}, Dirección: ${address}`
+            })
+        }).catch(e => console.error(e));
+
+    } catch (err) {
+        console.error('Error registrando lead en CRM:', err);
+    }
+
+    const messageText = `¡Hola Departamento de Consultoría! Solicito asesoría para el Sistema Puronics® 🚀\n👤 Nombre: ${name}\n📞 Teléfono: ${phone}\n📧 Email: ${email}\n🏠 Dirección: ${address}`;
+    const waUrl = `https://wa.me/13058136159?text=${encodeURIComponent(messageText)}`;
+    window.open(waUrl, '_blank');
+};
 
 // Global Document Load
 document.addEventListener('DOMContentLoaded', () => {
