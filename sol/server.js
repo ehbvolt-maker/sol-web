@@ -1,3 +1,4 @@
+const { buildSolarSalesSystemPrompt, LEAD_EXTRACTION_SCHEMA, CADENCE_STAGES, getLeadFirstName } = require('./solar_sales_assistants');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -167,6 +168,9 @@ const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/p73ls3ukkbtd6szgpznx7hu96ax1
 // Configuración de Email (Gmail SMTP cargado desde .env)
 const transporter = nodemailer.createTransport({
     service: 'gmail',
+    pool: true,
+    maxConnections: 3,
+    maxMessages: 100,
     auth: {
         user: process.env.GMAIL_USER || 'ehbequitypuronics@gmail.com',
         pass: process.env.GMAIL_APP_PASS || 'TU_PASSWORD_DE_APLICACION_AQUI'
@@ -245,6 +249,18 @@ const db = new sqlite3.Database(path.join(__dirname, 'leads.db'), (err) => {
         db.run(`ALTER TABLE leads ADD COLUMN last_followup_at DATETIME`, () => {});
         db.run(`ALTER TABLE leads ADD COLUMN blog_status TEXT`, () => {});
         db.run(`ALTER TABLE leads ADD COLUMN last_blog_at DATETIME`, () => {});
+        db.run(`ALTER TABLE leads ADD COLUMN followup_stage INTEGER DEFAULT 1`, () => {});
+        db.run(`ALTER TABLE leads ADD COLUMN last_cadence_at DATETIME`, () => {});
+        db.run(`ALTER TABLE leads ADD COLUMN cadence_status TEXT DEFAULT 'active'`, () => {});
+
+        db.run(`CREATE TABLE IF NOT EXISTS sms_chats (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            phone TEXT,
+            sender TEXT,
+            message TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`);
+
         
         db.run(`CREATE TABLE IF NOT EXISTS chat_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -889,6 +905,70 @@ app.get('/api/video-status/:id', async (req, res) => {
 });
 
 // ==========================================
+// AVATAR STUDIO & BLOG TO REELS PIPELINE
+// ==========================================
+app.post('/api/avatar-studio/generate-reel', async (req, res) => {
+    const { articleId, title, script } = req.body;
+    const finalScript = script || "Guía oficial sobre energía solar y programas regulados en Florida a $0 inversión inicial. Llama al 305-813-6159.";
+
+    if (!HEYGEN_API_KEY || HEYGEN_API_KEY === 'TU_HEYGEN_API_KEY_AQUI') {
+        console.warn('[Avatar Studio] HeyGen API Key en modo de prueba/simulación local.');
+        return res.json({
+            success: true,
+            simulated: true,
+            message: 'Pipeline ejecutado en modo demostración. HeyGen y Make.com listos para producción con tus credenciales.',
+            script: finalScript
+        });
+    }
+
+    try {
+        const heygenPayload = {
+            video_inputs: [
+                {
+                    character: {
+                        type: "avatar",
+                        avatar_id: process.env.MY_HEYGEN_AVATAR_ID || "Annie_Casual_Standing_Front_public"
+                    },
+                    voice: {
+                        type: "text",
+                        input_text: finalScript,
+                        voice_id: process.env.MY_ELEVENLABS_VOICE_ID || "8217ce4716a34615a75beec0685dbba8"
+                    }
+                }
+            ],
+            dimension: { width: 1080, height: 1920 } // Formato vertical 9:16 para Instagram Reels & FB
+        };
+
+        const heygenResponse = await fetch('https://api.heygen.com/v2/video/generate', {
+            method: 'POST',
+            headers: {
+                'X-Api-Key': HEYGEN_API_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(heygenPayload)
+        });
+
+        const heygenData = await heygenResponse.json();
+        if (heygenData.error) {
+            throw new Error(`Error de HeyGen: ${JSON.stringify(heygenData.error)}`);
+        }
+
+        const videoId = heygenData.data.video_id;
+        pollHeyGenVideoStatus(videoId, finalScript);
+
+        res.json({
+            success: true,
+            video_id: videoId,
+            script: finalScript,
+            message: 'Video enviado para renderizado en HeyGen. Se publicará automáticamente en Instagram y Facebook.'
+        });
+    } catch (err) {
+        console.error('[Avatar Studio Error]:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// ==========================================
 // WHATSAPP AI SETTER & SIMULATION SYSTEM
 // ==========================================
 
@@ -1117,57 +1197,24 @@ async function sendMessengerMessage(recipientId, text) {
 }
 
 async function sendRealTimeFollowUp(lead) {
-    const firstName = (lead.name && !lead.name.includes("Lead Meta") && !lead.name.includes("Prospecto") && !lead.name.includes("Usuario Messenger")) ? lead.name.trim().split(' ')[0] : 'Estimado/a';
+    const firstName = getLeadFirstName(lead);
     const cleanAddress = lead.address ? lead.address.trim() : 'su propiedad en Florida';
     const cleanPhone = normalizePhone(lead.phone);
     const waLink = "https://wa.me/13058136159?text=" + encodeURIComponent(`Hola, soy ${firstName !== 'Estimado/a' ? firstName : 'un interesado'}, recibí su mensaje sobre el estudio solar`);
-    const messengerLink = "https://m.me/739996699200833";
-
-    // 1. Mensaje de Alta Conversión para WhatsApp
     const blogUrl = "https://ehbvolt-maker.github.io/sol-web/blog.html";
-    const whatsappFollowUp = `☀️ *Programa de Medición Neta (Net Metering) Florida 2026*
-Hola ${firstName}, le saluda el Departamento Técnico de Evaluación Solar.
 
-Hemos recibido correctamente su solicitud para verificar si su vivienda califica para el programa de tarifa eléctrica fija a *$0 costo de inversión inicial*.
+    // 1. Mensajes de Alta Conversión mediante Técnicas de Ventas Solares (Fase 1: Speed to Lead)
+    const initialCadence = CADENCE_STAGES[1].generate(lead, waLink, blogUrl);
+    const whatsappFollowUp = initialCadence.whatsapp;
+    const smsFollowUp = initialCadence.sms;
+    const messengerFollowUp = initialCadence.messenger;
 
-📌 *Estado actual de su caso:*
-Su propiedad (${cleanAddress}) ha sido asignada a uno de nuestros consultores de zona y en este momento estamos cargando las coordenadas de su techo en la herramienta de radiación satelital para calcular su ahorro mensual frente a las tarifas de su proveedor eléctrico.
-
-📚 *Guía Educativa Oficial para Propietarios:*
-Antes de nuestra llamada, preparamos un portal con artículos clave para aclarar sus dudas sobre Net Metering y el mito de "paneles gratis":
-👉 ${blogUrl}
-
-📞 *Siguiente paso:*
-Uno de nuestros especialistas le marcará brevemente desde este número o el (305) 813-6159 para validar dos datos técnicos de la estructura de su techo.
-
-⏱️ *Para coordinar:*
-¿Le resulta más cómodo atender una breve llamada de 3 minutos ahora en la mañana o después de las 5:00 PM?
-
-*(Tip: Si tiene a mano su última factura de electricidad o su app en el celular, puede enviarnos una foto respondiendo a este mensaje para tener su gráfico de ahorro exacto al momento de hablar).*
-
-Atentamente,
-*Equipo de Consultoría Solar Florida*
-📱 Tel: (305) 813-6159`;
-
-    // 2. Mensaje Optimizado para SMS (Conciso, anti-spam, 1-Tap link + Blog)
-    const smsFollowUp = `Hola ${firstName}, recibimos su solicitud para el programa solar de Florida. Evaluamos su techo para congelar su tarifa electrica a $0 inicial. Le llamaremos para confirmar si califica. Prefiere llamada mediodia o tarde? Info: 305-813-6159
-
-📚 Guia educativa: ${blogUrl}
-📲 WhatsApp directo: ${waLink}`;
-
-    // 3. Mensaje para Facebook Messenger
-    const messengerFollowUp = `☀️ Programa de Medición Neta Florida 2026
-Hola ${firstName}, un gusto saludarle. Recibimos su solicitud para evaluar su techo a $0 costo inicial.
-
-Estamos analizando la vista satelital de su propiedad en ${cleanAddress} para calcular cuánto puede congelar de su factura mensual frente a las subidas de su proveedor eléctrico.
-
-📚 Guía educativa para propietarios: ${blogUrl}
-
-Uno de nuestros especialistas le llamará en breve para verificar dos datos técnicos. ¿Prefiere recibir la llamada en la mañana o en la tarde?
-
-Atentamente,
-Departamento de Consultoría Solar Florida
-Tel: (305) 813-6159`;
+    // Registrar inicio de cadencia en la base de datos
+    db.run(
+        `UPDATE leads SET followup_stage = 1, last_cadence_at = CURRENT_TIMESTAMP WHERE id = ?`,
+        [lead.id],
+        () => {}
+    );
 
     console.log(`[Seguimiento Real-Time Omnicanal] Iniciando envíos para ${lead.name} (Tel: ${lead.phone || 'N/A'}, Email: ${lead.email || 'N/A'})...`);
 
@@ -1559,25 +1606,22 @@ async function processWhatsAppAI(phone, userMessage) {
 
     const todayStr = new Date().toISOString().split('T')[0];
 
-    // 3. Prepare AI Prompt
+    // Obtener información contextual del lead para personalización de neuroventas
+    const existingLeadData = await new Promise((resolve) => {
+        db.get(`SELECT * FROM leads WHERE phone = ?`, [phone], (err, row) => resolve(row));
+    });
+
+    const systemPromptContent = buildSolarSalesSystemPrompt({
+        channel: 'whatsapp',
+        leadName: existingLeadData?.name || '',
+        leadAddress: existingLeadData?.address || '',
+        todayStr
+    });
+
     const openaiMessages = [
         {
             role: "system",
-            content: `Eres Sol, una carismática asesora experta en energía puronics de la empresa EQUITY SOLAR en Florida ( Miami, Orlando, etc.).
-Tu objetivo es charlar con el cliente de manera muy amigable y empática para precalificarlo.
-Para precalificar a un cliente, necesitas obtener de forma sutil durante la conversación:
-1. Nombre
-2. Si es dueño de casa (homeowner) - (es requisito que sea dueño de casa para calificar).
-3. Si su factura de electricidad promedio es mayor a $100 (si paga menos, no califica).
-4. Si su puntuación de crédito (credit score) está por encima de 650 (aproximadamente, para calificar al financiamiento a tasa cero inicial).
-5. Dirección, Código Postal (ZIP) y Correo Electrónico.
-
-Reglas importantes de conversación:
-- Habla en español de Florida (un tono latino, profesional pero muy cercano, entusiasta y positivo).
-- NO hagas todas las preguntas juntas. Ve haciendo una o dos preguntas a la vez en el flujo natural de la charla.
-- Sé breve y directa (máximo 2 párrafos cortos por respuesta).
-- Si te preguntan el costo, diles que depende del consumo actual y que justamente para darles el cálculo exacto necesitas saber cuánto pagan de luz y si son dueños de la casa. El objetivo es que paguen menos de lo que pagan hoy, sin inversión inicial.
-- UNA VEZ QUE EL CLIENTE CALIFIQUE (es dueño de casa, paga > $100 de luz, y tiene buen crédito), felicítalo y ofrécele agendar una llamada/consulta de 15 minutos para coordinar su diseño gratuito. Pregúntale qué día y hora le queda mejor. Hoy es ${todayStr} (usa esta fecha para interpretar expresiones relativas como "mañana", "el lunes", etc.).`
+            content: systemPromptContent
         }
     ];
 
@@ -1610,22 +1654,7 @@ Reglas importantes de conversación:
     });
     conversationText += `Asistente Sol: ${botReply}\n`;
 
-    const extractSchema = {
-        type: "object",
-        properties: {
-            name: { type: "string", description: "First and last name of the client. Empty string if not mentioned." },
-            email: { type: "string", description: "Email address. Empty string if not mentioned." },
-            address: { type: "string", description: "Home address. Empty string if not mentioned." },
-            zipcode: { type: "string", description: "Zip code. Empty string if not mentioned." },
-            bill_over_100: { type: "string", enum: ["yes", "no", ""], description: "Is their monthly power bill > $100? yes/no/empty" },
-            credit_score: { type: "string", enum: ["yes", "no", ""], description: "Is their credit score > 650? yes/no/empty" },
-            roof_type: { type: "string", description: "Roof type if mentioned (shingle, tile, metal, concrete, etc.). Empty string if not." },
-            is_owner: { type: "string", enum: ["yes", "no", ""], description: "Are they the homeowner? yes/no/empty" },
-            appointment_date: { type: "string", description: `The date and time the client wants to schedule a call, formatted in ISO 8601 (YYYY-MM-DDTHH:MM:SS) based on the reference date of today (${todayStr}). For example, if they said 'tomorrow at 3pm' on 2026-06-24, this must be '2026-06-25T15:00:00'. Empty string if not requested or scheduled yet.` }
-        },
-        required: ["name", "email", "address", "zipcode", "bill_over_100", "credit_score", "roof_type", "is_owner", "appointment_date"],
-        additionalProperties: false
-    };
+    const extractSchema = LEAD_EXTRACTION_SCHEMA;
 
     let extracted = { name: "", email: "", address: "", zipcode: "", bill_over_100: "", credit_score: "", roof_type: "", is_owner: "", appointment_date: "" };
     try {
@@ -1856,6 +1885,301 @@ app.get('/api/whatsapp/chats', (req, res) => {
 });
 
 // Get chat history for a session
+
+// =========================================================================
+// ASISTENTE BIDIRECCIONAL DE SMS (TWO-WAY SMS AI SETTER) & WEBHOOKS
+// =========================================================================
+async function processSMSAI(phone, userMessage) {
+    const cleanPhone = normalizePhone(phone);
+
+    // 1. Guardar mensaje entrante del usuario en sms_chats
+    await new Promise((resolve, reject) => {
+        db.run(`INSERT INTO sms_chats (phone, sender, message) VALUES (?, 'user', ?)`, [cleanPhone, userMessage], (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+
+    // 2. Obtener historial reciente de SMS (máximo 8 turnos para mantener contexto)
+    const chatHistory = await new Promise((resolve) => {
+        db.all(`SELECT * FROM sms_chats WHERE phone = ? ORDER BY created_at DESC LIMIT 8`, [cleanPhone], (err, rows) => {
+            resolve((rows || []).reverse());
+        });
+    });
+
+    // 3. Obtener lead en CRM
+    const existingLead = await new Promise((resolve) => {
+        db.get(`SELECT * FROM leads WHERE phone = ?`, [cleanPhone], (err, row) => resolve(row));
+    });
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    const systemPrompt = buildSolarSalesSystemPrompt({
+        channel: 'sms',
+        leadName: existingLead?.name || '',
+        leadAddress: existingLead?.address || '',
+        todayStr
+    });
+
+    const openaiMessages = [
+        { role: 'system', content: systemPrompt }
+    ];
+
+    chatHistory.forEach(m => {
+        openaiMessages.push({
+            role: m.sender === 'user' ? 'user' : 'assistant',
+            content: m.message
+        });
+    });
+
+    // 4. Generar respuesta de alta conversión para SMS (< 160 caracteres)
+    let botReply = '';
+    try {
+        const completion = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: openaiMessages,
+            max_tokens: 100,
+            temperature: 0.5
+        });
+        botReply = completion.choices[0].message.content.trim();
+    } catch (e) {
+        console.error('[SMS AI Completion Error]:', e.message);
+        botReply = 'Hola! Le marcamos en 3 min para validar el estudio satelital de su techo. Prefiere llamada ahora o despues de las 5pm? Tel: 305-813-6159';
+    }
+
+    // 5. Guardar respuesta del bot en sms_chats
+    await new Promise((resolve, reject) => {
+        db.run(`INSERT INTO sms_chats (phone, sender, message) VALUES (?, 'bot', ?)`, [cleanPhone, botReply], (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+
+    // 6. Enviar SMS al teléfono del cliente
+    await sendSMSMessage(cleanPhone, botReply);
+
+    // 7. Extraer citas o datos si el cliente los confirmó por SMS
+    let conversationText = "";
+    chatHistory.forEach(msg => {
+        conversationText += `${msg.sender === 'user' ? 'Cliente' : 'Asistente SMS'}: ${msg.message}\n`;
+    });
+    conversationText += `Asistente SMS: ${botReply}\n`;
+
+    try {
+        const extractionCompletion = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "system",
+                    content: `Analiza el chat de SMS y extrae datos del cliente. Si coordinan cita, calcula la fecha real con base en Hoy = ${todayStr}.`
+                },
+                { role: "user", content: conversationText }
+            ],
+            response_format: {
+                type: "json_schema",
+                json_schema: {
+                    name: "solar_sms_extraction",
+                    schema: LEAD_EXTRACTION_SCHEMA,
+                    strict: true
+                }
+            }
+        });
+        const extracted = JSON.parse(extractionCompletion.choices[0].message.content);
+        if (extracted.appointment_date && extracted.appointment_date.trim() !== '' && existingLead) {
+            db.run(
+                `INSERT INTO appointments (lead_id, appointment_time, notes) VALUES (?, ?, 'Cita agendada automáticamente por el AI Setter en SMS')`,
+                [existingLead.id, extracted.appointment_date]
+            );
+            console.log(`[SMS Setter] Cita agendada para Lead ${existingLead.id} el ${extracted.appointment_date}`);
+            sendMetaConversionsAPI(existingLead, 'Schedule');
+        }
+    } catch (err) {
+        console.error('[SMS Setter Extraction Error]:', err.message);
+    }
+
+    return { reply: botReply };
+}
+
+// ENDPOINT: Webhook para SMS entrantes (Twilio y servicios SMS)
+app.post('/api/webhook/sms', async (req, res) => {
+    try {
+        const fromPhone = req.body.From || req.body.phone || req.body.from;
+        const messageBody = req.body.Body || req.body.message || req.body.text;
+
+        if (!fromPhone || !messageBody) {
+            return res.status(400).send('From and Body are required.');
+        }
+
+        console.log(`[SMS Webhook Incoming] De ${fromPhone}: "${messageBody}"`);
+        const result = await processSMSAI(fromPhone, messageBody);
+
+        // Si es solicitud de Twilio, responder con TwiML
+        if (req.headers['x-twilio-signature'] || req.body.AccountSid) {
+            res.type('text/xml');
+            return res.send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>${result.reply}</Message></Response>`);
+        }
+
+        res.json({ success: true, reply: result.reply });
+    } catch (e) {
+        console.error('[SMS Webhook Error]:', e.message);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// ENDPOINT: Simulación interactiva de SMS AI
+app.post('/api/sms/simulate', async (req, res) => {
+    try {
+        const { phone, message } = req.body;
+        if (!phone || !message) {
+            return res.status(400).json({ error: 'phone y message son requeridos.' });
+        }
+        const result = await processSMSAI(phone, message);
+        res.json({ success: true, result });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// ENDPOINT: Listar teléfonos con historial SMS
+app.get('/api/sms/chats', (req, res) => {
+    db.all(`SELECT DISTINCT phone FROM sms_chats ORDER BY created_at DESC`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true, phones: (rows || []).map(r => r.phone) });
+    });
+});
+
+// ENDPOINT: Ver historial SMS de un teléfono específico
+app.get('/api/sms/chats/:phone', (req, res) => {
+    db.all(`SELECT * FROM sms_chats WHERE phone = ? ORDER BY created_at ASC`, [req.params.phone], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true, chats: rows || [] });
+    });
+});
+
+// =========================================================================
+// MOTOR DE CADENCIA MULTICANAL DE SEGUIMIENTO (5 FASES ANTI-GHOSTING)
+// =========================================================================
+async function executeLeadCadenceStep(lead, targetStage) {
+    if (!CADENCE_STAGES[targetStage]) return { skipped: true, reason: 'Etapa no válida' };
+
+    const firstName = getLeadFirstName(lead);
+    const cleanPhone = normalizePhone(lead.phone);
+    const waLink = "https://wa.me/13058136159?text=" + encodeURIComponent(`Hola, soy ${firstName !== 'Estimado/a' ? firstName : 'un interesado'}, recibí el mensaje sobre el estudio solar`);
+    const blogUrl = "https://ehbvolt-maker.github.io/sol-web/blog.html";
+
+    const messages = CADENCE_STAGES[targetStage].generate(lead, waLink, blogUrl);
+    console.log(`[Cadence Engine] Ejecutando Fase ${targetStage} (${CADENCE_STAGES[targetStage].name}) para Lead ID ${lead.id} (${lead.name || 'Sin nombre'})...`);
+
+    // 1. WhatsApp
+    if (cleanPhone) {
+        try {
+            await sendWhatsAppMessage(cleanPhone, messages.whatsapp);
+        } catch (e) {
+            console.error(`[Cadence WhatsApp Stage ${targetStage} Error]:`, e.message);
+        }
+    }
+
+    // 2. SMS
+    if (cleanPhone) {
+        try {
+            await sendSMSMessage(cleanPhone, messages.sms);
+        } catch (e) {
+            console.error(`[Cadence SMS Stage ${targetStage} Error]:`, e.message);
+        }
+    }
+
+    // 3. Messenger
+    if (lead.messenger_id) {
+        try {
+            await sendMessengerMessage(lead.messenger_id, messages.messenger);
+        } catch (e) {
+            console.error(`[Cadence Messenger Stage ${targetStage} Error]:`, e.message);
+        }
+    }
+
+    // Actualizar etapa en DB
+    await new Promise((resolve) => {
+        db.run(
+            `UPDATE leads SET followup_stage = ?, last_cadence_at = CURRENT_TIMESTAMP WHERE id = ?`,
+            [targetStage, lead.id],
+            () => resolve()
+        );
+    });
+
+    return { success: true, stage: targetStage, stageTitle: CADENCE_STAGES[targetStage].title };
+}
+
+// ENDPOINT: Ejecución de Cadencia Automática de Prospectos
+app.post('/api/leads/run-cadence', async (req, res) => {
+    try {
+        db.all(
+            `SELECT * FROM leads WHERE (cadence_status IS NULL OR cadence_status = 'active') AND phone IS NOT NULL AND phone != '' ORDER BY id DESC LIMIT 100`,
+            [],
+            async (err, rows) => {
+                if (err) return res.status(500).json({ error: err.message });
+                if (!rows || rows.length === 0) return res.json({ success: true, message: 'No hay leads activos para cadencia.', processed: [] });
+
+                const processed = [];
+                const now = new Date();
+
+                for (const lead of rows) {
+                    const currentStage = lead.followup_stage || 1;
+                    const nextStage = currentStage + 1;
+                    if (!CADENCE_STAGES[nextStage]) continue; // Ya completó todas las fases
+
+                    const lastCadenceDate = lead.last_cadence_at ? new Date(lead.last_cadence_at) : (lead.created_at ? new Date(lead.created_at) : now);
+                    const hoursElapsed = (now - lastCadenceDate) / (1000 * 60 * 60);
+                    const requiredHours = CADENCE_STAGES[nextStage].minHoursAfterPrevious || 20;
+
+                    if (req.body.force || hoursElapsed >= requiredHours) {
+                        const stepResult = await executeLeadCadenceStep(lead, nextStage);
+                        processed.push({ leadId: lead.id, name: lead.name, phone: lead.phone, previousStage: currentStage, newStage: nextStage, stepResult });
+                        await new Promise(r => setTimeout(r, 400));
+                    }
+                }
+
+                res.json({ success: true, count: processed.length, processed });
+            }
+        );
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Background runner de Cadencia cada 30 minutos (solo en horario comercial 9 AM - 7 PM EST)
+setInterval(async () => {
+    try {
+        const now = new Date();
+        // Convert to EST (UTC - 4 in summer/EDT, UTC - 5 in winter)
+        const estHour = (now.getUTCHours() - 4 + 24) % 24;
+        if (estHour >= 9 && estHour <= 19) {
+            console.log('[Cadence Cron] Verificando prospectos pendientes de avance de fase...');
+            db.all(
+                `SELECT * FROM leads WHERE (cadence_status IS NULL OR cadence_status = 'active') AND phone IS NOT NULL AND phone != '' ORDER BY id DESC LIMIT 20`,
+                [],
+                async (err, rows) => {
+                    if (err || !rows) return;
+                    for (const lead of rows) {
+                        const currentStage = lead.followup_stage || 1;
+                        const nextStage = currentStage + 1;
+                        if (!CADENCE_STAGES[nextStage]) continue;
+
+                        const lastCadenceDate = lead.last_cadence_at ? new Date(lead.last_cadence_at) : (lead.created_at ? new Date(lead.created_at) : now);
+                        const hoursElapsed = (now - lastCadenceDate) / (1000 * 60 * 60);
+                        const requiredHours = CADENCE_STAGES[nextStage].minHoursAfterPrevious || 20;
+
+                        if (hoursElapsed >= requiredHours) {
+                            await executeLeadCadenceStep(lead, nextStage);
+                            await new Promise(r => setTimeout(r, 1000));
+                        }
+                    }
+                }
+            );
+        }
+    } catch (cronErr) {
+        console.error('[Cadence Cron Error]:', cronErr.message);
+    }
+}, 30 * 60 * 1000);
+
 app.get('/api/whatsapp/chats/:phone', (req, res) => {
     db.all(`SELECT * FROM whatsapp_chats WHERE phone = ? ORDER BY created_at ASC`, [req.params.phone], (err, rows) => {
         if (err) {
@@ -2365,11 +2689,12 @@ async function processMessengerAI(psid, userMessage, lead) {
         const messages = [
             {
                 role: "system",
-                content: `Eres el asistente oficial del DEPARTAMENTO DE CONSULTORIA del programa regional de energía solar (NET METERING) en Florida.
-Tu objetivo es continuar la conversación amablemente, responder dudas sobre el programa Net Metering, y coordinar una breve llamada informativa de 5 minutos con el DEPARTAMENTO DE CONSULTORIA para verificar su calificación (confirmando su número de teléfono o mejor horario).
-Información de contacto: DEPARTAMENTO DE CONSULTORIA - Tel: 305-813-6159 / 305-784-6363.
-REGLA CRÍTICA REGULATORIA: El incentivo fiscal federal del 30% concluyó. NUNCA menciones, ofrezcas ni prometas un 30% de crédito fiscal federal. Enfócate exclusivamente en el Programa de Medición Neta (Net Metering) de Florida, con $0 de inversión inicial y ahorro de hasta 50% en la factura eléctrica.
-Sé directo, educado, empático y mantén las respuestas cortas (1-2 párrafos).`
+                content: buildSolarSalesSystemPrompt({
+                    channel: 'messenger',
+                    leadName: lead?.name || '',
+                    leadAddress: lead?.address || '',
+                    todayStr: new Date().toISOString().split('T')[0]
+                })
             }
         ];
 
@@ -2428,10 +2753,12 @@ async function fetchAndProcessMetaLead(leadgenId) {
         let billOver100 = '';
         let creditScore = '';
         let roofType = '';
+        let customDetails = [];
 
         fieldData.forEach(field => {
             const fieldName = (field.name || '').toLowerCase();
             const value = field.values && field.values[0] ? field.values[0].trim() : '';
+            if (!value) return;
 
             if (fieldName.includes('name') || fieldName.includes('nombre')) {
                 name = value;
@@ -2441,19 +2768,25 @@ async function fetchAndProcessMetaLead(leadgenId) {
                 email = value;
             } else if (fieldName.includes('zip') || fieldName.includes('postal')) {
                 zipcode = value;
-            } else if (fieldName.includes('address') || fieldName.includes('direc')) {
+            } else if (fieldName.includes('address') || fieldName.includes('direc') || fieldName.includes('street')) {
                 address = value;
-            } else if (fieldName.includes('owner') || fieldName.includes('dueñ') || fieldName.includes('duen') || fieldName.includes('propietari')) {
+            } else if (fieldName.includes('owner') || fieldName.includes('dueñ') || fieldName.includes('duen') || fieldName.includes('propietari') || fieldName.includes('vivienda')) {
                 const lowerVal = value.toLowerCase();
                 isOwner = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true') || lowerVal.includes('propietario')) ? 'yes' : 'no';
-            } else if (fieldName.includes('bill') || fieldName.includes('factura') || fieldName.includes('luz') || fieldName.includes('100') || fieldName.includes('paga')) {
+                customDetails.push(`Propietario: ${value}`);
+            } else if (fieldName.includes('bill') || fieldName.includes('factura') || fieldName.includes('luz') || fieldName.includes('100') || fieldName.includes('paga') || fieldName.includes('cuánto')) {
                 const lowerVal = value.toLowerCase();
                 billOver100 = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true') || !lowerVal.includes('menos')) ? 'yes' : 'no';
+                customDetails.push(`Factura Luz: ${value}`);
             } else if (fieldName.includes('credit') || fieldName.includes('credito') || fieldName.includes('crédito') || fieldName.includes('score')) {
                 const lowerVal = value.toLowerCase();
                 creditScore = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true')) ? 'yes' : 'no';
+                customDetails.push(`Crédito: ${value}`);
             } else if (fieldName.includes('roof') || fieldName.includes('techo')) {
                 roofType = value;
+                customDetails.push(`Techo: ${value}`);
+            } else if (!fieldName.includes('inbox_url')) {
+                customDetails.push(`${field.name}: ${value}`);
             }
         });
 
@@ -2469,12 +2802,12 @@ async function fetchAndProcessMetaLead(leadgenId) {
         // Filtro de Números Internacionales (Protección Anti-Fugas Fuera de EE.UU./Florida)
         const cleanDigits = phone.replace(/[^0-9]/g, '');
         const isUSNumber = phone.startsWith('+1') || cleanDigits.length === 10 || (cleanDigits.length === 11 && cleanDigits.startsWith('1'));
-        let leadNotes = "Lead Meta Ads 2026";
+        let leadNotes = customDetails.length > 0 ? customDetails.join(' | ') : "Lead Meta Ads 2026";
         let isInternationalSpam = false;
 
         if (!isUSNumber) {
             console.warn(`[Meta Webhook Alerta] Número internacional detectado (${phone}). Marcando como fuera de zona.`);
-            leadNotes = `Descalificado automático: Número fuera de EE.UU./Florida (${phone})`;
+            leadNotes = `Descalificado automático: Número fuera de EE.UU./Florida (${phone}) | ` + leadNotes;
             isInternationalSpam = true;
         }
 
@@ -2555,7 +2888,7 @@ async function fetchAndProcessMetaLead(leadgenId) {
             to: adminEmail,
             subject: `☀️ NUEVO LEAD SOLAR META ADS: ${name}`,
             text: `Felicidades! Tienes un nuevo lead registrado por formulario de Meta Ads.\n\nNombre: ${name}\nTeléfono: ${phone}\nEmail: ${email}`,
-            html: generateAdminEmailHTML({ name, phone, address, email, zipcode, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore, roof_type: roofType })
+            html: generateAdminEmailHTML({ name, phone, address, email, zipcode, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore, roof_type: roofType, notes: leadNotes })
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) console.error('[Meta Webhook] Error al enviar correo alerta admin:', error.message);
@@ -2691,6 +3024,12 @@ function generateAdminEmailHTML(lead) {
                 </tr>
             </table>
         </div>
+
+        ${lead.notes ? `
+        <div style="background-color: rgba(255,183,3,0.08); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,183,3,0.35); margin-top: 20px;">
+            <h3 style="color: #ffb703; margin-top: 0; margin-bottom: 8px; font-size: 15px;">📋 Solicitud / Opciones Seleccionadas:</h3>
+            <p style="color: #ffffff; margin: 0; font-size: 14px; line-height: 1.5; font-weight: 500;">${lead.notes}</p>
+        </div>` : ''}
 
         <div style="text-align: center; margin-top: 25px; font-size: 12px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
             Este prospecto ha sido enviado de forma automatizada al CRM de DEPARTAMENTO ENERGIA SOLAR NETA (NET METERING) FLORIDA.
@@ -3340,93 +3679,52 @@ app.get('/agua-es-vida', (req, res) => {
 
 async function syncMetaLeadsFromAPI() {
     const accessToken = process.env.META_PAGE_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN;
-    const targetId = process.env.META_LEADGEN_FORM_ID || process.env.META_AD_ID || '1761421208269513';
     if (!accessToken) return;
 
-    try {
-        const url = `https://graph.facebook.com/v20.0/${targetId}/leads?fields=id,created_time,field_data&access_token=${accessToken}&limit=50`;
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        if (data.error) {
-            console.error(`[Meta Auto-Sync Error]: ${data.error.message} (Code: ${data.error.code})`);
-            return;
-        }
+    // Lista de formularios activos de los anuncios y variables de entorno
+    const formIdsToCheck = [
+        '1853635819138471', // Renta Solar Florida 2026 - Ahorro 50% ($0 Down)
+        '940971318597007',  // VOLT 2026 - Todo Para Tu Hogar (7 Servicios)
+        '4433590826954299', // VOLT 2026 - Todo Para Tu Hogar (7 Servicios) - Activo
+        '1106762292289900', // Florida Solar 2026 - Propietarios Calificados (High Intent)
+        '1719593572707976'  // PURONICS ok - Tratamiento y Purificación de Agua Florida
+    ];
 
-        const leads = data.data || [];
+    if (process.env.META_LEADGEN_FORM_ID && !formIdsToCheck.includes(process.env.META_LEADGEN_FORM_ID)) {
+        formIdsToCheck.push(process.env.META_LEADGEN_FORM_ID);
+    }
 
-        for (const item of leads) {
-            const leadgenId = item.id;
-            const fieldData = item.field_data || [];
-
-            let name = '';
-            let phone = '';
-            let email = '';
-            let address = '';
-            let zipcode = '';
-            let roofType = '';
-            let isOwner = 'no';
-            let billOver100 = 'no';
-
-            fieldData.forEach(f => {
-                const fname = (f.name || '').toLowerCase();
-                const val = f.values && f.values[0] ? f.values[0].trim() : '';
-
-                if (fname.includes('name') || fname.includes('nombre')) {
-                    if (!name) name = val;
-                } else if (fname.includes('phone') || fname.includes('tel')) {
-                    phone = val;
-                } else if (fname.includes('email') || fname.includes('correo')) {
-                    email = val;
-                } else if (fname.includes('dueñ') || fname.includes('owner') || fname.includes('propietario') || fname.includes('vivienda')) {
-                    isOwner = (val.toLowerCase().includes('si') || val.toLowerCase().includes('yes') || val.toLowerCase().includes('dueño')) ? 'yes' : 'no';
-                } else if (fname.includes('100') || fname.includes('bill') || fname.includes('factura') || fname.includes('pagas') || fname.includes('cuánto') || fname.includes('luz')) {
-                    billOver100 = val.toLowerCase().includes('menos de $100') ? 'no' : 'yes';
-                } else if (fname.includes('zip') || fname.includes('postal')) {
-                    zipcode = val;
-                } else if (fname.includes('roof') || fname.includes('techo')) {
-                    roofType = val;
-                } else if (fname.includes('address') || fname.includes('direc') || fname.includes('street') || fname.includes('zona') || fname.includes('location')) {
-                    if (!address) address = val;
-                    else address += ` (${val})`;
-                }
-            });
-
-            if (!phone) continue;
-
-            const existing = await new Promise((resolve, reject) => {
-                db.get(`SELECT id FROM leads WHERE phone = ? OR leadgen_id = ?`, [phone, leadgenId], (err, row) => {
-                    if (err) reject(err);
-                    else resolve(row);
-                });
-            });
-
-            if (!existing) {
-                console.log(`[Meta Auto-Sync] ¡Nuevo lead detectado en Meta Ads!: ${name} (${phone})`);
-                await new Promise((resolve, reject) => {
-                    db.run(
-                        `INSERT INTO leads (name, phone, address, email, zipcode, roof_type, bill_over_100, is_owner, leadgen_id, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Meta Ads Form 2026')`,
-                        [name, phone, address, email || null, zipcode || null, roofType || null, billOver100, isOwner, leadgenId],
-                        async function(err) {
-                            if (err) reject(err);
-                            else {
-                                const newLeadId = this.lastID;
-                                const leadObj = { id: newLeadId, name, phone, email, zipcode, address, leadgen_id: leadgenId, is_owner: isOwner, bill_over_100: billOver100 };
-                                
-                                try { await sendRealTimeFollowUp(leadObj); } catch(e) { console.error('[FollowUp Error]:', e.message); }
-                                try { sendMetaConversionsAPI(leadObj, 'Lead'); } catch(e) {}
-                                if (isOwner === 'yes' && billOver100 === 'yes') {
-                                    try { sendMetaConversionsAPI(leadObj, 'QualifiedLead'); } catch(e) {}
-                                }
-                                resolve();
-                            }
-                        }
-                    );
-                });
+    for (const formId of formIdsToCheck) {
+        try {
+            const url = `https://graph.facebook.com/v20.0/${formId}/leads?fields=id,created_time,field_data&access_token=${accessToken}&limit=50`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.error) {
+                console.error(`[Meta Auto-Sync Form ${formId} Error]: ${data.error.message} (Code: ${data.error.code})`);
+                continue;
             }
+
+            const leads = data.data || [];
+
+            for (const item of leads) {
+                const leadgenId = item.id;
+                
+                // Verificar si ya existe en la base de datos
+                const existing = await new Promise((resolve) => {
+                    db.get(`SELECT id FROM leads WHERE leadgen_id = ?`, [leadgenId], (err, row) => {
+                        resolve(row);
+                    });
+                });
+
+                if (!existing) {
+                    console.log(`[Meta Auto-Sync] ¡Nuevo lead detectado en Formulario ${formId} (Leadgen ID: ${leadgenId})! Procesando en CRM...`);
+                    await fetchAndProcessMetaLead(leadgenId);
+                }
+            }
+        } catch (e) {
+            console.error(`[Meta Auto-Sync Exception Form ${formId}]:`, e.message);
         }
-    } catch (e) {
-        console.error('[Meta Auto-Sync Error]:', e.message);
     }
 }
 
