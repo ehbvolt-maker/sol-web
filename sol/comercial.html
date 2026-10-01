@@ -119,8 +119,13 @@
                 <div class="studio-control-panel scroll-reveal">
                     <div class="panel-header-box">
                         <h3 class="panel-title"><span>⚙️</span> Estudio de Producción & Guiones</h3>
-                        <div class="panel-status-pill">
-                            <span class="pulse-dot"></span> Pipeline Activo
+                        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                            <div class="panel-status-pill" style="background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.5); color: #34d399;">
+                                <span class="pulse-dot" style="background: #10b981;"></span> Avatar HeyGen: MBA Eliecer Hernandez
+                            </div>
+                            <div class="panel-status-pill">
+                                <span class="pulse-dot"></span> Meta API Conectada
+                            </div>
                         </div>
                     </div>
 
@@ -145,7 +150,10 @@
                     <!-- Botones de Acción en Vivo -->
                     <div class="studio-buttons-grid">
                         <button class="btn-studio-action btn-studio-primary" id="btnGenerateScript" onclick="generateScriptAI()">
-                            ✨ Generar Guion con IA
+                            ✨ Generar Video de este Blog (HeyGen)
+                        </button>
+                        <button class="btn-studio-action btn-studio-gold" id="btnBatchSolarVideos" onclick="batchGenerateAllSolarVideos()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: bold; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
+                            ⚡ Generar Video de Cada Blog Solar (HeyGen)
                         </button>
                         <button class="btn-studio-action btn-studio-meta" id="btnPublishMeta" onclick="publishToMetaReels()">
                             🚀 Publicar en Instagram & FB
@@ -170,7 +178,10 @@
                             
                             <!-- Video / Avatar Background Layer -->
                             <div class="reel-video-layer">
-                                <img src="assets/influencer.webp" id="reelBgAvatar" class="reel-bg-avatar" alt="Agente Virtual de MBA Eliecer Hernandez">
+                                <video id="reelBgVideo" class="reel-bg-avatar" style="display:none; width:100%; height:100%; object-fit:cover;" loop playsinline muted>
+                                    <source src="https://files2.heygen.ai/avatar/v3/a2675f620de340d4ba7561b06eeab16f/full/2.2/preview_video_target.mp4" type="video/mp4">
+                                </video>
+                                <img src="https://files2.heygen.ai/avatar/v3/a2675f620de340d4ba7561b06eeab16f/full/2.2/preview_target.webp" id="reelBgAvatar" class="reel-bg-avatar" alt="Agente Virtual de MBA Eliecer Hernandez" onerror="this.src='assets/influencer.webp'">
                             </div>
                             <div class="reel-overlay-gradient"></div>
 
@@ -312,10 +323,10 @@ Headers: { "X-Api-Key": process.env.HEYGEN_API_KEY, "Content-Type": "application
 Body:
 {
   "video_inputs": [{
-    "character": { "type": "avatar", "avatar_id": "TU_CUSTOM_AVATAR_ID" },
-    "voice": { "type": "text", "input_text": scriptGenerado, "voice_id": "TU_ELEVENLABS_VOICE_ID" }
+    "character": { "type": "avatar", "avatar_id": "a2675f620de340d4ba7561b06eeab16f" }, // MBA Eliecer Hernandez
+    "voice": { "type": "text", "input_text": scriptGenerado, "voice_id": "a4088bcc161b4931912850a7c0692f9b" }
   }],
-  "dimension": { "width": 1080, "height": 1920 }
+  "dimension": { "width": 1080, "height": 1920 } // Formato Reels 9:16
 }
             </div>
 

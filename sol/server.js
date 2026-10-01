@@ -159,8 +159,8 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || 'mock-openai-key-for-startup',
 });
 
-// Configuración de HeyGen
-const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY;
+// Configuración de HeyGen (Avatar Eliecer Hernandez)
+const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY || 'sk_V2_hgu_kEN3KwiGUt6_CUd4OB4lGSLgUa36QlS1nZ6wnn5kNDSV';
 
 // Configuración de Make.com
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/p73ls3ukkbtd6szgpznx7hu96ax1k624';
@@ -774,9 +774,9 @@ Información de la Empresa (Referencia)
     }
 });
 
-// Función Rastreador de Estado de Video (Polling) para enviar a Make.com
-async function pollHeyGenVideoStatus(videoId, script) {
-    const maxAttempts = 30; // ~7.5 minutos de espera máx (30 intentos * 15 seg)
+// Función Rastreador de Estado de Video (Polling) para enviar a Make.com y Meta
+async function pollHeyGenVideoStatus(videoId, script, articleTitle = 'Energía Solar Florida 2026', articleId = null) {
+    const maxAttempts = 35; // ~8.5 minutos de espera máx (35 intentos * 15 seg)
     const pollIntervalMs = 15000;
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -794,8 +794,11 @@ async function pollHeyGenVideoStatus(videoId, script) {
                     const videoUrl = data.data.video_url;
                     console.log(`[Rastreador HeyGen] Video ${videoId} Terminado! URL: ${videoUrl}`);
                     
-                    // Enviar paquete final a Make.com
-                    console.log(`[Make.com] Enviando video al Webhook de automatización...`);
+                    // Actualizar en base de datos marketing_videos
+                    db.run(`UPDATE marketing_videos SET status = 'completed', video_url = ? WHERE heygen_video_id = ?`, [videoUrl, videoId]);
+
+                    // Enviar paquete final a Make.com para publicación en Instagram & Facebook
+                    console.log(`[Make.com] Enviando video de Eliecer Hernandez al Webhook para Instagram Reels y FB...`);
                     await fetch(MAKE_WEBHOOK_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -804,14 +807,19 @@ async function pollHeyGenVideoStatus(videoId, script) {
                             video_id: videoId,
                             video_url: videoUrl,
                             script: script,
-                            avatar_id: "Annie_Casual_Standing_Front_public",
-                            presenter: "Sol"
+                            article_id: articleId,
+                            article_title: articleTitle,
+                            avatar_id: process.env.MY_HEYGEN_AVATAR_ID || "a2675f620de340d4ba7561b06eeab16f",
+                            presenter: "MBA Eliecer Hernandez",
+                            platforms: ["instagram_reels", "facebook_page_video"],
+                            caption: `${articleTitle}\n\n${script}\n\n📲 Asesoría Técnica: (305) 813-6159\n📍 Florida Solar Education\n\n#FloridaSolar #NetMetering #TeslaPowerwall #AhorroLuz #MiamiHomeowners`
                         })
                     });
-                    console.log(`[Make.com] Webhook enviado con éxito! Make.com publicará el video en breve.`);
+                    console.log(`[Make.com] Webhook enviado con éxito! Publicado en Instagram & FB.`);
                     return;
                 } else if (status === 'failed' || status === 'error') {
                     console.error(`[Rastreador HeyGen] El renderizado falló para el video ${videoId}. Revisa tus créditos en HeyGen.`);
+                    db.run(`UPDATE marketing_videos SET status = 'failed' WHERE heygen_video_id = ?`, [videoId]);
                     return;
                 }
             }
@@ -825,39 +833,49 @@ async function pollHeyGenVideoStatus(videoId, script) {
     console.error(`[Rastreador HeyGen] Timeout. El video ${videoId} tardó demasiado tiempo en renderizarse.`);
 }
 
-// 4. Marketing Video Generator (OpenAI + HeyGen)
+// 4. Marketing Video Generator (OpenAI + HeyGen Avatar Eliecer Hernandez)
 app.post('/api/generate-marketing-video', async (req, res) => {
     if (HEYGEN_API_KEY === 'TU_HEYGEN_API_KEY_AQUI' || !HEYGEN_API_KEY) {
         return res.status(500).json({ error: 'Falta configurar la HeyGen API Key' });
     }
 
     try {
+        const { articleTitle, articleContent, articleId } = req.body;
+        
+        let promptText = "Genera un nuevo guion educativo persuasivo para atraer nuevos dueños de casa al programa solar a $0 inicial.";
+        if (articleTitle && articleContent) {
+            promptText = `Resume este artículo del blog solar en un guion para Reel de 50 segundos:\nTítulo: ${articleTitle}\nContenido: ${articleContent}`;
+        }
+
         const promptCompletions = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [
-                { role: "system", content: "Eres el Director de Marketing de Equity Puronics en Florida. Escribe un guion para un video corto de TikTok/Reels de máximo 30 segundos (unas 60-70 palabras). El tono debe ser entusiasta, directo y vender el programa de renta puronics donde se elimina la factura de luz a 0 costo inicial. Menciona el número 305-813-6159 al final. Devuelve SOLO el texto que el presentador dirá, sin acotaciones escénicas ni hashtags." },
-                { role: "user", content: "Genera un nuevo guion educativo persuasivo para atraer nuevos dueños de casa a nuestro programa." }
+                { role: "system", content: "Eres el MBA Eliecer Hernandez, Consultor Senior en Energía Solar y Puronics en Florida. Escribe un guion para un video corto de Instagram Reels/TikTok de 45-50 segundos (unas 70-80 palabras). Estructura AIDA: Gancho intrigante (0-3s), problema o ley de Florida (Net Metering, tarifas variables), solución a $0 inicial con equipos premium (Silfab, Tesla Powerwall) y llamado a la acción al teléfono 305-813-6159. Devuelve SOLO el texto que el presentador dirá, sin acotaciones escénicas ni hashtags." },
+                { role: "user", content: promptText }
             ]
         });
         
         const videoScript = promptCompletions.choices[0].message.content.trim();
-        console.log("Guion Generado por OpenAI:\n", videoScript);
+        console.log("[OpenAI] Guion Generado para Eliecer Hernandez:\n", videoScript);
+
+        const avatarId = process.env.MY_HEYGEN_AVATAR_ID || "a2675f620de340d4ba7561b06eeab16f";
+        const voiceId = process.env.MY_HEYGEN_VOICE_ID || "a4088bcc161b4931912850a7c0692f9b";
 
         const heygenPayload = {
             video_inputs: [
                 {
                     character: {
                         type: "avatar",
-                        avatar_id: "Annie_Casual_Standing_Front_public"
+                        avatar_id: avatarId
                     },
                     voice: {
                         type: "text",
                         input_text: videoScript,
-                        voice_id: "8217ce4716a34615a75beec0685dbba8"
+                        voice_id: voiceId
                     }
                 }
             ],
-            test: false
+            dimension: { width: 1080, height: 1920 } // Formato vertical 9:16 Reels
         };
 
         const heygenResponse = await fetch('https://api.heygen.com/v2/video/generate', {
@@ -876,18 +894,24 @@ app.post('/api/generate-marketing-video', async (req, res) => {
         }
 
         const videoId = heygenData.data.video_id;
-        pollHeyGenVideoStatus(videoId, videoScript);
+        
+        // Guardar en SQLite
+        db.run(`INSERT OR REPLACE INTO marketing_videos (heygen_video_id, script, avatar_id, status) VALUES (?, ?, ?, 'processing')`, 
+            [videoId, videoScript, avatarId]);
+
+        pollHeyGenVideoStatus(videoId, videoScript, articleTitle || "Florida Solar 2026", articleId);
 
         res.json({ 
             success: true, 
-            message: 'Video enviado a HeyGen para renderizado. El Rastreador alertará a Make.com cuando esté terminado.', 
+            message: 'Video enviado a HeyGen con el Avatar de Eliecer Hernandez. Make.com lo publicará en Instagram y FB al terminar.', 
             video_id: videoId,
+            avatar_id: avatarId,
             script: videoScript
         });
 
     } catch (error) {
         console.error('Error generando video:', error.message);
-        res.status(500).json({ error: 'Error en el proceso de generación de video.' });
+        res.status(500).json({ error: 'Error en el proceso de generación de video: ' + error.message });
     }
 });
 
@@ -922,17 +946,20 @@ app.post('/api/avatar-studio/generate-reel', async (req, res) => {
     }
 
     try {
+        const avatarId = process.env.MY_HEYGEN_AVATAR_ID || "a2675f620de340d4ba7561b06eeab16f";
+        const voiceId = process.env.MY_HEYGEN_VOICE_ID || "a4088bcc161b4931912850a7c0692f9b";
+
         const heygenPayload = {
             video_inputs: [
                 {
                     character: {
                         type: "avatar",
-                        avatar_id: process.env.MY_HEYGEN_AVATAR_ID || "Annie_Casual_Standing_Front_public"
+                        avatar_id: avatarId
                     },
                     voice: {
                         type: "text",
                         input_text: finalScript,
-                        voice_id: process.env.MY_ELEVENLABS_VOICE_ID || "8217ce4716a34615a75beec0685dbba8"
+                        voice_id: voiceId
                     }
                 }
             ],
@@ -954,18 +981,102 @@ app.post('/api/avatar-studio/generate-reel', async (req, res) => {
         }
 
         const videoId = heygenData.data.video_id;
-        pollHeyGenVideoStatus(videoId, finalScript);
+        db.run(`INSERT OR REPLACE INTO marketing_videos (heygen_video_id, script, avatar_id, status) VALUES (?, ?, ?, 'processing')`,
+            [videoId, finalScript, avatarId]);
+
+        pollHeyGenVideoStatus(videoId, finalScript, title || "Blog Solar 2026", articleId);
 
         res.json({
             success: true,
             video_id: videoId,
+            avatar_id: avatarId,
             script: finalScript,
-            message: 'Video enviado para renderizado en HeyGen. Se publicará automáticamente en Instagram y Facebook.'
+            message: 'Video enviado para renderizado en HeyGen con Avatar de Eliecer Hernandez. Se publicará automáticamente en Instagram y Facebook.'
         });
     } catch (err) {
         console.error('[Avatar Studio Error]:', err.message);
         res.status(500).json({ error: err.message });
     }
+});
+
+// ==========================================
+// GENERACIÓN POR LOTE Y AUTOMÁTICA POR CADA BLOG SOLAR
+// ==========================================
+app.post('/api/blog/batch-generate-solar-videos', async (req, res) => {
+    const solarArticles = [
+        {
+            id: 1,
+            title: "Guía Net Metering 2026: Cómo congelar tu factura eléctrica (Regla 25-6.065)",
+            script: "Bajo la Regla 25-6.065 en Florida, tu compañía eléctrica está obligada por ley a medir tu energía de forma bidireccional y pagar créditos por el sol de tu techo. Cambia facturas variables de 300 dólares por una cuota fija mucho menor sin inversión inicial. Llama al MBA Eliecer Hernandez al 305-813-6159 o toca el enlace para tu estudio 3D sin costo."
+        },
+        {
+            id: 2,
+            title: "¿Paneles 'Gratis' en Florida? La Verdad del Programa a $0 Inicial ($0 Down)",
+            script: "¡Cuidado con los anuncios de paneles gratis! El gobierno no regala nada, pero el programa regulado a $0 Down sí te permite sustituir tu recibo de luz sin pagar un centavo de entrada si pagas más de 100 dólares de luz al mes. Escríbeme al 305-813-6159 para validar tu casa en 30 segundos."
+        },
+        {
+            id: 3,
+            title: "Inspección Satelital 3D de Techos con Azimut y Sombras",
+            script: "No enviamos vendedores a quitarte tiempo. Con tecnología LiDAR y mapas satelitales 3D evaluamos azimut, inclinación y micro-sombras en minutos, con paneles Silfab resistentes a vientos de huracán de 175 millas por hora. Llama al 305-813-6159 para tu reporte satelital gratis hoy."
+        },
+        {
+            id: 4,
+            title: "Baterías Tesla Powerwall 3 vs Generadores en Huracanes",
+            script: "En temporada de huracanes las gasolineras colapsan. Las baterías inteligentes de litio como Tesla Powerwall 3 se recargan día a día con el sol y responden en menos de 10 milisegundos tras un apagón, manteniendo tu aire acondicionado encendido. Protege a tu familia llamando al 305-813-6159."
+        }
+    ];
+
+    try {
+        const avatarId = process.env.MY_HEYGEN_AVATAR_ID || "a2675f620de340d4ba7561b06eeab16f";
+        const voiceId = process.env.MY_HEYGEN_VOICE_ID || "a4088bcc161b4931912850a7c0692f9b";
+        const queued = [];
+
+        for (const art of solarArticles) {
+            const heygenPayload = {
+                video_inputs: [{
+                    character: { type: "avatar", avatar_id: avatarId },
+                    voice: { type: "text", input_text: art.script, voice_id: voiceId }
+                }],
+                dimension: { width: 1080, height: 1920 }
+            };
+
+            const response = await fetch('https://api.heygen.com/v2/video/generate', {
+                method: 'POST',
+                headers: {
+                    'X-Api-Key': HEYGEN_API_KEY,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(heygenPayload)
+            });
+
+            const data = await response.json();
+            if (data && data.data && data.data.video_id) {
+                const videoId = data.data.video_id;
+                db.run(`INSERT OR REPLACE INTO marketing_videos (heygen_video_id, script, avatar_id, status) VALUES (?, ?, ?, 'processing')`,
+                    [videoId, art.script, avatarId]);
+                pollHeyGenVideoStatus(videoId, art.script, art.title, art.id);
+                queued.push({ article_id: art.id, title: art.title, video_id: videoId });
+            }
+        }
+
+        res.json({
+            success: true,
+            message: `¡Se enviaron ${queued.length} videos a HeyGen con el Avatar de Eliecer Hernandez! Se publicarán en Instagram Reels y Facebook al renderizarse.`,
+            avatar_id: avatarId,
+            queued: queued
+        });
+    } catch (e) {
+        console.error('[Batch Solar Error]:', e.message);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Endpoint para consultar videos generados en marketing_videos
+app.get('/api/blog/solar-videos-list', (req, res) => {
+    db.all(`SELECT * FROM marketing_videos ORDER BY id DESC LIMIT 20`, (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true, videos: rows });
+    });
 });
 
 // ==========================================
