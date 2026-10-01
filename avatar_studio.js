@@ -23,21 +23,21 @@
             category: "Medición Neta",
             readTime: "4 min",
             icon: "☀️",
+            videoFile: "https://resource2.heygen.ai/aws_pacific/avatar_tmp/890f1e2fc21f4e988e42824898086845/v0612a30d31d4467595cea8aa34dc5e6f/caption_c82a2684f8444afd9959c66996d4dd72.mp4",
+            posterImg: "assets/eliecer_solar_thumbnail.jpg",
             brollImg: "assets/solar_benefits_es.png",
             brollCaption: "Contador Bidireccional Net Metering",
-            hook: "¿Sabías que tu compañía eléctrica en Florida está obligada por ley a pagarte por el sol que cae en tu techo?",
-            insight: "Bajo la Regla 25-6.065 del Código de Florida, tu contador bidireccional gira hacia atrás y acumula créditos en kWh para compensar las noches y el verano.",
-            solution: "En lugar de facturas impredecibles de $300 que suben año con año, el programa a $0 Inicial congela tu gasto en una cuota fija mucho menor respaldada por programas federales.",
-            cta: "Toca el enlace en mi perfil o llámame al (305) 813-6159 para validar tu dirección satelitalmente hoy mismo. ¡Hablemos!",
+            hook: "¿Vives en Florida y sigues pagando facturas de luz altísimas? ¡Escucha esto!",
+            insight: "Con el Programa de Renta Solar, eliminamos por completo tu facturación eléctrica tradicional desde el primer día.",
+            solution: "Es con $0 pago inicial. Sin gravámenes ni liens sobre tu título de propiedad, y con tarifa fija por 25 años garantizada hasta un 50% más barata que tu factura de luz.",
+            cta: "Mira si tu propiedad califica en 30 segundos. ¡Haz clic en el enlace o llámame al (305) 813-6159!",
             subtitles: [
-                "¿SABÍAS QUE TU COMPAÑÍA ELÉCTRICA EN FLORIDA...",
-                "...ESTÁ OBLIGADA POR LEY A PAGARTE POR EL SOL?",
-                "LA REGLA 25-6.065 ACTIVA LA MEDICIÓN NETA BIDIRECCIONAL.",
-                "CADA KILOVATIO GIRA TU CONTADOR HACIA ATRÁS...",
-                "...Y ACUMULA CRÉDITOS PARA EL VERANO Y LAS NOCHES.",
-                "CAMBIA FACTURAS VARIABLES DE $300 POR UNA CUOTA FIJA.",
-                "$0 INVERSIÓN INICIAL Y RESPALDO FEDERAL REAL.",
-                "LLÁMAME DIRECTAMENTE AL (305) 813-6159 O ENTRA AL ENLACE."
+                "¿VIVES EN FLORIDA Y SIGUES PAGANDO FACTURAS ALTÍSIMAS?",
+                "CON EL PROGRAMA DE RENTA SOLAR ELIMINAMOS TU FACTURACIÓN.",
+                "¡$0 PAGO INICIAL! NO PAGAS EN DISEÑO NI INSTALACIÓN.",
+                "SIN GRAVÁMENES NI LIENS • NO AFECTA TU CRÉDITO.",
+                "TARIFA FIJA POR 25 AÑOS • HASTA 50% MÁS BARATA.",
+                "VALIDA TU PROPIEDAD EN 30 SEGUNDOS Y CALCULA TU AHORRO."
             ]
         },
         {
@@ -46,6 +46,8 @@
             category: "Mitos y Costos",
             readTime: "5 min",
             icon: "⚡",
+            videoFile: "https://resource2.heygen.ai/aws_pacific/avatar_tmp/890f1e2fc21f4e988e42824898086845/vf70a37033a6548a1b0c138cf38112361/caption_f7044de7972b4470a83540bd18b0aa00.mp4",
+            posterImg: "assets/solar_program_ad_1_thumb.jpg",
             brollImg: "assets/solar_install_1.png",
             brollCaption: "Instalación Certificada $0 Down",
             hook: "¡Cuidado con los anuncios en redes que dicen que el gobierno regala paneles solares en Florida!",
@@ -69,6 +71,8 @@
             category: "Ingeniería 3D",
             readTime: "3 min",
             icon: "🛰️",
+            videoFile: "https://resource2.heygen.ai/aws_pacific/avatar_tmp/890f1e2fc21f4e988e42824898086845/v760c7c2c9e9b4492a46498ca484128db/caption_a690865c268c4564b371e12e7b11fabd.mp4",
+            posterImg: "assets/silfab_440_panel.png",
             brollImg: "assets/silfab_440_panel.png",
             brollCaption: "Modelado Satelital LiDAR 3D",
             hook: "¿Por qué analizamos tu techo por satélite antes de marcar tu número telefónico?",
@@ -153,11 +157,13 @@
     const reelBgVideo = document.getElementById('reelBgVideo');
 
     function initAvatarMedia() {
+        const art = blogArticlesData[currentArticleIndex];
         if (reelBgAvatar) {
-            reelBgAvatar.src = HEYGEN_ELIECER_CONFIG.preview_img;
+            reelBgAvatar.src = art.posterImg || HEYGEN_ELIECER_CONFIG.preview_img;
         }
         if (reelBgVideo) {
-            reelBgVideo.src = HEYGEN_ELIECER_CONFIG.preview_video;
+            reelBgVideo.src = art.videoFile || HEYGEN_ELIECER_CONFIG.preview_video;
+            reelBgVideo.load();
         }
     }
 
@@ -230,6 +236,16 @@
         currentArticleIndex = index;
         subtitleStep = 0;
         stopReel();
+        const art = blogArticlesData[currentArticleIndex];
+        if (reelBgVideo && art.videoFile) {
+            reelBgVideo.src = art.videoFile;
+            reelBgVideo.load();
+        }
+        if (reelBgAvatar && art.posterImg) {
+            reelBgAvatar.src = art.posterImg;
+            reelBgAvatar.style.display = 'block';
+            if (reelBgVideo) reelBgVideo.style.display = 'none';
+        }
         renderArticlePicker();
         updateScriptDisplay();
     };
@@ -247,21 +263,23 @@
         if (btnReelPlay) btnReelPlay.innerText = '⏸';
         if (reelAudioWave) reelAudioWave.classList.add('wave-active');
 
-        // Play real HeyGen preview video if available
+        const art = blogArticlesData[currentArticleIndex];
+
+        // Reproducir video real de HeyGen
         if (reelBgVideo) {
             reelBgVideo.style.display = 'block';
             if (reelBgAvatar) reelBgAvatar.style.display = 'none';
-            reelBgVideo.play().catch(e => console.log('Autoplay handled:', e));
+            reelBgVideo.muted = !isVoiceActive;
+            reelBgVideo.play().catch(e => {
+                console.log('Autoplay muted retry:', e);
+                reelBgVideo.muted = true;
+                reelBgVideo.play().catch(err => console.log('Playback error:', err));
+            });
         } else if (reelBgAvatar) {
             reelBgAvatar.classList.add('speaking-animation');
         }
 
-        const art = blogArticlesData[currentArticleIndex];
         const subs = art.subtitles;
-
-        if (isVoiceActive) {
-            playSpeechSynthesis(art);
-        }
 
         if (reelTimer) clearInterval(reelTimer);
         reelTimer = setInterval(() => {
@@ -269,7 +287,7 @@
             if (reelCaptionsText) {
                 reelCaptionsText.innerHTML = formatSubtitles(subs[subtitleStep]);
             }
-        }, 3200);
+        }, 4000);
     }
 
     function stopReel() {
@@ -281,10 +299,8 @@
 
         if (reelBgVideo) {
             reelBgVideo.pause();
-            reelBgVideo.style.display = 'none';
         }
         if (reelBgAvatar) {
-            reelBgAvatar.style.display = 'block';
             reelBgAvatar.classList.remove('speaking-animation');
         }
 
@@ -297,19 +313,16 @@
         isVoiceActive = !isVoiceActive;
         if (btnReelAudio) {
             btnReelAudio.classList.toggle('active', isVoiceActive);
-            btnReelAudio.innerHTML = isVoiceActive ? '🔊 Voz Activa' : '🔇 Activar Voz';
+            btnReelAudio.innerHTML = isVoiceActive ? '🔊 Audio Activo' : '🔇 Activar Audio';
+        }
+
+        if (reelBgVideo) {
+            reelBgVideo.muted = !isVoiceActive;
         }
 
         if (isVoiceActive) {
             if (!isReelPlaying) {
                 startReel();
-            } else {
-                const art = blogArticlesData[currentArticleIndex];
-                playSpeechSynthesis(art);
-            }
-        } else {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
             }
         }
     };
