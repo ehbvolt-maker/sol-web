@@ -534,8 +534,9 @@
                                 <span class="item-name">👤 ${lead.name || 'Sin nombre'} ${sourceContent} ${smsBadge} ${emailBadge} ${blogBadge}</span>
                                 <span class="badge-status status-lead">${lead.bill_over_100 === 'yes' ? '⚡ Factura > $100' : 'Lead Registrado'}</span>
                             </div>
-                            <div class="item-detail">📞 <strong>Tel:</strong> ${lead.phone || 'N/A'} | ✉️ <strong>Email:</strong> ${lead.email || 'N/A'}${lead.messenger_id ? ` | ⚡ <strong>Messenger:</strong> Conectado` : ''}</div>
+                            <div class="item-detail">📞 <strong>Tel:</strong> ${lead.phone ? `<a href="tel:${lead.phone}" style="color:#38bdf8; text-decoration:underline; font-weight:bold;">${lead.phone}</a>` : 'N/A'} | ✉️ <strong>Email:</strong> ${lead.email || 'N/A'}${lead.messenger_id ? ` | ⚡ <strong>Messenger:</strong> Conectado` : ''}</div>
                             <div class="item-detail">📍 <strong>Dirección:</strong> ${lead.address || 'N/A'} (${lead.zipcode || ''})</div>
+                            ${lead.preferred_time ? `<div class="item-detail" style="color: #ffb703; font-weight: bold; background: rgba(255, 183, 3, 0.12); border: 1px solid rgba(255,183,3,0.3); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px;">⏰ Horario para Llamar: ${lead.preferred_time}</div>` : ''}
                             ${noteContent ? `<div class="item-detail" style="background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 8px; border-left: 3px solid var(--primary); margin-top: 6px; color: #f8fafc;">💬 <strong>Mensaje / Detalle:</strong> ${noteContent}</div>` : ''}
                             
                             <div class="btn-group">

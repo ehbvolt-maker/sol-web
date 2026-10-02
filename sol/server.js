@@ -252,6 +252,7 @@ const db = new sqlite3.Database(path.join(__dirname, 'leads.db'), (err) => {
         db.run(`ALTER TABLE leads ADD COLUMN followup_stage INTEGER DEFAULT 1`, () => {});
         db.run(`ALTER TABLE leads ADD COLUMN last_cadence_at DATETIME`, () => {});
         db.run(`ALTER TABLE leads ADD COLUMN cadence_status TEXT DEFAULT 'active'`, () => {});
+        db.run(`ALTER TABLE leads ADD COLUMN preferred_time TEXT`, () => {});
 
         db.run(`CREATE TABLE IF NOT EXISTS sms_chats (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -380,7 +381,11 @@ app.post('/api/leads', (req, res) => {
         email = `lead_${cleanPhone}@solpuronics.com`;
     }
 
-    const leadNotes = notes || message || '';
+    const preferred_time = req.body.preferred_time || req.body.preferredTime || '';
+    let leadNotes = notes || message || '';
+    if (preferred_time && !leadNotes.includes('Horario:')) {
+        leadNotes = leadNotes ? `${leadNotes} | Horario: ${preferred_time}` : `Horario: ${preferred_time}`;
+    }
     const leadSource = source || 'Formulario Web';
     const clientIp = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || req.ip;
     const userAgent = req.headers['user-agent'] || '';
@@ -397,19 +402,21 @@ app.post('/api/leads', (req, res) => {
         eventSourceUrl: req.headers['referer'] || "https://ehbvolt-maker.github.io/sol-web/"
     };
 
-    const query = `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id, notes, source, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.run(query, [name, phone || '', address || '', email, zipcode || '', bill_over_100 || '', credit_score || '', roof_type || '', is_owner || '', leadgen_id || null, leadNotes, leadSource, leadNotes], function(err) {
+    const query = `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id, notes, source, message, preferred_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.run(query, [name, phone || '', address || '', email, zipcode || '', bill_over_100 || '', credit_score || '', roof_type || '', is_owner || '', leadgen_id || null, leadNotes, leadSource, leadNotes, preferred_time || null], function(err) {
         if (err) {
             if(err.message.includes('UNIQUE')) {
-                const updateQuery = `UPDATE leads SET name = COALESCE(NULLIF(?, ''), name), phone = COALESCE(NULLIF(?, ''), phone), address = COALESCE(NULLIF(?, ''), address), notes = ?, source = ?, message = ?, created_at = CURRENT_TIMESTAMP WHERE email = ?`;
-                db.run(updateQuery, [name, phone || '', address || '', leadNotes, leadSource, leadNotes, email], function(updateErr) {
+                const updateQuery = `UPDATE leads SET name = COALESCE(NULLIF(?, ''), name), phone = COALESCE(NULLIF(?, ''), phone), address = COALESCE(NULLIF(?, ''), address), notes = ?, source = ?, message = ?, preferred_time = COALESCE(NULLIF(?, ''), preferred_time), created_at = CURRENT_TIMESTAMP WHERE email = ?`;
+                db.run(updateQuery, [name, phone || '', address || '', leadNotes, leadSource, leadNotes, preferred_time || null, email], function(updateErr) {
                     if (updateErr) {
                         return res.status(500).json({ error: updateErr.message });
                     }
-                    db.get(`SELECT id FROM leads WHERE email = ?`, [email], (findErr, row) => {
+                    db.get(`SELECT id, preferred_time FROM leads WHERE email = ?`, [email], (findErr, row) => {
                         const existingId = row ? row.id : null;
+                        const existingPrefTime = row ? row.preferred_time : preferred_time;
                         const leadObj = { 
                             id: existingId, name, phone, email, address, zipcode, leadgen_id, source: leadSource, notes: leadNotes,
+                            preferred_time: existingPrefTime || preferred_time,
                             event_id: eventId, fbp, fbc, client_ip: clientIp, user_agent: userAgent
                         };
                         sendMetaConversionsAPI(leadObj, 'Lead', capiContext);
@@ -433,6 +440,7 @@ app.post('/api/leads', (req, res) => {
             leadgen_id, 
             source: leadSource, 
             notes: leadNotes,
+            preferred_time: preferred_time,
             event_id: eventId,
             fbp,
             fbc,
@@ -2864,6 +2872,7 @@ async function fetchAndProcessMetaLead(leadgenId) {
         let billOver100 = '';
         let creditScore = '';
         let roofType = '';
+        let preferredTime = '';
         let customDetails = [];
 
         fieldData.forEach(field => {
@@ -2896,6 +2905,9 @@ async function fetchAndProcessMetaLead(leadgenId) {
             } else if (fieldName.includes('roof') || fieldName.includes('techo')) {
                 roofType = value;
                 customDetails.push(`Techo: ${value}`);
+            } else if (fieldName.includes('horario') || fieldName.includes('time') || fieldName.includes('localizar') || fieldName.includes('contact')) {
+                preferredTime = value;
+                customDetails.push(`Horario preferido: ${value}`);
             } else if (!fieldName.includes('inbox_url')) {
                 customDetails.push(`${field.name}: ${value}`);
             }
@@ -2944,11 +2956,12 @@ async function fetchAndProcessMetaLead(leadgenId) {
             const updatedCredit = creditScore || existingLead.credit_score;
             const updatedRoof = roofType || existingLead.roof_type;
             const updatedOwner = isOwner || existingLead.is_owner;
+            const updatedPrefTime = preferredTime || existingLead.preferred_time;
 
             await new Promise((resolve, reject) => {
                 db.run(
-                    `UPDATE leads SET name = ?, email = ?, address = ?, zipcode = ?, bill_over_100 = ?, credit_score = ?, roof_type = ?, is_owner = ?, leadgen_id = ?, notes = ? WHERE id = ?`,
-                    [updatedName, updatedEmail || null, updatedAddress, updatedZip, updatedBill, updatedCredit, updatedRoof, updatedOwner, leadgenId, leadNotes, leadId],
+                    `UPDATE leads SET name = ?, email = ?, address = ?, zipcode = ?, bill_over_100 = ?, credit_score = ?, roof_type = ?, is_owner = ?, leadgen_id = ?, notes = ?, preferred_time = ? WHERE id = ?`,
+                    [updatedName, updatedEmail || null, updatedAddress, updatedZip, updatedBill, updatedCredit, updatedRoof, updatedOwner, leadgenId, leadNotes, updatedPrefTime || null, leadId],
                     (err) => {
                         if (err) reject(err);
                         else resolve();
@@ -2958,8 +2971,8 @@ async function fetchAndProcessMetaLead(leadgenId) {
         } else {
             await new Promise((resolve, reject) => {
                 db.run(
-                    `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id, notes, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Meta Ads Form 2026')`,
-                    [name, phone, address, email || null, zipcode, billOver100, creditScore, roofType, isOwner, leadgenId, leadNotes],
+                    `INSERT INTO leads (name, phone, address, email, zipcode, bill_over_100, credit_score, roof_type, is_owner, leadgen_id, notes, source, preferred_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Meta Ads Form 2026', ?)`,
+                    [name, phone, address, email || null, zipcode, billOver100, creditScore, roofType, isOwner, leadgenId, leadNotes, preferredTime || null],
                     function(err) {
                         if (err) reject(err);
                         else {
@@ -2980,7 +2993,7 @@ async function fetchAndProcessMetaLead(leadgenId) {
         // Criterio de calificación: Dueño de casa + factura > $100 (score opcional/asumido)
         const isQualified = isOwner === 'yes' && billOver100 === 'yes' && (creditScore === 'yes' || !creditScore);
 
-        const leadObj = { id: leadId, name, phone, email, leadgen_id: leadgenId, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore };
+        const leadObj = { id: leadId, name, phone, email, leadgen_id: leadgenId, is_owner: isOwner, bill_over_100: billOver100, credit_score: creditScore, preferred_time: preferredTime, address, zipcode, notes: leadNotes };
         // Disparar CAPI Lead (es un nuevo lead que capturamos en el CRM)
         sendMetaConversionsAPI(leadObj, 'Lead');
 
@@ -3093,24 +3106,30 @@ function generateAdminEmailHTML(lead) {
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0; width: 40%;"><strong>Nombre:</strong></td>
-                    <td style="color: white; padding: 8px 0;">\${lead.name}</td>
+                    <td style="color: white; padding: 8px 0;">${lead.name}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>Teléfono:</strong></td>
-                    <td style="color: white; padding: 8px 0;">\${lead.phone}</td>
+                    <td style="color: white; padding: 8px 0;">${lead.phone}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>Email:</strong></td>
-                    <td style="color: white; padding: 8px 0;">\${lead.email || '-'}</td>
+                    <td style="color: white; padding: 8px 0;">${lead.email || '-'}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>Dirección:</strong></td>
-                    <td style="color: white; padding: 8px 0;">\${lead.address || '-'}</td>
+                    <td style="color: white; padding: 8px 0;">${lead.address || '-'}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>Código Postal (ZIP):</strong></td>
-                    <td style="color: white; padding: 8px 0;">\${lead.zipcode || '-'}</td>
+                    <td style="color: white; padding: 8px 0;">${lead.zipcode || '-'}</td>
                 </tr>
+                ${lead.preferred_time ? `
+                <tr style="background: rgba(255, 183, 3, 0.15);">
+                    <td style="color: #ffb703; padding: 8px 6px; font-weight: bold;">⏰ Horario para Llamarlo:</td>
+                    <td style="color: #ffb703; padding: 8px 6px; font-weight: bold; font-size: 14px;">${lead.preferred_time}</td>
+                </tr>
+                ` : ''}
             </table>
         </div>
 
@@ -3119,19 +3138,19 @@ function generateAdminEmailHTML(lead) {
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0; width: 60%;"><strong>¿Dueño de Propiedad?</strong></td>
-                    <td style="padding: 8px 0;">\${badge(lead.is_owner)}</td>
+                    <td style="padding: 8px 0;">${badge(lead.is_owner)}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>¿Factura mensual > $100?</strong></td>
-                    <td style="padding: 8px 0;">\${badge(lead.bill_over_100)}</td>
+                    <td style="padding: 8px 0;">${badge(lead.bill_over_100)}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>¿Crédito mayor a 650?</strong></td>
-                    <td style="padding: 8px 0;">\${badge(lead.credit_score)}</td>
+                    <td style="padding: 8px 0;">${badge(lead.credit_score)}</td>
                 </tr>
                 <tr>
                     <td style="color: #94a3b8; padding: 8px 0;"><strong>Tipo de Techo:</strong></td>
-                    <td style="color: white; padding: 8px 0; text-transform: capitalize;">\${lead.roof_type || '-'}</td>
+                    <td style="color: white; padding: 8px 0; text-transform: capitalize;">${lead.roof_type || '-'}</td>
                 </tr>
             </table>
         </div>
@@ -3161,7 +3180,7 @@ function generateClientEmailHTML(lead, customWaLink) {
         <!-- Header Oficial -->
         <div style="text-align: center; margin-bottom: 25px;">
             <div style="display: inline-block; background: rgba(255, 183, 3, 0.15); border: 1px solid #ffb703; padding: 6px 18px; border-radius: 25px; color: #ffb703; font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; letter-spacing: 0.5px;">
-                ☀️ PROGRAMA OFICIAL DE MEDICIÓN NETA FLORIDA 2026
+                ☀️ PROGRAMA OFICIAL DE MEDICION NETA FLORIDA 2026
             </div>
             <h1 style="color: #ffffff; text-align: center; margin: 0 0 6px 0; font-size: 1.55rem; font-weight: 800; line-height: 1.3;">
                 Estudio Satelital Solar en Proceso
@@ -3195,7 +3214,7 @@ function generateClientEmailHTML(lead, customWaLink) {
                 </tr>
                 <tr>
                     <td style="padding: 6px 0; width: 30px;">📞</td>
-                    <td style="padding: 6px 0; color: #94a3b8;"><strong>Paso 3:</strong> Breve validación técnica de 15 minutos para entregarle su proyección de ahorro.</td>
+                    <td style="padding: 6px 0; color: #94a3b8;"><strong>Paso 3:</strong> Breve llamada técnica para mostrarle su proyección de ahorro.</td>
                 </tr>
             </table>
         </div>
@@ -3272,9 +3291,18 @@ function generateClientEmailHTML(lead, customWaLink) {
                 🟢 Chatear por WhatsApp con el Departamento Técnico
             </a>
             <div style="margin-top: 14px;">
-                <a href="tel:3058136159" style="background-color: #ffb703; color: #070b14; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.92rem; display: inline-block;">
-                    📞 Llamada Inmediata al (305) 813-6159
-                </a>
+                <div style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 8px;">¿Desea atención inmediata? Llámenos directamente a nuestras líneas de oficina:</div>
+                <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                    <a href="tel:3058136159" style="background-color: #ffb703; color: #070b14; padding: 10px 18px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.92rem; display: inline-block;">
+                        📞 (305) 813-6159
+                    </a>
+                    <a href="tel:3057846363" style="background-color: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); padding: 10px 18px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.92rem; display: inline-block;">
+                        📞 (305) 784-6363
+                    </a>
+                </div>
+                <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 8px;">
+                    ⏰ Horario de oficina: Lunes a Sábado de 9:00 AM – 9:00 PM | Domingos de 9:00 AM – 1:00 PM
+                </div>
             </div>
         </div>
 
@@ -3282,6 +3310,7 @@ function generateClientEmailHTML(lead, customWaLink) {
         <div style="font-size: 0.78rem; text-align: center; color: #64748b; margin-top: 25px; border-top: 1px solid #1e293b; padding-top: 15px; line-height: 1.5;">
             <strong>DEPARTAMENTO DE CONSULTORÍA ENERGÉTICA SOLAR FLORIDA</strong><br>
             Oficinas Técnicas: (305) 813-6159 | (305) 784-6363 | Email: ehbequitysolar@gmail.com<br>
+            Horario de atención: Lun-Sáb 9:00 am - 9:00 pm | Dom 9:00 am - 1:00 pm<br>
             En cumplimiento con la Comisión de Servicios Públicos de Florida (PSC) y la Regla 25-6.065 (Net Metering).<br>
             <a href="https://ehbvolt-maker.github.io/sol-web/privacy.html" style="color: #64748b; text-decoration: underline;">Política de Privacidad y Cumplimiento</a>
         </div>

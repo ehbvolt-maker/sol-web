@@ -53,8 +53,8 @@ function buildSolarSalesSystemPrompt({ channel = 'whatsapp', leadName = '', lead
         '# CONTEXTO DEL CLIENTE',
         '- Nombre: ' + (leadName || 'Propietario/a'),
         '- Direccion aproximada: ' + (leadAddress || 'Florida'),
-        '- Fecha de referencia hoy: ' + todayStr + ' (usa esta fecha para calcular fechas como "manana", "el lunes", etc.).',
-        '- Telefono oficial de oficina: (305) 813-6159'
+        '- Telefonos oficiales de oficina: (305) 813-6159 y (305) 784-6363',
+        '- Horarios de oficina: Lunes a Sabado de 9:00 AM a 9:00 PM y Domingos de 9:00 AM a 1:00 PM.'
     ].join('\n');
 }
 
@@ -86,10 +86,13 @@ const CADENCE_STAGES = {
         generate: (lead, waLink, blogUrl) => {
             const firstName = getLeadFirstName(lead);
             const address = lead.address || 'su propiedad en Florida';
+            const prefTime = lead.preferred_time || (lead.notes && lead.notes.includes('Horario:') ? lead.notes.split('Horario:')[1].split('|')[0].trim() : '');
+            const timeMention = prefTime ? `en su horario preferido (${prefTime})` : 'en breve';
+
             return {
-                whatsapp: `☀️ *Programa de Medición Neta (Net Metering) Florida 2026*\nHola ${firstName}, le saluda el Departamento Técnico de Evaluación Solar.\n\nHemos recibido correctamente su solicitud para verificar si su vivienda califica para el programa de tarifa eléctrica fija a *$0 costo de inversión inicial*.\n\n📌 *Estado de su caso:*\nTengo en pantalla la vista satelital de su techo en ${address} para calcular su producción solar y ahorro frente a las tarifas de su proveedor eléctrico.\n\n📚 *Guía Educativa Oficial para Propietarios:*\n👉 ${blogUrl}\n\n⏱️ *Para coordinar la revisión de 5 minutos:*\n¿Le resulta más cómodo atender una breve llamada hoy en la tarde o mañana en la mañana?\n\n*(Tip: Puede responder a este mensaje con una foto de su última factura de luz para tener su gráfico exacto listo al momento de hablar).*\n\nAtentamente,\n*Equipo de Consultoría Solar Florida*\n📱 Tel: (305) 813-6159`,
-                sms: `Hola ${firstName}, recibimos su solicitud solar en Florida. Evaluamos su techo en ${address} a $0 inicial. Le mostramos en 3 min hoy tarde o manana? Tel: 305-813-6159 . WhatsApp: ${waLink}`,
-                messenger: `☀️ Programa de Medición Neta Florida 2026\nHola ${firstName}, un gusto saludarle. Recibimos su solicitud para evaluar su techo a $0 costo inicial.\n\nEstamos analizando la vista satelital de su propiedad en ${address} para calcular cuánto puede congelar de su factura mensual frente a las subidas de su proveedor eléctrico.\n\n📚 Guía educativa para propietarios: ${blogUrl}\n\nUno de nuestros especialistas le llamará en breve para verificar dos datos técnicos. ¿Prefiere recibir la llamada en la mañana o en la tarde?`
+                whatsapp: `☀️ *Programa de Medición Neta (Net Metering) Florida 2026*\nHola ${firstName}, le saluda el Departamento Técnico de Evaluación Solar.\n\nHemos recibido correctamente su solicitud para evaluar su vivienda en ${address} a *$0 costo de inversión inicial*.\n\n📌 *Llamada Oficial Agendada:*\nLe llamaremos ${timeMention} desde nuestros teléfonos oficiales: *(305) 813-6159* o *(305) 784-6363* para mostrarle el cálculo satelital de su techo.\n\n📞 *¿Desea atención inmediata sin esperar?*\nPuede llamarnos usted directamente a nuestras líneas de oficina:\n📱 *(305) 813-6159* | *(305) 784-6363*\n⏰ *Horario de Oficina:* Lunes a Sábado 9:00 AM – 9:00 PM | Domingos 9:00 AM – 1:00 PM\n\n📚 *Guía Educativa Oficial para Propietarios:*\n👉 ${blogUrl}\n\nAtentamente,\n*Equipo de Consultoría Solar Florida*`,
+                sms: `Hola ${firstName}, recibimos su solicitud solar para ${address}. Le llamaremos ${timeMention} desde el 305-813-6159 o 305-784-6363. O llamenos ahora (Lun-Sab 9am-9pm, Dom 9am-1pm). WhatsApp: ${waLink}`,
+                messenger: `☀️ Programa de Medición Neta Florida 2026\nHola ${firstName}, un gusto saludarle. Recibimos su solicitud para evaluar su techo en ${address} a $0 costo inicial.\n\nLe llamaremos ${timeMention} desde el (305) 813-6159 o (305) 784-6363 para mostrarle su ahorro. Si desea atención inmediata, puede llamarnos directamente a esas mismas líneas (Lun-Sáb 9am-9pm, Dom 9am-1pm).\n\n📚 Guía educativa para propietarios: ${blogUrl}`
             };
         }
     },

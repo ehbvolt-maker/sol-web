@@ -4,6 +4,7 @@ import urllib.request
 import urllib.parse
 import re
 import os
+from datetime import datetime
 from dotenv import dotenv_values
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -26,8 +27,10 @@ if not token:
     print("   python deploy_high_intent_form.py <TU_TOKEN>")
     sys.exit(1)
 
+form_name = f"Florida Solar 2026 - Propietarios Calificados Horarios v2 ({datetime.now().strftime('%d-%m-%Y')})"
+
 form_payload = {
-    'name': 'Florida Solar 2026 - Propietarios Calificados (High Intent)',
+    'name': form_name,
     'locale': 'es_LA',
     'privacy_policy': json.dumps({
         'url': 'https://ehbvolt-maker.github.io/sol-web/privacy.html',
@@ -65,6 +68,18 @@ form_payload = {
                 {'key': 'techo_antiguo', 'value': 'Más de 20 años (Deseo evaluar cambio)'}
             ]
         },
+        {
+            'type': 'CUSTOM',
+            'key': 'question_preferred_time',
+            'label': '¿Cuál es el mejor horario para llamarle con su estudio satelital de ahorro?',
+            'options': [
+                {'key': 'manana', 'value': 'Mañanas (9:00 AM - 1:00 PM)'},
+                {'key': 'tarde', 'value': 'Tardes (1:00 PM - 5:00 PM)'},
+                {'key': 'noche', 'value': 'Noches (5:00 PM - 9:00 PM)'},
+                {'key': 'domingo', 'value': 'Domingos (9:00 AM - 1:00 PM)'},
+                {'key': 'whatsapp_primero', 'value': 'Prefiero mensaje por WhatsApp primero'}
+            ]
+        },
         {'type': 'FULL_NAME'},
         {'type': 'PHONE'},
         {'type': 'EMAIL'},
@@ -76,15 +91,15 @@ form_payload = {
         'content': [
             'Evaluación satelital del techo en 30 segundos sin costo.',
             'Cero cuota inicial ($0 Down) para propietarios calificados.',
-            'Elimina la tarifa variable de FPL y congela tu costo mensual.',
-            'Opción de batería de respaldo para temporada de huracanes.'
+            'Líneas directas: (305) 813-6159 | (305) 784-6363.',
+            'Horario de oficina: Lun-Sáb 9:00am-9:00pm | Dom 9:00am-1:00pm.'
         ],
         'style': 'LIST_STYLE',
         'button_text': 'Verificar si mi propiedad califica'
     }),
     'thank_you_page': json.dumps({
         'title': '¡Felicidades! Su solicitud ha sido aprobada para análisis',
-        'body': 'Uno de nuestros ingenieros solares revisará la orientación y sombra de su techo mediante satélite. Para agilizar su estudio y ver su ahorro ahora mismo, toque el botón de WhatsApp abajo.',
+        'body': 'Le llamaremos en su horario elegido desde el (305) 813-6159 o (305) 784-6363. Para atención inmediata sin esperar, puede llamarnos directamente (Lun-Sáb 9:00 am - 9:00 pm, Dom 9:00 am - 1:00 pm) o tocar el botón abajo para WhatsApp.',
         'button_text': 'Chatear por WhatsApp con un Consultor',
         'button_type': 'VIEW_WEBSITE',
         'website_url': 'https://wa.me/13058136159?text=Hola%20Eliecer,%20acabo%20de%20completar%20el%20formulario%20de%20Florida%20Solar%20y%20deseo%20ver%20el%20estudio%20satelital%20de%20mi%20techo'
@@ -125,8 +140,15 @@ except urllib.error.HTTPError as e:
     print(f"\n❌ Error HTTP de Meta ({e.code}):")
     try:
         err_json = json.loads(err_txt)
-        msg = err_json.get('error', {}).get('message', err_txt)
+        err_obj = err_json.get('error', {})
+        msg = err_obj.get('message', err_txt)
+        user_title = err_obj.get('error_user_title')
+        user_msg = err_obj.get('error_user_msg')
         print(f"   Mensaje: {msg}")
+        if user_title:
+            print(f"   Motivo: {user_title}")
+        if user_msg:
+            print(f"   Detalle: {user_msg}")
     except:
         print(f"   Detalle: {err_txt}")
 except Exception as e:

@@ -93,17 +93,32 @@ En tu carpeta [`sol/assets/`](file:///c:/Users/elyeh/.gemini/antigravity/playgro
 
 ---
 
-## 4. FORMULARIO INSTANTÁNEO CON LÓGICA DE CALIFICACIÓN
+## 4. FORMULARIO INSTANTÁNEO CON LÓGICA DE ALTA CONVERSIÓN & ANTI-NO CONTESTAN
 
-Hemos programado el script automático [`sol/deploy_high_intent_form.py`](file:///c:/Users/elyeh/.gemini/antigravity/playground/entropic-equinox/sol/deploy_high_intent_form.py). 
+Hemos actualizado el script automático [`sol/deploy_high_intent_form.py`](file:///c:/Users/elyeh/.gemini/antigravity/playground/entropic-equinox/sol/deploy_high_intent_form.py) para solucionar la causa por la que los clientes interesados no contestan el teléfono:
 
+### 💡 Diagnóstico del problema y Solución Lógica:
+1. **Filtros Anti-Spam de Operadores:** En Florida, números no guardados son silenciados o marcados como *"Spam Likely"*. Se incorporó un aviso claro indicando los números oficiales: **(305) 813-6159** y **(305) 784-6363** para que el usuario los guarde antes de recibir la llamada.
+2. **Selector de Horario Preferido:** Se agregó la pregunta obligatoria para que el cliente elija su franja de contacto:
+   - 🌅 Mañanas (9:00 AM – 1:00 PM)
+   - ☀️ Tardes (1:00 PM – 5:00 PM)
+   - 🌙 Noches (5:00 PM – 9:00 PM)
+   - 📅 Domingos (9:00 AM – 1:00 PM)
+   - 💬 Prefiero mensaje por WhatsApp primero
+3. **Llamada Inversa Directa (Inbound):** En la tarjeta de contexto y pantalla de agradecimiento se ofrece al cliente la opción de llamar directamente a las oficinas si desea atención inmediata sin esperar:
+   - 📞 **(305) 813-6159** | 📞 **(305) 784-6363**
+   - ⏰ **Horarios de atención:** Lunes a Sábado de 9:00 AM – 9:00 PM | Domingos de 9:00 AM – 1:00 PM.
+4. **Pre-aviso SMS / WhatsApp en Speed-to-Lead:** El CRM envía automáticamente una notificación de 30 segundos confirmando el horario seleccionado y anticipando que la llamada vendrá de esos números.
+
+### Despliegue con un solo comando:
 En cuanto pegues tu nuevo token permanente de Meta, solo debes ejecutar:
 ```powershell
 python sol/deploy_high_intent_form.py
 ```
 El script creará automáticamente en la Graph API de Meta tu formulario con:
-1. **Pantalla de Revisión (Higher Intent):** El usuario debe confirmar sus datos antes de enviar.
-2. **Filtro de Descalificación:** Quien marque "Soy inquilino / Rento" es descalificado sin costo.
-3. **Pregunta de Factura Eléctrica:** Filtra prospectos con facturas < $100.
-4. **Captura Satelital:** Dirección exacta y código postal en Florida.
-5. **Agradecimiento con Enlace Directo a WhatsApp:** Abre el chat directo con Eliecer (`+13058136159`) para cerrar la cita en el primer minuto.
+1. **Pantalla de Revisión (Higher Intent):** El usuario confirma sus datos antes de enviar.
+2. **Filtro de Descalificación:** Inquilinos o personas que rentan quedan fuera de presupuesto.
+3. **Pregunta de Factura Eléctrica:** Filtra prospectos con facturas menores a $100.
+4. **Pregunta de Mejor Horario:** Garantiza contactar al cliente en su momento ideal.
+5. **Captura Satelital:** Dirección exacta y código postal en Florida.
+6. **Agradecimiento con Teléfonos y WhatsApp:** Acceso inmediato a llamadas directas y chat con Eliecer (`+13058136159`).

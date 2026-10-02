@@ -55,6 +55,18 @@ form_data = {
                 {'key': 'fuera_fl', 'value': 'Fuera del estado de Florida'}
             ]
         },
+        {
+            'type': 'CUSTOM',
+            'key': 'question_preferred_time',
+            'label': '¿Cuál es el mejor horario para llamarle con su estudio de ahorro?',
+            'options': [
+                {'key': 'manana', 'value': 'Mañanas (9:00 AM - 1:00 PM)'},
+                {'key': 'tarde', 'value': 'Tardes (1:00 PM - 5:00 PM)'},
+                {'key': 'noche', 'value': 'Noches (5:00 PM - 9:00 PM)'},
+                {'key': 'domingo', 'value': 'Domingos (9:00 AM - 1:00 PM)'},
+                {'key': 'whatsapp_primero', 'value': 'Prefiero mensaje por WhatsApp primero'}
+            ]
+        },
         {'type': 'FULL_NAME'},
         {'type': 'PHONE'},
         {'type': 'EMAIL'},
@@ -66,14 +78,15 @@ form_data = {
         'content': [
             'Evaluación satelital gratuita en 30 segundos.',
             'Cero costo inicial ($0 Down) para propietarios calificados.',
-            'Elimine su factura variable y congele su tarifa eléctrica.'
+            'Líneas directas: (305) 813-6159 | (305) 784-6363.',
+            'Horario de oficina: Lun-Sáb 9:00am-9:00pm | Dom 9:00am-1:00pm.'
         ],
         'style': 'LIST_STYLE',
         'button_text': 'Verificar mi calificacion'
     }),
     'thank_you_page': json.dumps({
         'title': '¡Felicidades! Su solicitud ha sido recibida',
-        'body': 'Un consultor revisará la vista satelital de su techo para calcular su ahorro. Toque el botón abajo para atención inmediata por WhatsApp.',
+        'body': 'Le llamaremos en su horario elegido desde el (305) 813-6159 o (305) 784-6363. Para atención inmediata sin esperar, puede llamarnos directamente (Lun-Sáb 9:00 am - 9:00 pm, Dom 9:00 am - 1:00 pm) o tocar el botón abajo para WhatsApp.',
         'button_text': 'Chatear por WhatsApp',
         'button_type': 'VIEW_WEBSITE',
         'website_url': 'https://wa.me/13058136159?text=Hola,%20acabo%20de%20completar%20el%20formulario%20de%20Florida%20Solar'

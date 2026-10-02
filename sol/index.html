@@ -409,20 +409,65 @@
                 <p>Eres elegible para el plan <strong>Cero Inversión Inicial</strong>.</p>
                 <p>Completa tus datos para recibir tu diseño 3D personalizado y reporte de ahorros.</p>
                 <div class="quiz-input-group multi-input" style="display: flex; flex-direction: column; gap: 10px;">
-                    <input type="text" id="leadName" placeholder="Nombre y Apellido" class="glass-input" required>
-                    <input type="tel" id="leadPhone" placeholder="Teléfono" class="glass-input" required>
-                    <input type="text" id="leadAddress" placeholder="Dirección de la propiedad" class="glass-input" required>
-                    <input type="text" id="leadZip" placeholder="Código Postal" class="glass-input" required>
-                    <input type="email" id="leadEmail" placeholder="Correo Electrónico" class="glass-input" required>
-                    <button class="btn-primary" id="submitLead" style="margin-top: 10px;">Ver mi Diseño</button>
+                    <input type="text" id="leadName" placeholder="Nombre y Apellido *" class="glass-input" required>
+                    <input type="tel" id="leadPhone" placeholder="Teléfono Móvil (Recibirás la llamada aquí) *" class="glass-input" required>
+                    <input type="text" id="leadAddress" placeholder="Dirección de la propiedad en Florida *" class="glass-input" required>
+                    <input type="text" id="leadZip" placeholder="Código Postal *" class="glass-input" required>
+                    <input type="email" id="leadEmail" placeholder="Correo Electrónico *" class="glass-input" required>
+
+                    <!-- Selector de Mejor Horario para Localizarlo -->
+                    <div style="text-align: left; margin-top: 4px;">
+                        <label for="leadPreferredTime" style="font-size: 0.85rem; color: #ffb703; font-weight: 700; display: block; margin-bottom: 4px;">
+                            ⏰ Mejor horario para localizarte y mostrarte tu estudio:
+                        </label>
+                        <select id="leadPreferredTime" class="glass-input" style="width: 100%; padding: 10px 12px; background: rgba(15, 23, 42, 0.9); color: #fff; border: 1px solid rgba(255, 183, 3, 0.4); border-radius: 8px; font-size: 0.9rem; cursor: pointer;">
+                            <option value="Mañana (9:00 AM - 1:00 PM)" selected>🌅 Mañana: 9:00 AM – 1:00 PM</option>
+                            <option value="Tarde (1:00 PM - 5:00 PM)">☀️ Tarde: 1:00 PM – 5:00 PM</option>
+                            <option value="Noche (5:00 PM - 9:00 PM)">🌙 Noche: 5:00 PM – 9:00 PM</option>
+                            <option value="Domingo (9:00 AM - 1:00 PM)">📅 Domingo: 9:00 AM – 1:00 PM</option>
+                            <option value="WhatsApp primero">💬 Escríbeme por WhatsApp primero</option>
+                        </select>
+                    </div>
+
+                    <!-- Tarjeta de Atención Telefónica Directa y Prevención Anti-Spam -->
+                    <div style="background: rgba(255, 183, 3, 0.08); border: 1px solid rgba(255, 183, 3, 0.25); border-radius: 10px; padding: 12px; margin-top: 4px; text-align: left;">
+                        <div style="font-size: 0.85rem; color: #ffb703; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                            <span>📞</span> ¿Deseas atención inmediata sin esperar nuestra llamada?
+                        </div>
+                        <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0 0 8px 0; line-height: 1.4;">
+                            Puedes llamarnos tú directamente ahora a nuestras líneas de consultoría oficial:
+                        </p>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <a href="tel:3058136159" style="background: #ffb703; color: #0f172a; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 5px;">
+                                📞 (305) 813-6159
+                            </a>
+                            <a href="tel:3057846363" style="background: rgba(255, 255, 255, 0.12); color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,0.25);">
+                                📞 (305) 784-6363
+                            </a>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #94a3b8; margin-top: 8px; line-height: 1.4;">
+                            ⏰ <strong>Horarios de oficina:</strong> Lunes a Sábado: 9:00 AM – 9:00 PM | Domingos: 9:00 AM – 1:00 PM<br>
+                            💡 <em>Te llamaremos desde estos mismos números. Guárdalos en tus contactos para identificarnos.</em>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" id="submitLead" style="margin-top: 8px;">Ver mi Diseño y Estudio Solar</button>
                 </div>
-                <div id="successMsg" style="display: none; color: #06d6a0; margin-top: 15px;">
-                    ¡Enviado! Revisa tu bandeja de entrada en unos minutos.
+                <div id="successMsg" style="display: none; color: #06d6a0; margin-top: 15px; background: rgba(6, 214, 160, 0.1); border: 1px solid rgba(6, 214, 160, 0.3); border-radius: 8px; padding: 12px; text-align: left; font-size: 0.9rem; line-height: 1.5;">
+                    ¡Solicitud recibida! Te llamaremos en el horario indicado desde el <strong>(305) 813-6159</strong> o <strong>(305) 784-6363</strong>.<br>Si deseas acelerar tu estudio, llámanos o escríbenos por WhatsApp ahora mismo:
                 </div>
-                <div id="whatsappButtons" style="display: none; margin-top: 15px; flex-direction: column; gap: 10px;">
-                    <p style="color: var(--text-main); font-size: 0.9rem; margin-bottom: 5px;">Conecta con tu consultor por WhatsApp:</p>
-                    <a id="waBtn1" href="#" target="_blank" class="btn-primary" style="background: #25D366; text-decoration: none; text-align: center; font-size: 0.9rem;">📲 Departamento de Consultoría (305-813-6159)</a>
-                    <a id="waBtn2" href="#" target="_blank" class="btn-secondary" style="border-color: #25D366; color: #25D366; text-decoration: none; text-align: center; font-size: 0.9rem;">📲 Consultor 2 (305-784-6363)</a>
+                <div id="callActionButtons" style="display: none; margin-top: 10px; gap: 8px; flex-wrap: wrap;">
+                    <a href="tel:3058136159" class="btn-primary" style="background: #ffb703; color: #0f172a; text-decoration: none; text-align: center; font-size: 0.82rem; padding: 8px 12px; font-weight: bold; border-radius: 8px; flex: 1;">
+                        📞 Llamar (305) 813-6159
+                    </a>
+                    <a href="tel:3057846363" class="btn-secondary" style="border-color: #ffb703; color: #ffb703; text-decoration: none; text-align: center; font-size: 0.82rem; padding: 8px 12px; font-weight: bold; border-radius: 8px; flex: 1;">
+                        📞 Llamar (305) 784-6363
+                    </a>
+                </div>
+                <div id="whatsappButtons" style="display: none; margin-top: 10px; flex-direction: column; gap: 8px;">
+                    <p style="color: var(--text-main); font-size: 0.85rem; margin: 4px 0;">O conéctate por WhatsApp directamente:</p>
+                    <a id="waBtn1" href="#" target="_blank" class="btn-primary" style="background: #25D366; text-decoration: none; text-align: center; font-size: 0.85rem; padding: 8px 12px;">📲 Consultoría Directa 1 (305-813-6159)</a>
+                    <a id="waBtn2" href="#" target="_blank" class="btn-secondary" style="border-color: #25D366; color: #25D366; text-decoration: none; text-align: center; font-size: 0.85rem; padding: 8px 12px;">📲 Consultoría Directa 2 (305-784-6363)</a>
                 </div>
             </div>
         </div>

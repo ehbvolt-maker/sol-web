@@ -343,6 +343,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('step1').classList.add('active');
                 successMsg.style.display = 'none';
                 submitLead.style.display = 'block';
+                if (document.getElementById('callActionButtons')) document.getElementById('callActionButtons').style.display = 'none';
+                if (document.getElementById('whatsappButtons')) document.getElementById('whatsappButtons').style.display = 'none';
                 document.getElementById('leadEmail').value = '';
             }, 300);
         });
@@ -377,6 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const phone = document.getElementById('leadPhone').value;
             const address = document.getElementById('leadAddress').value;
             const zipcode = document.getElementById('leadZip').value;
+            const preferredTime = document.getElementById('leadPreferredTime')?.value || 'Mañana (9:00 AM - 1:00 PM)';
 
             if(!name.trim()) {
                 alert('Por favor ingresa tu nombre completo.');
@@ -406,6 +409,8 @@ document.addEventListener("DOMContentLoaded", () => {
             quizData.phone = phone;
             quizData.address = address;
             quizData.zipcode = zipcode;
+            quizData.preferred_time = preferredTime;
+            quizData.notes = `Horario preferido: ${preferredTime}`;
             quizData.event_id = leadEventId;
             
             // Rastrear Evento Lead de Meta en el navegador con Event ID para deduplicación con CAPI
@@ -425,29 +430,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 
                 if (response.ok) {
-                    const leadMessage = `¡Nuevo Lead Puronics! ☀️\nNombre: ${name}\nTeléfono: ${phone}\nDirección: ${address}, CP: ${zipcode}\nEmail: ${email}\nPropietario: ${quizData.is_owner}\nFactura >$100: ${quizData.bill_over_100}\nCrédito >650: ${quizData.credit_score}\nTecho: ${quizData.roof_type}`;
+                    const leadMessage = `¡Nuevo Lead Solar Florida! ☀️\nNombre: ${name}\nTeléfono: ${phone}\nDirección: ${address}, CP: ${zipcode}\nEmail: ${email}\n⏰ Horario Preferido para Llamar: ${preferredTime}\nPropietario: ${quizData.is_owner}\nFactura >$100: ${quizData.bill_over_100}\nCrédito >650: ${quizData.credit_score}\nTecho: ${quizData.roof_type}`;
                     
                     // Enviar al número principal (Eliecer)
                     const waLink = `https://wa.me/13058136159?text=${encodeURIComponent(leadMessage)}`;
                     
-                    successMsg.innerHTML = '¡Excelente! Tu información ha sido guardada.<br>Selecciona un consultor abajo para iniciar la conversación por WhatsApp:';
+                    successMsg.innerHTML = `¡Excelente! Solicitud recibida.<br>Te llamaremos en tu horario elegido (<strong>${preferredTime}</strong>) desde el <strong>(305) 813-6159</strong> o <strong>(305) 784-6363</strong>.<br>Si deseas atención inmediata, llámanos o escríbenos por WhatsApp:`;
                     successMsg.style.display = 'block';
                     
+                    const callBtns = document.getElementById('callActionButtons');
+                    if (callBtns) {
+                        callBtns.style.display = 'flex';
+                    }
+
                     const waBtns = document.getElementById('whatsappButtons');
                     if (waBtns) {
                         waBtns.style.display = 'flex';
-                        const msgEliecer = `Hola Eliecer, acabo de calificar para el programa puronics en la web. Mi nombre es ${name} y mi dirección es ${address}. ¿Cuándo podemos revisar mi diseño 3D?`;
-                        const msgConsultor2 = `Hola, acabo de calificar para el programa puronics en la web. Mi nombre es ${name} y mi dirección es ${address}. ¿Cuándo podemos revisar mi diseño 3D?`;
+                        const msgEliecer = `Hola Eliecer, acabo de solicitar el estudio solar en la web. Mi nombre es ${name} (${address}). Mi horario preferido de llamada es ${preferredTime}. ¿Podemos ver el análisis satelital de mi techo?`;
+                        const msgConsultor2 = `Hola, acabo de solicitar el estudio solar en la web. Mi nombre es ${name} (${address}). Mi horario preferido de llamada es ${preferredTime}. ¿Podemos ver el análisis satelital de mi techo?`;
                         
                         document.getElementById('waBtn1').href = `https://wa.me/13058136159?text=${encodeURIComponent(msgEliecer)}`;
                         document.getElementById('waBtn2').href = `https://wa.me/13057846363?text=${encodeURIComponent(msgConsultor2)}`;
                     }
 
-                    // Redirección automática secundaria al WhatsApp del consultor principal como conveniencia después de 2s
-                    setTimeout(() => {
-                        window.open(waLink, '_blank');
-                    }, 2000);
-                    
                     // Iniciar chat de IA en segundo plano
                     if(!chatWindow.classList.contains('active')){
                         chatWindow.classList.add('active');
@@ -455,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     addTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
-                        addMessage(`¡Genial! Acabo de registrar tus datos y enviar el reporte a ${email}. Nuestro equipo evaluará la propiedad en ${address}. ¿Tienes alguna duda mientras tanto?`, 'sol');
+                        addMessage(`¡Genial! Acabo de registrar tus datos y programar la llamada en tu horario preferido (${preferredTime}). Revisaremos la propiedad en ${address} mediante satélite. ¿Tienes alguna pregunta mientras tanto?`, 'sol');
                     }, 2000);
 
                     // El modal se quedará abierto infinitamente hasta que el usuario elija.
