@@ -3825,7 +3825,8 @@ async function syncMetaLeadsFromAPI() {
     const formIdsToCheck = [
         '1853635819138471', // Renta Solar Florida 2026 - Ahorro 50% ($0 Down)
         '1106762292289900', // Florida Solar 2026 - Propietarios Calificados (High Intent)
-        '1761509505143395'  // Florida Solar 2026 - Horario Preferido y Contacto Directo
+        '1761509505143395', // Florida Solar 2026 - Horario Preferido y Contacto Directo
+        '1442718728022648'  // Florida Solar 2026 - Llama Libremente y Botón Directo
     ];
 
     if (process.env.META_LEADGEN_FORM_ID && !formIdsToCheck.includes(process.env.META_LEADGEN_FORM_ID)) {

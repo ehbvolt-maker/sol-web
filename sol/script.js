@@ -372,6 +372,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    const leadPreferredTimeSelect = document.getElementById('leadPreferredTime');
+    const directCallCard = document.getElementById('directCallCard');
+    if (leadPreferredTimeSelect && directCallCard) {
+        leadPreferredTimeSelect.addEventListener('change', (e) => {
+            if (e.target.value.includes('Llama libremente')) {
+                directCallCard.style.borderColor = '#ffb703';
+                directCallCard.style.boxShadow = '0 0 20px rgba(255, 183, 3, 0.5)';
+                directCallCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                directCallCard.style.borderColor = 'rgba(255, 183, 3, 0.45)';
+                directCallCard.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            }
+        });
+    }
+
     if(submitLead) {
         submitLead.addEventListener('click', async () => {
             const email = document.getElementById('leadEmail').value;
@@ -379,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const phone = document.getElementById('leadPhone').value;
             const address = document.getElementById('leadAddress').value;
             const zipcode = document.getElementById('leadZip').value;
-            const preferredTime = document.getElementById('leadPreferredTime')?.value || 'Mañana (9:00 AM - 1:00 PM)';
+            const preferredTime = document.getElementById('leadPreferredTime')?.value || 'Llama libremente a nuestra compañía (305-813-6159 / 305-784-6363)';
 
             if(!name.trim()) {
                 alert('Por favor ingresa tu nombre completo.');
