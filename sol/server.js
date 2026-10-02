@@ -3821,13 +3821,11 @@ async function syncMetaLeadsFromAPI() {
     const accessToken = process.env.META_PAGE_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN;
     if (!accessToken) return;
 
-    // Lista de formularios activos de los anuncios y variables de entorno
+    // Lista de formularios activos de los anuncios solares
     const formIdsToCheck = [
         '1853635819138471', // Renta Solar Florida 2026 - Ahorro 50% ($0 Down)
-        '940971318597007',  // VOLT 2026 - Todo Para Tu Hogar (7 Servicios)
-        '4433590826954299', // VOLT 2026 - Todo Para Tu Hogar (7 Servicios) - Activo
         '1106762292289900', // Florida Solar 2026 - Propietarios Calificados (High Intent)
-        '1719593572707976'  // PURONICS ok - Tratamiento y Purificación de Agua Florida
+        '1761509505143395'  // Florida Solar 2026 - Horario Preferido y Contacto Directo
     ];
 
     if (process.env.META_LEADGEN_FORM_ID && !formIdsToCheck.includes(process.env.META_LEADGEN_FORM_ID)) {
