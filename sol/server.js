@@ -3913,12 +3913,12 @@ app.post('/api/leads/sync-bounces', async (req, res) => {
 });
 
 // Start Server
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log("=================================");
     console.log("🚀 Solar / Puronics Next Backend API Started");
     console.log("=================================");
-    console.log('Server running on: http://localhost:' + PORT);
-    console.log('Frontend accessible at: http://localhost:' + PORT + '/index.html');
+    console.log('Server running on port: ' + PORT);
+    console.log('Frontend accessible at: http://0.0.0.0:' + PORT + '/index.html');
 });
 
 server.on('error', (err) => {

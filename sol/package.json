@@ -5,6 +5,7 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'Build successful'",
     "start": "node server.js"
   },
   "keywords": [],
@@ -23,6 +24,6 @@
     "twilio": "^6.0.2"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=20.0.0"
   }
 }

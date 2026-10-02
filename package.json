@@ -1,0 +1,13 @@
+{
+  "name": "sol-web-root",
+  "version": "1.0.0",
+  "description": "Florida Solar Web Platform Root",
+  "main": "sol/server.js",
+  "scripts": {
+    "build": "cd sol && npm install",
+    "start": "cd sol && node server.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
