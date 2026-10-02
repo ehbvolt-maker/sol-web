@@ -2900,11 +2900,16 @@ async function fetchAndProcessMetaLead(leadgenId) {
                 customDetails.push(`Factura Luz: ${value}`);
             } else if (fieldName.includes('credit') || fieldName.includes('credito') || fieldName.includes('crédito') || fieldName.includes('score')) {
                 const lowerVal = value.toLowerCase();
-                creditScore = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true')) ? 'yes' : 'no';
+                creditScore = (lowerVal.includes('yes') || lowerVal.includes('si') || lowerVal.includes('sí') || lowerVal.includes('true') || value.includes('700')) ? 'yes' : 'no';
                 customDetails.push(`Crédito: ${value}`);
             } else if (fieldName.includes('roof') || fieldName.includes('techo')) {
-                roofType = value;
-                customDetails.push(`Techo: ${value}`);
+                if (value.includes('600') || value.includes('700') || value.toLowerCase().includes('crédit') || value.toLowerCase().includes('credit')) {
+                    creditScore = (value.includes('700') || value.includes('600 y 700')) ? 'yes' : 'no';
+                    customDetails.push(`Puntuación crediticia: ${value}`);
+                } else {
+                    roofType = value;
+                    customDetails.push(`Techo: ${value}`);
+                }
             } else if (fieldName.includes('horario') || fieldName.includes('time') || fieldName.includes('localizar') || fieldName.includes('contact')) {
                 preferredTime = value;
                 customDetails.push(`Horario preferido: ${value}`);
@@ -3826,7 +3831,8 @@ async function syncMetaLeadsFromAPI() {
         '1853635819138471', // Renta Solar Florida 2026 - Ahorro 50% ($0 Down)
         '1106762292289900', // Florida Solar 2026 - Propietarios Calificados (High Intent)
         '1761509505143395', // Florida Solar 2026 - Horario Preferido y Contacto Directo
-        '1442718728022648'  // Florida Solar 2026 - Llama Libremente y Botón Directo
+        '1442718728022648', // Florida Solar 2026 - Llama Libremente y Botón Directo
+        '1844914899847950'  // Florida Solar 2026 - Llama Libremente (Formulario Activo en Meta)
     ];
 
     if (process.env.META_LEADGEN_FORM_ID && !formIdsToCheck.includes(process.env.META_LEADGEN_FORM_ID)) {
